@@ -20,6 +20,7 @@ import ProfileDropdown from "@/components/ProfileDropdown";
 import Navigation from "@/components/Navigation";
 import Tippy from "@tippyjs/react";
 import GroupCard from "@/components/GroupCard";
+import MessageCard from "@/components/MessageCard";
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -115,8 +116,27 @@ export default function Home() {
             </Tippy>
           </div>
         </div>
-        <div className="px-4 py-6 sm:px-6 lg:px-8">
-          <GroupCard />
+        <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
+          <GroupCard
+            unreadMsgCount="2"
+            groupName="Nerd Mining"
+            latestSender="Metin"
+            latestMsg="Notları atın la"
+            latestMsgTime="12:00"
+          />
+          <MessageCard
+            unreadMsgCount="1"
+            senderFullname="Enes Öztekin"
+            latestMsg="Kanka projeyi naptın?"
+            latestMsgTime="15:35"
+          />
+          <GroupCard
+            unreadMsgCount="0"
+            groupName="Çay Tayfası"
+            latestSender="Enes"
+            latestMsg="Mangal yok mu bugün?"
+            latestMsgTime="07:50"
+          />
         </div>
       </aside>
     </div>
