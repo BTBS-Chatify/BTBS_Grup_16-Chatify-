@@ -15,6 +15,7 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import ProfileDropdown from "@/components/ProfileDropdown";
 import Navigation from "@/components/Navigation";
+import Tippy from '@tippyjs/react';
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
