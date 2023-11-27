@@ -21,6 +21,7 @@ import Navigation from "@/components/Navigation";
 import Tippy from "@tippyjs/react";
 import GroupCard from "@/components/GroupCard";
 import MessageCard from "@/components/MessageCard";
+import Chat from "@/components/Chat";
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -84,9 +85,7 @@ export default function Home() {
         </div>
 
         <main className="xl:pl-96 hidden lg:block">
-          <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
-            {/* Main area */}
-          </div>
+          <Chat />
         </main>
       </div>
 
