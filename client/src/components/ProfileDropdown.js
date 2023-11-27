@@ -1,6 +1,17 @@
 import { Fragment } from 'react'
 import {Menu, Transition} from "@headlessui/react";
-import {ChevronDownIcon} from "@heroicons/react/20/solid";
+
+import {
+    ChatBubbleLeftIcon,
+    ArrowRightCircleIcon,
+    ChevronDownIcon,
+    UsersIcon,
+    HeartIcon,
+    PencilSquareIcon,
+    UserIcon,
+    UserPlusIcon,
+    ArrowRightOnRectangleIcon,
+} from '@heroicons/react/20/solid'
 
 const userNavigation = [
     { name: 'Profil', href: '#' },
@@ -25,7 +36,7 @@ export default function ProfileDropdown()
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-                        Tom Cook
+                        Müslüm
                       </span>
                       <ChevronDownIcon className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                     </span>
@@ -39,22 +50,122 @@ export default function ProfileDropdown()
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                        {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="py-1">
+                            <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        href={item.href}
+                                        href="#"
                                         className={classNames(
-                                            active ? 'bg-gray-50' : '',
-                                            'block px-3 py-1 text-sm leading-6 text-gray-900'
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'group flex items-center px-4 py-2 text-sm'
                                         )}
                                     >
-                                        {item.name}
+                                        <UserIcon
+                                            className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                                            aria-hidden="true"
+                                        />
+                                        Profil
                                     </a>
                                 )}
                             </Menu.Item>
-                        ))}
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="#"
+                                        className={classNames(
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'group flex items-center px-4 py-2 text-sm'
+                                        )}
+                                    >
+                                        <PencilSquareIcon
+                                            className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                                            aria-hidden="true"
+                                        />
+                                        Hesabımı Düzenle
+                                    </a>
+                                )}
+                            </Menu.Item>
+                        </div>
+                        <div className="py-1">
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="#"
+                                        className={classNames(
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'group flex items-center px-4 py-2 text-sm'
+                                        )}
+                                    >
+                                        <UsersIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                        Arkadaşlar
+                                    </a>
+                                )}
+                            </Menu.Item>
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="#"
+                                        className={classNames(
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'group flex items-center px-4 py-2 text-sm'
+                                        )}
+                                    >
+                                        <ChatBubbleLeftIcon
+                                            className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                                            aria-hidden="true"
+                                        />
+                                        Mesajlar
+                                    </a>
+                                )}
+                            </Menu.Item>
+                        </div>
+                        <div className="py-1">
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="#"
+                                        className={classNames(
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'group flex items-center px-4 py-2 text-sm'
+                                        )}
+                                    >
+                                        <UserPlusIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                        Share
+                                    </a>
+                                )}
+                            </Menu.Item>
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="#"
+                                        className={classNames(
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'group flex items-center px-4 py-2 text-sm'
+                                        )}
+                                    >
+                                        <HeartIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                        Add to favorites
+                                    </a>
+                                )}
+                            </Menu.Item>
+                        </div>
+                        <div className="py-1">
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="#"
+                                        className={classNames(
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'group flex items-center px-4 py-2 text-sm'
+                                        )}
+                                    >
+                                        <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5 text-red-400 group-hover:text-red-500" aria-hidden="true" />
+                                        Çıkış yap
+                                    </a>
+                                )}
+                            </Menu.Item>
+                        </div>
                     </Menu.Items>
                 </Transition>
             </Menu>
