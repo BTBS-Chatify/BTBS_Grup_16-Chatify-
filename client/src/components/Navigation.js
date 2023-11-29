@@ -8,6 +8,7 @@ import {
   UserIcon,
   ChatBubbleLeftIcon,
   Cog8ToothIcon,
+  UserCircleIcon
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -15,7 +16,7 @@ const navigation = [
   { name: "Arkadaşlar", href: "#", icon: UserIcon, current: false },
   { name: "Gruplar", href: "#", icon: UsersIcon, current: false },
   { name: "Mesajlar", href: "#", icon: ChatBubbleLeftIcon, current: false },
-  { name: "Ayarlar", href: "#", icon: Cog8ToothIcon, current: false },
+  { name: "Ayarlar", href: "settings", icon: Cog8ToothIcon, current: false },
 ];
 
 function classNames(...classes) {
