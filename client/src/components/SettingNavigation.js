@@ -7,7 +7,7 @@ import {
     QuestionMarkCircleIcon,
     ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-  
+import Link from "next/link";
 export default function SettingsNavigation(){
     return (
         <aside className="fixed bottom-0 lg:left-20 top-16 w-80 overflow-y-auto  border-gray-200 bg-white">
@@ -17,7 +17,7 @@ export default function SettingsNavigation(){
           <div class="md:flex">
             <ul class="menu w-full">
               <div className="shadow-sm hover:shadow-md hover:bg-gray-200">
-                <a href="#" className="flex">
+                <Link href="/settings" className="flex">
                   <span className="p-2">
                   <UserCircleIcon class="p-2 w-12 h-12 text-blue-400" />
                   </span>
@@ -25,16 +25,16 @@ export default function SettingsNavigation(){
                     <span className="font-semibold">Hesap</span>
                     <span className="text-gray-400 text-xs">Profil resmi, e-posta, şifre</span>
                   </span>
-                </a>
+                </Link>
               </div>
             </ul>
           </div>
         </div>
         <div className="flex flex-col ">
-          <div class="md:flex">
+          <div class="sm:flex">
             <ul class="menu w-full">
               <div className="shadow-sm hover:shadow-md hover:bg-gray-200">
-                <a href="#" className="flex">
+                <Link href="/settings/notifications" className="flex">
                   <span className="p-2">
                     <BellAlertIcon class="p-2 h-12 w-12 text-yellow-500" />
                   </span>
@@ -42,7 +42,7 @@ export default function SettingsNavigation(){
                     <span className="font-semibold">Bildirimler</span>
                     <span className="text-gray-400 text-xs">E-posta, masaüstü, mobil</span>
                   </span>
-                </a>
+                </Link>
               </div>
             </ul>
           </div>
@@ -51,7 +51,7 @@ export default function SettingsNavigation(){
           <div class="md:flex">
             <ul class="menu w-full">
               <div className="shadow-sm hover:shadow-md hover:bg-gray-200">
-                <a href="#" className="flex">
+                <Link href="/settings/availability" className="flex">
                   <span className="p-2">
                     <ClockIcon class="p-2 h-12 w-12 text-purple-500" />
                   </span>
@@ -59,7 +59,7 @@ export default function SettingsNavigation(){
                     <span className="font-semibold">Kullanılabilirlik</span>
                     <span className="text-gray-400 text-xs">Ziyaretçiler sizi çevrimiçi olarak gördüğünde</span>
                   </span>
-                </a>
+                </Link>
               </div>
             </ul>
           </div>
@@ -83,7 +83,7 @@ export default function SettingsNavigation(){
         </div>
         
         <div className="flex flex-col">
-          <div class="md:flex item">
+          <div class="sm:flex item">
             <ul class="menu w-full">
               <div className="shadow-sm hover:shadow-md hover:bg-gray-200">
                 <a href="#" className="flex items-center p-2">

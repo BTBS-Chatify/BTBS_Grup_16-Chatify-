@@ -18,10 +18,11 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
+      <script src="https://cdn.tailwindcss.com"></script>
       <Navigation />
 
-      <div className="lg:pl-20">
+      <div className="sm:pl-20">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
@@ -41,8 +42,8 @@ export default function Home() {
           <Header />
         </div>
 
-        <main className="xl:pl-96 hidden lg:block">
-          <div className="mt-8 max-w-3xl mx-auto">
+        <main className="sm:pl-96 hidden sm:block">
+          <div className="mt-8 max-w-3xl mx-auto mb-10">
             <h3 className="font-semibold text-lg py-3">Hesap Ayarları</h3>
             <div className="max-w-3xl bg-white rounded-lg px-8 py-6 mb-8 block">
               <span className="text-gray-500 text-sm">Yalnızca Adınız kullanıcılar tarafından görülür.</span>
