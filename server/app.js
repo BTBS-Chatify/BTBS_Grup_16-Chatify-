@@ -1,20 +1,20 @@
 // 👇️ using require() CommonJS imports
 const express = require('express');
-//const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use(express.urlencoded());
+app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-// Parse JSON bodies (as sent by API clients)
-app.use(express.json());
+app.post('/profile', (req, res, next) => {
+    console.log(req.body)
+    res.json(req.body)
+})
 
-// Access the parse results as request.body
-app.post('/merhaba', function(request, response){
-    console.log(request.body.name);
-    console.log(request.body.email);
-});
-
+app.get('/merhaba/:id', (req, res, next) => {
+    res.send(req.params.id);
+})
 
 const port = 3005;
 
