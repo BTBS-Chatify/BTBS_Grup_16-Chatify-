@@ -1,15 +1,18 @@
 'use strict';
 
-var express = require('express');
-
+const express = require('express');
 var route = express.Router();
 
-route.use(express.json()) // for parsing application/json
-route.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+const { PrismaClient } = require('@prisma/client');
 
-route.post('/register', function (req, res, next) {
-    console.log(req.body);
-    res.send(req.body);
+const prisma = new PrismaClient();
+
+route.post('/register',  async (req, res, next) => {
+
+    const users = await prisma.user.findMany()
+
+    console.log(users)
+
 });
 
 module.exports = route;
