@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from 'react-toastify';
+import { useEffect} from "react";
 
 export default function Register()
 {
@@ -23,15 +22,16 @@ export default function Register()
 
         axios.post('http://localhost:3005/auth/register', userData)
             .then(res => {
-                if (res.status === 200) {
-                    toast("Helal olsun qral");
+                var response = JSON.parse(res.request.response);
+                if (response.status === 'success') {
+                    toast.success(response.message);
                 }
             })
             .catch(res => {
                 var response = JSON.parse(res.request.response);
 
                 response.details.body.forEach(bodyData => {
-                    alert(bodyData.message);
+                    toast.error(bodyData.message);
                 })
 
             });
