@@ -108,6 +108,4 @@ route.post('/login', validate(authValidation.login, {}, {}), async (request, res
 
 });
 
-
-
 module.exports = route;
