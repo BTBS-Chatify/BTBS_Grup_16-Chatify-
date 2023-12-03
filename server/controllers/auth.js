@@ -21,7 +21,8 @@ route.post('/register', validate(authValidation.create, {}, {}), async (request,
         if (request.body.password !== request.body.passwordConfirmation)
         {
             return response.status(400).json({
-                "error": "Invalid password"
+                "status": "error",
+                "message": "Invalid password"
             })
         }
 
@@ -36,13 +37,14 @@ route.post('/register', validate(authValidation.create, {}, {}), async (request,
 
         if (emailExists) {
             return response.status(400).json({
-                "error":"User already registered"
+                "status": "error",
+                "message":"User already registered"
             })
         }
 
-        const hashedPassword = await bcrypt.hash(request.body.password, 10);
+        let hashedPassword = await bcrypt.hash(request.body.password, 10);
 
-        const user = await prisma.user.create({
+        let user = await prisma.user.create({
             data: {
                 email: request.body.email,
                 username: request.body.username,
@@ -80,14 +82,12 @@ route.post('/login', validate(authValidation.login, {}, {}), async (request, res
             var userExists = await prisma.user.findFirst({
                 where: {
                     email: request.body.email,
-                    password: request.body.password
                 }
             })
         } else {
             var userExists = await prisma.user.findFirst({
                 where: {
                     username: request.body.email,
-                    password: request.body.password
                 }
             })
         }
@@ -98,6 +98,15 @@ route.post('/login', validate(authValidation.login, {}, {}), async (request, res
                 "error":"User does not exist"
             })
         }
+
+        bcrypt.compare(request.body.password, userExists.password, function (err, result) {
+            if (err && !result) {
+                return response.status(500).json({
+                    status: "error",
+                    message: "Password not match"
+                })
+            }
+        })
 
         return response.status(200).json({
             "status": "success",

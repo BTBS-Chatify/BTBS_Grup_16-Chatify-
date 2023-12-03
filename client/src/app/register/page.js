@@ -1,36 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Register()
 {
-
-    // const [candidat, setCandidat] = useState({
-    //
-    // })
-
-    // const onSubmit = async (e) => {
-    //     e.preventDefault();
-    //
-    //     console.log("Register")
-    //
-    //     // await fetch("/api/myform", {
-    //     //     method: "POST",
-    //     //     headers: {
-    //     //         "Content-Type": "application/json",
-    //     //     },
-    //     //     body: JSON.stringify(candidat),
-    //     // }).then(res=>res.json()).then(data=>setUser(data.user))
-    // };
-
     async function onSubmit(e) {
         e.preventDefault();
 
         var action = e.target.action;
 
-        var userData = JSON.stringify({
+        var userData = ({
             email: e.target.email.value,
             name: e.target.name.value,
             username: e.target.username.value,
@@ -38,13 +21,20 @@ export default function Register()
             passwordConfirmation: e.target.passwordConfirmation.value
         })
 
-        const response = axios.post('http://localhost:3005/auth/register', userData, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
+        axios.post('http://localhost:3005/auth/register', userData)
+            .then(res => {
+                if (res.status === 200) {
+                    toast("Helal olsun qral");
+                }
+            })
+            .catch(res => {
+                var response = JSON.parse(res.request.response);
 
-        return response;
+                response.details.body.forEach(bodyData => {
+                    alert(bodyData.message);
+                })
+
+            });
 
     }
 

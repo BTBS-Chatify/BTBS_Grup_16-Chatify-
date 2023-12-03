@@ -1,6 +1,40 @@
+"use client";
+
 import Link from "next/link";
+import axios from "axios";
+import {toast} from "react-toastify";
 export default function Login()
 {
+
+    async function onSubmit(e) {
+        e.preventDefault();
+
+        var action = e.target.action;
+
+        var userData = ({
+            email: e.target.email.value,
+            name: e.target.name.value,
+            username: e.target.username.value,
+            password: e.target.password.value,
+            passwordConfirmation: e.target.passwordConfirmation.value
+        })
+
+        axios.post('http://localhost:3005/auth/login', userData)
+            .then(res => {
+                console.log(res);
+                if (res.status === 200) {
+                    toast("Helal olsun qral");
+                }
+            })
+            .catch(res => {
+                var response = JSON.parse(res.request.response);
+                response.details.body.forEach(bodyData => {
+                    alert(bodyData.message);
+                })
+            });
+
+    }
+
     return (
         <div className="flex min-h-full flex-col bg-white">
             <div className="flex min-h-full flex-1">
@@ -20,7 +54,7 @@ export default function Login()
 
                         <div className="mt-10">
                             <div>
-                                <form action="#" method="POST" className="space-y-6">
+                                <form onSubmit={onSubmit} method="POST" className="space-y-6">
                                     <div>
                                         <label htmlFor="email"
                                                className="block text-sm font-medium leading-6 text-gray-900">E-posta

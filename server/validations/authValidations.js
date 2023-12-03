@@ -10,7 +10,6 @@ module.exports = {
     create: {
         body: Joi.object({
             email: Joi.string()
-                .email({ minDomainSegments: 2 })
                 // .custom(async value => {
                 //     const exists = await prismaClient.user.findUnique({
                 //         where: {
