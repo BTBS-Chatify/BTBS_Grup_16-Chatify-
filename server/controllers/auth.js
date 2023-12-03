@@ -10,11 +10,20 @@ const authValidation = require('../validations/authValidations');
 const { PrismaClient } = require('@prisma/client');
 const {isEmail} = require("validator");
 
+const bcrypt = require('bcrypt');
+
 const prisma = new PrismaClient();
 
 route.post('/register', validate(authValidation.create, {}, {}), async (request, response, next) => {
 
     try {
+
+        if (request.body.password !== request.body.passwordConfirmation)
+        {
+            return response.status(400).json({
+                "error": "Invalid password"
+            })
+        }
 
         const emailExists = await prisma.user.findFirst({
             where: {
@@ -31,21 +40,20 @@ route.post('/register', validate(authValidation.create, {}, {}), async (request,
             })
         }
 
+        const hashedPassword = await bcrypt.hash(request.body.password, 10);
+
         const user = await prisma.user.create({
             data: {
                 email: request.body.email,
                 username: request.body.username,
-                password: request.body.password,
-                name: "Hosgeldin Muzaffer"
+                password: hashedPassword,
+                name: request.body.name
             }
         })
 
         return response.status(200).json({
             "status": "success",
-            "message":"Kayit basarili qral",
-            "data": {
-                user
-            }
+            "message": "Kayıt başarılı, giriş yapabilirsiniz...",
         })
 
     } catch (err) {

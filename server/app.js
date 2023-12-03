@@ -1,11 +1,33 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { ValidationError } = require('express-validation');
-
+const cors = require('cors');
 const app = express();
+
+var corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: false })) // for parsing application/x-www-form-urlencoded
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if (req.method == "OPTIONS") {
+        res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+        return res.status(200).json({});
+    }
+    next();
+});
+
+// app.options('*', cors(corsOptions)) // include before other routes
 
 app.use('/auth', require('./controllers/auth'));
 
@@ -13,7 +35,7 @@ app.use(function (err, req, res, next) {
     if (err instanceof ValidationError) {
         return res.status(err.statusCode).json(err)
     }
-    return res.status(400).json(err)
+    return res.status(366).json(err)
 })
 
 
