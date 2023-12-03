@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+    headers: {
+        'Access-Control-Allow-Origin': '*'
+    }
+}
 
 module.exports = nextConfig
