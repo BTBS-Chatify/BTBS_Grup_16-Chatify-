@@ -196,7 +196,7 @@ route.post('/verifyToken', (req, res) => {
             return res.status(401).json({ valid: false, message: 'Invalid token' });
         }
         // Token geçerli ise
-        res.status(200).json({ valid: true, message: 'Token is valid' });
+        res.status(200).json({ valid: true, message: 'Token is valid', user: decoded });
     });
 });
 
