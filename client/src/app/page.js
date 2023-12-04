@@ -25,7 +25,7 @@ import Chat from "@/components/Chat";
 import Header from "@/components/Header";
 import isAuth from "@/middleware/isAuth";
 
-const Home = () => {
+const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -49,7 +49,7 @@ const Home = () => {
                 aria-hidden="true"
             />
 
-            <Header />
+            <Header user={user} />
           </div>
 
           <main className="xl:pl-96 hidden lg:block">

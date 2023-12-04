@@ -2,8 +2,7 @@ import {MagnifyingGlassIcon} from "@heroicons/react/20/solid";
 import {BellIcon} from "@heroicons/react/24/outline";
 import ProfileDropdown from "@/components/ProfileDropdown";
 
-export default function Header()
-{
+const Header = ({ user }) => {
     return (
         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <form className="relative flex flex-1" action="#" method="GET">
@@ -38,8 +37,10 @@ export default function Header()
                 />
 
                 {/* Profile dropdown */}
-                <ProfileDropdown />
+                <ProfileDropdown user={user} />
             </div>
         </div>
     )
 }
+
+export default Header;
