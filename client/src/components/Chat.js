@@ -57,7 +57,7 @@ export default function Chat() {
 
             <div className="flex-grow">
               <input type="text"
-                     className="w-full border-transparent rounded h-10 bg-gray-50 placeholder:text-14 text-14"
+                     className=" w-full border-transparent rounded h-10 bg-gray-50 placeholder:text-14 text-14"
                      placeholder="Enter Message..."/>
             </div>
             <div>

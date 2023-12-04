@@ -49,23 +49,23 @@ export default function Home() {
               <form className="mt-5">
                 <div class="mb-5 flex items-center">
                   <label for="name" class="mb-2 w-24 text-sm font-medium">Ad*</label>
-                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-sm p-2.5 ml-2" placeholder="Metin" required />
+                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="Metin" required />
                 </div>
                 <div class="mb-5 flex items-center">
                   <label for="name" class="mb-2 w-24 text-sm font-medium">Soyad*</label>
-                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-sm p-2.5 ml-2" placeholder="TAŞ" required />
+                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="TAŞ" required />
                 </div>
                 <hr className="py-2"></hr>
                 <span className="text-gray-500 text-sm py-2">E-postanız size bildirim göndermek için kullanılır. Ziyaretçileriniz tarafından görülmez.</span>
                 <div class="mb-5 flex items-center py-3">
                   <label for="name" class="mb-2 w-24 text-sm font-medium">E-posta*</label>
-                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-sm p-2.5 ml-2" placeholder="metintas@gmail.com" required />
+                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="metintas@gmail.com" required />
                 </div>
                 <hr className="py-2"></hr>
                 <span className="text-gray-500 text-sm py-2">Bir telefon numarası hesap kurtarma amacıyla kullanılabilir. İki Faktörlü kimlik doğrulama için gereklidir.</span>
                 <div class="mb-5 flex items-center py-3">
                   <label for="name" class="mb-2 w-24 text-sm font-medium">Telefon</label>
-                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-sm p-2.5 ml-2" placeholder="Telefon numaranızı yazın (örn+901111111111)" required />
+                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="Telefon numaranızı yazın (örn+901111111111)" required />
                 </div>
                 <hr className="py-2"></hr>
                 <div className="flex w-1/3 border-2 rounded-md py-4 px-3 items-center">

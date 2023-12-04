@@ -17,7 +17,7 @@ const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
 route.post('/register', validate(authValidation.create, {}, {}), async (request, response, next) => {
-
+   
     try {
 
         if (request.body.password !== request.body.passwordConfirmation)

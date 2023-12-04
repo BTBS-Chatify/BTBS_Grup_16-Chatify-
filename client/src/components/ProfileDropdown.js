@@ -54,25 +54,8 @@ const ProfileDropdown = ({ user }) => {
                         <div className="py-1">
                             <Menu.Item>
                                 {({ active }) => (
-                                    <a
-                                        href="#"
-                                        className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'group flex items-center px-4 py-2 text-sm'
-                                        )}
-                                    >
-                                        <UserIcon
-                                            className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                            aria-hidden="true"
-                                        />
-                                        Profil
-                                    </a>
-                                )}
-                            </Menu.Item>
-                            <Menu.Item>
-                                {({ active }) => (
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href="/settings"
                                         className={classNames(
                                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                             'group flex items-center px-4 py-2 text-sm'
@@ -83,7 +66,7 @@ const ProfileDropdown = ({ user }) => {
                                             aria-hidden="true"
                                         />
                                         Hesabımı Düzenle
-                                    </a>
+                                    </Link>
                                 )}
                             </Menu.Item>
                         </div>
@@ -116,36 +99,6 @@ const ProfileDropdown = ({ user }) => {
                                             aria-hidden="true"
                                         />
                                         Mesajlar
-                                    </a>
-                                )}
-                            </Menu.Item>
-                        </div>
-                        <div className="py-1">
-                            <Menu.Item>
-                                {({ active }) => (
-                                    <a
-                                        href="#"
-                                        className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'group flex items-center px-4 py-2 text-sm'
-                                        )}
-                                    >
-                                        <UserPlusIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                                        Share
-                                    </a>
-                                )}
-                            </Menu.Item>
-                            <Menu.Item>
-                                {({ active }) => (
-                                    <a
-                                        href="#"
-                                        className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'group flex items-center px-4 py-2 text-sm'
-                                        )}
-                                    >
-                                        <HeartIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                                        Add to favorites
                                     </a>
                                 )}
                             </Menu.Item>

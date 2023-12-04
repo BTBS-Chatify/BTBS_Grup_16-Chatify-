@@ -1,5 +1,7 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   HomeIcon,
@@ -12,21 +14,28 @@ import {
 } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Akış", href: "#", icon: HomeIcon, current: true },
+  { name: "Akış", href: "/", icon: HomeIcon, current: false },
   { name: "Arkadaşlar", href: "#", icon: UserIcon, current: false },
   { name: "Gruplar", href: "#", icon: UsersIcon, current: false },
   { name: "Mesajlar", href: "#", icon: ChatBubbleLeftIcon, current: false },
-  { name: "Ayarlar", href: "settings", icon: Cog8ToothIcon, current: false },
+  { name: "Ayarlar", href: "/settings", icon: Cog8ToothIcon, current: false},
 ];
 
+
+
 function classNames(...classes) {
+
   return classes.filter(Boolean).join(" ");
+
 }
 
 export default function Navigation() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const currentUrl = usePathname()
+
 
   return (
+
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
@@ -93,10 +102,10 @@ export default function Navigation() {
                     <ul role="list" className="-mx-2 flex-1 space-y-1">
                       {navigation.map((item) => (
                         <li key={item.name}>
-                          <a
+                          <Link
                             href={item.href}
                             className={classNames(
-                              item.current
+                               currentUrl == item.href
                                 ? "bg-gray-800 text-white"
                                 : "text-gray-400 hover:text-white hover:bg-gray-800",
                               "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -107,7 +116,7 @@ export default function Navigation() {
                               aria-hidden="true"
                             />
                             {item.name}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -135,10 +144,11 @@ export default function Navigation() {
                 <a
                   href={item.href}
                   className={classNames(
-                    item.current
+                    currentUrl == item.href
                       ? "bg-gray-800 text-white"
                       : "text-gray-400 hover:text-white hover:bg-gray-800",
-                    "group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold"
+                    "group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold",
+
                   )}
                 >
                   <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
