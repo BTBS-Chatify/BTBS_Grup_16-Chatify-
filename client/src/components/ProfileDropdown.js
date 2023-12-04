@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import {Menu, Transition} from "@headlessui/react";
+import Link from 'next/link';
 
 import {
     ChatBubbleLeftIcon,
@@ -22,8 +23,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function ProfileDropdown()
-{
+const ProfileDropdown = ({ user }) => {
     return (
         <>
             <Menu as="div" className="relative">
@@ -36,7 +36,7 @@ export default function ProfileDropdown()
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-                        Müslüm
+                        {user ? user.username : null}
                       </span>
                       <ChevronDownIcon className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                     </span>
@@ -153,16 +153,12 @@ export default function ProfileDropdown()
                         <div className="py-1">
                             <Menu.Item>
                                 {({ active }) => (
-                                    <a
-                                        href="#"
-                                        className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'group flex items-center px-4 py-2 text-sm'
-                                        )}
-                                    >
-                                        <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5 text-red-400 group-hover:text-red-500" aria-hidden="true" />
-                                        Çıkış yap
-                                    </a>
+                                    <Link href="/logout" className={`group flex items-center px-4 py-2 text-sm ${
+                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                                    }`}>
+                                            <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5 text-red-400 group-hover:text-red-500" aria-hidden="true" />
+                                            Çıkış yap
+                                    </Link>
                                 )}
                             </Menu.Item>
                         </div>
@@ -172,3 +168,5 @@ export default function ProfileDropdown()
         </>
     )
 }
+
+export default ProfileDropdown;
