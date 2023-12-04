@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import axios from "axios";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
 export default function Login()
 {
+
+    const router = useRouter();
 
     async function onSubmit(e) {
         e.preventDefault();
@@ -13,23 +17,25 @@ export default function Login()
 
         var userData = ({
             email: e.target.email.value,
-            name: e.target.name.value,
-            username: e.target.username.value,
             password: e.target.password.value,
-            passwordConfirmation: e.target.passwordConfirmation.value
         })
 
         axios.post('http://localhost:3005/auth/login', userData)
             .then(res => {
-                console.log(res);
-                if (res.status === 200) {
-                    toast("Helal olsun qral");
+                var response = JSON.parse(res.request.response);
+                if (response.status === 'success') {
+                    toast.success(response.message);
                 }
+
+                localStorage.setItem('token', response.accessToken);
+
+                router.push('/');
+
             })
             .catch(res => {
                 var response = JSON.parse(res.request.response);
                 response.details.body.forEach(bodyData => {
-                    alert(bodyData.message);
+                    toast.error(bodyData.message);
                 })
             });
 
