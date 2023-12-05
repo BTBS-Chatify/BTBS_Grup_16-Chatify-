@@ -1,5 +1,5 @@
 "use client";
-
+import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -7,6 +7,22 @@ import { useRouter } from "next/navigation";
 
 export default function Login()
 {
+    const [isWideScreen, setIsWideScreen] = useState(true);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsWideScreen(window.innerWidth >= 1150);
+        };
+
+        // Sayfa yüklendiğinde ve pencere boyutu değiştiğinde çağrılır
+        window.addEventListener('resize', handleResize);
+
+        // İlk render'dan sonra temizleme
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    
 
     const router = useRouter();
 
@@ -42,21 +58,48 @@ export default function Login()
     }
 
     return (
-        <div className="flex min-h-full flex-col bg-white">
-            <div className="flex min-h-full flex-1">
-                <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-                    <div className="mx-auto w-full max-w-sm lg:w-96">
-                        <div>
-                            <img className="h-10 w-auto"
-                                 src="https://tailwindui.com/img/logos/mark.svg?color=blue&amp;shade=600"
-                                 alt="Your Company"/>
-                            <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">Hesabınıza
-                                giriş yapın</h2>
-                            <p className="mt-2 text-sm leading-6 text-gray-500 space-x-2">
-                                <span>Hesabınız yok mu?</span>
-                                <Link href={'register'} className="font-semibold text-blue-600 hover:text-blue-500">kaydol</Link>
-                            </p>
-                        </div>
+        <div className="flex min-h-full flex-col bg-white justify-center  items-center">,
+            <div className="flex min-h-full flex-1 justify  items-center  ">
+            
+            <div class=" absolute left-40 top-20 transform -translate-x-3 -translate-y-1/5 w-66 h-66 rounded-full animate-bounce duration-100" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-1.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full" />
+             
+             </div>
+            <div class="absolute left-600 right-1/4 top-1/4 transform -translate-x-1/2 -translate-y-1/5 w-15 h-15 rounded-full animate-bounce duration-200" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                 <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-2.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full"/>
+            </div>
+
+            <div class="absolute left-80 top-1/3 transform -translate-x-1/2 -translate-y-1/5 w-35 h-35 rounded-full animate-bounce duration-200" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                 <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-3.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div class="absolute left-60 top-3/4 transform -translate-x-1/2 -translate-y-1/5 w-27 h-27 rounded-full animate-bounce duration-200" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-5.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div class="absolute left-10 top-1/7 transform -translate-x-1/2 -translate-y-1/5 w-20 h-20 rounded-full animate-bounce duration-200" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-7.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div class="absolute right-24 top-20 transform -translate-x-1/2 -translate-y-1/5 w-30 h-30 rounded-full animate-bounce duration-200" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-4.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div class="absolute right-1/4 top-3/4 transform -translate-x-1/2 -translate-y-1/5 w-31 h-31 rounded-full animate-bounce duration-200" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-6.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div class="absolute right-60 top-90 transform -translate-x-1/3 -translate-y-1/5 w-20 h-20 rounded-full animate-bounce duration-200" style={{  display: isWideScreen ? 'block' : 'none'  }}>
+                <img src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-8.png&w=96&q=75" alt="Circular Image" className="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24" >
+                <div className="mx-auto w-full max-w-sm lg:w-96">
+                    <div>
+                       <img className="h-10 w-auto"
+                            src="https://tailwindui.com/img/logos/mark.svg?color=blue&amp;shade=600"
+                            alt="Your Company"/>
+                        <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">Hesabınıza
+                            giriş yapın</h2>
+                        <p className="mt-2 text-sm leading-6 text-gray-500 space-x-2">
+                            <span>Hesabınız yok mu?</span>
+                            <Link href={'register'} className="font-semibold text-blue-600 hover:text-blue-500">kaydol</Link>
+                        </p>
+                    </div>
 
                         <div className="mt-10">
                             <div>
@@ -102,12 +145,8 @@ export default function Login()
                         </div>
                     </div>
                 </div>
-                <div className="relative hidden w-0 flex-1 lg:block">
-                    <img className="absolute inset-0 h-full w-full object-cover"
-                         src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1908&amp;q=80"
-                         alt=""/>
-                </div>
             </div>
         </div>
     )
 }
+
