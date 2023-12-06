@@ -21,7 +21,7 @@ export default function Chat() {
         <div className="grid items-center grid-cols-12">
           <div className="col-span-8 sm:col-span-4">
             <div className="flex items-center space-x-2">
-              <div className=""></div>
+              <div className="">
                 <img
                   src="https://bgcp.bionluk.com/images/avatar/200x200/560da9fe-cb7c-42f7-adc7-3755df667792.jpg"
                   className="rounded-full h-9 w-9"
