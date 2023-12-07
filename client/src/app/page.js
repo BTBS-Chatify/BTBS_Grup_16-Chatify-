@@ -1,29 +1,15 @@
 "use client";
-import { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { useState } from "react";
 import {
-  Bars3Icon,
-  BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
+  Bars3Icon
 } from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
-import ProfileDropdown from "@/components/ProfileDropdown";
 import Navigation from "@/components/Navigation";
-import Tippy from "@tippyjs/react";
 import GroupCard from "@/components/GroupCard";
 import MessageCard from "@/components/MessageCard";
 import Chat from "@/components/Chat";
 import Header from "@/components/Header";
 import isAuth from "@/middleware/isAuth";
+import GroupCreateModal from "@/components/GroupCreateModal";
 
 const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -63,24 +49,7 @@ const Home = ({ user }) => {
               <span className="font-semibold text-lg text-slate-900">Akış</span>
             </div>
             <div>
-              <Tippy content="Merhaba">
-                <button className="bg-blue-500 rounded-full text-white hover:bg-blue-600 h-8 w-8 flex flex-row justify-center items-center">
-                  <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                  >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </button>
-              </Tippy>
+              <GroupCreateModal user={user} />
             </div>
           </div>
           <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
