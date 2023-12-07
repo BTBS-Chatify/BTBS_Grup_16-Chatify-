@@ -1,5 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express           = require('express');
+const bodyParser        = require('body-parser');
 const { ValidationError } = require('express-validation');
 const cors = require('cors');
 const app = express();
@@ -35,7 +35,7 @@ app.use(function (err, req, res, next) {
     if (err instanceof ValidationError) {
         return res.status(err.statusCode).json(err)
     }
-    return res.status(366).json(err)
+    return res.status(400).json(err)
 })
 
 
