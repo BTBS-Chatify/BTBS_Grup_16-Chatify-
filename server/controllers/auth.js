@@ -8,7 +8,8 @@ const { validate } = require("express-validation");
 const authValidation = require('../validations/authValidations');
 
 const { PrismaClient } = require('@prisma/client');
-const {isEmail} = require("validator");
+
+const { isEmail } = require("validator");
 
 const bcrypt = require('bcrypt');
 
@@ -69,7 +70,6 @@ route.post('/register', validate(authValidation.create, {}, {}), async (request,
                 email: request.body.email,
                 username: request.body.username,
                 password: hashedPassword,
-                name: request.body.name
             }
         })
 
@@ -138,34 +138,32 @@ route.post('/login', validate(authValidation.login, {}, {}), async (request, res
             });
         }
 
-        bcrypt.compare(request.body.password, userExists.password, function (err, result) {
-            if (err && !result) {
-                return response.status(400).json({
-                    name: 'ValidationError',
-                    message: 'Validation Failed',
-                    statusCode: 400,
-                    error: 'Bad Request',
-                    details: {
-                        body: [
-                            {
-                                message: 'Password not match',
-                            },
-                        ],
-                    }
-                });
-            }
-        })
+        if (userExists && (await bcrypt.compare(request.body.password, userExists.password))) {
 
-        let username = userExists.username;
+            const accessToken = jwt.sign(userExists, process.env.SECRET_KEY, { expiresIn: '15m' });
+            const refreshToken = jwt.sign(userExists, process.env.REFRESH_KEY, { expiresIn: '7d' });
 
-        const token = jwt.sign({ username }, process.env.SECRET_KEY, { expiresIn: '1h' });
-
-        return response.status(200).json({
-            status: "success",
-            message: "Giriş başarılı",
-            accessToken: token
-        })
-
+            return response.status(200).json({
+                status: "success",
+                message: "Giriş başarılı",
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            })
+        } else {
+            return response.status(400).json({
+                name: 'ValidationError',
+                message: 'Validation Failed',
+                statusCode: 400,
+                error: 'Bad Request',
+                details: {
+                    body: [
+                        {
+                            message: 'Invalid credentials',
+                        },
+                    ],
+                }
+            });
+        }
     } catch (err) {
         return response.status(400).json({
             name: 'ValidationError',
@@ -197,6 +195,22 @@ route.post('/verifyToken', (req, res) => {
         }
         // Token geçerli ise
         res.status(200).json({ valid: true, message: 'Token is valid', user: decoded });
+    });
+});
+
+route.post('/refreshToken', (req, res) => {
+    const { token } = req.body;
+
+    if (!token) {
+        return res.status(400).json({ valid: false, message: 'Token is missing' });
+    }
+
+    jwt.verify(token, process.env.REFRESH_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ valid: false, message: 'Invalid token' });
+        }
+        const newAccessToken = jwt.sign({ username: decoded }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+        res.status(200).json({ valid: true, message: 'New access token generated', accessToken: newAccessToken });
     });
 });
 
