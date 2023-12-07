@@ -2,28 +2,10 @@
 
 const { Joi } = require('express-validation')
 
-const { PrismaClient } = require('@prisma/client');
-
-const prismaClient = new PrismaClient();
-
 module.exports = {
     create: {
         body: Joi.object({
             email: Joi.string()
-                // .custom(async value => {
-                //     const exists = await prismaClient.user.findUnique({
-                //         where: {
-                //             email: value
-                //         }
-                //     });
-                //
-                //     if (exists) {
-                //         throw new Error('E-mail already in use');
-                //     }
-                //
-                // })
-                .required(),
-            name: Joi.string()
                 .required(),
             username: Joi.string()
                 .alphanum()
