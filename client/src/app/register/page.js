@@ -41,7 +41,9 @@ export default function Register() {
         var response = JSON.parse(res.request.response);
         if (response.status === "success") {
           toast.success(response.message);
-          window.location.href = "/login";
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 2000)
         }
       })
       .catch((res) => {
