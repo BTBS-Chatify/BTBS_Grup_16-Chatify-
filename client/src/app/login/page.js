@@ -44,6 +44,7 @@ export default function Login()
                 }
 
                 localStorage.setItem('token', response.accessToken);
+                localStorage.setItem('refreshToken', response.refreshToken);
 
                 router.push('/');
 
