@@ -1,27 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect } from "next/navigation";
 
 export default function Register() {
-  const [isWideScreen, setIsWideScreen] = useState(true);
-  useEffect(() => {
-    const handleResize = () => {
-      setIsWideScreen(window.innerWidth >= 1170);
-    };
-
-    // Sayfa yüklendiğinde ve pencere boyutu değiştiğinde çağrılır
-    window.addEventListener("resize", handleResize);
-
-    // İlk render'dan sonra temizleme
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   async function onSubmit(e) {
     e.preventDefault();
 
@@ -29,7 +15,6 @@ export default function Register() {
 
     var userData = {
       email: e.target.email.value,
-      name: e.target.name.value,
       username: e.target.username.value,
       password: e.target.password.value,
       passwordConfirmation: e.target.passwordConfirmation.value,
@@ -60,8 +45,7 @@ export default function Register() {
       <div className="flex min-h-full flex-1 justify-left items-center">
         {/*Eklediklerim */}
         <div
-          className="absolute left-40 top-20 transform -translate-x-3 -translate-y-1/5 w-66 h-66 rounded-full animate-bounce duration-200 "
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute left-40 top-20 transform -translate-x-3 -translate-y-1/5 hidden lg:block w-66 h-66 rounded-full animate-bounce duration-200 "
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-1.png&w=96&q=75"
@@ -70,8 +54,7 @@ export default function Register() {
           />
         </div>
         <div
-          className="absolute left-600 right-1/4 top-1/4 transform -translate-x-1/2 -translate-y-1/5 w-15 h-15 rounded-full animate-bounce duration-200"
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute left-600 right-1/4 top-1/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-15 h-15 rounded-full animate-bounce duration-200"
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-2.png&w=96&q=75"
@@ -81,8 +64,7 @@ export default function Register() {
         </div>
 
         <div
-          className="absolute left-80 top-1/3 transform -translate-x-1/2 -translate-y-1/5 w-35 h-35 rounded-full animate-bounce duration-200"
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute left-80 top-1/3 transform -translate-x-1/2 -translate-y-1/5 w-35 h-35 hidden lg:block rounded-full animate-bounce duration-200"
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-3.png&w=96&q=75"
@@ -91,8 +73,7 @@ export default function Register() {
           />
         </div>
         <div
-          className="absolute left-60 top-3/4 transform -translate-x-1/2 -translate-y-1/5 w-27 h-27 rounded-full animate-bounce duration-200"
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute left-60 top-3/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-27 h-27 rounded-full animate-bounce duration-200"
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-5.png&w=96&q=75"
@@ -101,8 +82,7 @@ export default function Register() {
           />
         </div>
         <div
-          className="absolute left-10 top-1/7 transform -translate-x-1/2 -translate-y-1/5 w-20 h-20 rounded-full animate-bounce duration-200"
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute left-10 top-1/7 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-20 h-20 rounded-full animate-bounce duration-200"
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-7.png&w=96&q=75"
@@ -111,8 +91,7 @@ export default function Register() {
           />
         </div>
         <div
-          className="absolute right-24 top-20 transform -translate-x-1/2 -translate-y-1/5 w-30 h-30 rounded-full animate-bounce duration-200"
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute right-24 top-20 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-30 h-30 rounded-full animate-bounce duration-200"
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-4.png&w=96&q=75"
@@ -121,8 +100,7 @@ export default function Register() {
           />
         </div>
         <div
-          className="absolute right-1/4 top-3/4 transform -translate-x-1/2 -translate-y-1/5 w-31 h-31 rounded-full animate-bounce duration-200"
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute right-1/4 top-3/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-31 h-31 rounded-full animate-bounce duration-200"
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-6.png&w=96&q=75"
@@ -131,8 +109,7 @@ export default function Register() {
           />
         </div>
         <div
-          className="absolute right-60 top-90 transform -translate-x-1/3 -translate-y-1/5 w-20 h-20 rounded-full animate-bounce duration-200"
-          style={{ display: isWideScreen ? "block" : "none" }}
+          className="absolute right-60 top-90 transform -translate-x-1/3 -translate-y-1/5 hidden lg:block w-20 h-20 rounded-full animate-bounce duration-200"
         >
           <img
             src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-8.png&w=96&q=75"
@@ -183,24 +160,6 @@ export default function Register() {
                       name="email"
                       type="text"
                       autoComplete="email"
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Tam adınız
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      autoComplete="name"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                     />
                   </div>
