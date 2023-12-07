@@ -23,8 +23,24 @@ const isAuth = (WrappedComponent) => {
                     }
                     router.push('/login');
                 } catch (error) {
-                    console.error('Token verification error:', error);
-                    router.push('/login');
+
+                    if (error.status != 200) {
+                        const refreshToken = localStorage.getItem('refreshToken');
+                        const refreshResponse = await axios.post('http://localhost:3005/auth/refreshToken', { refreshToken });
+                        if (refreshResponse.data.valid) {
+                            localStorage.setItem('token', refreshResponse.accessToken);
+
+                            return;
+                        } else {
+                            console.error('Token verification error:', refreshResponse.message);
+                            localStorage.removeItem('refreshToken');
+                            router.push('/login');
+                        }
+                    } else {
+                        console.error('Token verification error:', refreshResponse.message);
+                        localStorage.removeItem('token');
+                        router.push('/login');
+                    }
                 }
             };
 
