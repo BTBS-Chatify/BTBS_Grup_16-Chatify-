@@ -15,10 +15,9 @@ model User {
   createdAt        DateTime       @default(now())
   email            String         @unique
   username         String         @db.VarChar(20)
-  firstName        String?        @db.VarChar(25)
-  lastName         String?        @db.VarChar(25)
+  fullName         String?        @db.VarChar(50)
   password         String         @db.VarChar(255)
-  picture          String?        @db.VarChar(255)
+  picture          String?        @default("") @db.VarChar(255)
   status           Int            @default(1)
   GroupMember      GroupMember[]
   GroupMessage     GroupMessage[]
