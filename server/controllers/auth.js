@@ -17,9 +17,10 @@ const prisma = new PrismaClient();
 
 const jwt = require('jsonwebtoken');
 
-route.post('/register', validate(authValidation.create, {}, {}), async (request, response) => {
+route.post('/register', validate(authValidation.create, {}, {}), async (request, response, next) => {
    
     try {
+
         if (request.body.password !== request.body.passwordConfirmation)
         {
             return response.status(400).json({
@@ -64,7 +65,7 @@ route.post('/register', validate(authValidation.create, {}, {}), async (request,
 
         let hashedPassword = await bcrypt.hash(request.body.password, 10);
 
-        await prisma.user.create({
+        let user = await prisma.user.create({
             data: {
                 email: request.body.email,
                 username: request.body.username,
@@ -76,6 +77,7 @@ route.post('/register', validate(authValidation.create, {}, {}), async (request,
             status: "success",
             message: "Kayıt başarılı, giriş yapabilirsiniz...",
         })
+
     } catch (err) {
         return response.status(400).json({
             name: 'ValidationError',
@@ -95,7 +97,7 @@ route.post('/register', validate(authValidation.create, {}, {}), async (request,
 
 });
 
-route.post('/login', validate(authValidation.login, {}, {}), async (request, response) => {
+route.post('/login', validate(authValidation.login, {}, {}), async (request, response, next) => {
 
     let emailOrUsername = true;
 
@@ -103,18 +105,16 @@ route.post('/login', validate(authValidation.login, {}, {}), async (request, res
         emailOrUsername = false;
     }
 
-    let userExists;
-
     try {
 
         if (emailOrUsername === true) {
-            userExists = await prisma.user.findFirst({
+            var userExists = await prisma.user.findFirst({
                 where: {
                     email: request.body.email,
                 }
             })
         } else {
-            userExists = await prisma.user.findFirst({
+            var userExists = await prisma.user.findFirst({
                 where: {
                     username: request.body.email,
                 }
