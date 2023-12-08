@@ -1,18 +1,14 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { redirect } from "next/navigation";
 
 export default function Register() {
   async function onSubmit(e) {
     e.preventDefault();
-
-    var action = e.target.action;
-
+    
     var userData = {
       email: e.target.email.value,
       username: e.target.username.value,
