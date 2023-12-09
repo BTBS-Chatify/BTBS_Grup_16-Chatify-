@@ -1,14 +1,21 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { redirect } from "next/navigation";
 
 export default function Register() {
+
+  
+  
   async function onSubmit(e) {
     e.preventDefault();
-    
+
+    var action = e.target.action;
+
     var userData = {
       email: e.target.email.value,
       username: e.target.username.value,
@@ -24,7 +31,7 @@ export default function Register() {
           toast.success(response.message);
           setTimeout(() => {
             window.location.href = "/login";
-          }, 2000);
+          }, 2000)
         }
       })
       .catch((res) => {
@@ -35,70 +42,154 @@ export default function Register() {
         });
       });
   }
-
+  
   return (
     <div className="flex min-h-full flex-col bg-white">
       <div className="flex min-h-full flex-1 justify-left items-center">
         {/*Eklediklerim */}
-        <div className="absolute left-40 top-20 transform -translate-x-3 -translate-y-1/5 hidden lg:block w-66 h-66 rounded-full animate-bounce duration-200 ">
+        <div
+        className="absolute left-60 top-20 transform -translate-x-3 -translate-y-1/5 hidden lg:block w-66 h-66 rounded-full animate-bounce duration-200"
+
+      style={{
+            overflow: 'hidden',
+          }}
+        >
           <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-1.png&w=96&q=75"
+            src='/assets/1.jpg'
             alt="Circular Image"
             className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '80px',  // İstenilen genişlik değeri
+              height: '80px', // İstenilen yükseklik değeri
+            }}
           />
         </div>
-        <div className="absolute left-600 right-1/4 top-1/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-15 h-15 rounded-full animate-bounce duration-200">
+       
+        <div
+          className="absolute left-80 top-1/3 transform -translate-x-1/2 -translate-y-1/5 w-35 h-35 hidden lg:block rounded-full animate-bounce duration-200"
+          style={{
+            overflow: 'hidden',
+          }}
+        >
           <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-2.png&w=96&q=75"
+            src="/assets/2.jpg"
             alt="Circular Image"
             className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '70px',  // İstenilen genişlik değeri
+              height: '70px', // İstenilen yükseklik değeri
+            }}
+          />
+        </div>
+        <div
+          className="fixed left-20 right-1/4 top-96 transform -translate-x-1/2 -translate-y-1/5 z-10 hidden lg:block w-30 h-30 rounded-full animate-bounce duration-200"
+          style={{
+            overflow: 'hidden',
+          }}
+       >
+          <img
+            src="/assets/3.jpg"
+            alt="Circular Image"
+            className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '90px',  
+              height: '90px', 
+            }}
+          />
+        </div>
+        <div
+          className="absolute left-60 top-3/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-27 h-27 rounded-full animate-bounce duration-200"
+          style={{
+            overflow: 'hidden',
+          }}
+        >
+          <img
+            src="/assets/4.jpg"
+            alt="Circular Image"
+            className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '60px',  
+              height: '60px', 
+            }}
+          />
+        </div>
+{/******************************SAĞ******************************************************** */}
+<div
+          className="absolute right-60 top-3/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-27 h-27 rounded-full animate-bounce duration-200"
+          
+        >
+          <img
+            src="/assets/5.jpg"
+            alt="Circular Image"
+            className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '80px',  // İstenilen genişlik değeri
+              height: '80px', // İstenilen yükseklik değeri
+              
+            }}
+          />
+        </div>
+        
+        <div
+          className="absolute right-40 top-20 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-27 h-27 rounded-full animate-bounce duration-200"
+          
+        >
+          <img
+            src="/assets/6.jpg"
+            alt="Circular Image"
+            className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '70px',  // İstenilen genişlik değeri
+              height: '70px', // İstenilen yükseklik değeri
+              
+            }}
+          />
+        </div>
+ 
+        <div
+          className="absolute right-72 top-60 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-27 h-27 rounded-full animate-bounce duration-200"
+          
+        >
+          <img
+            src="/assets/7.jpg"
+            alt="Circular Image"
+            className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '90px',  // İstenilen genişlik değeri
+              height: '90px', // İstenilen yükseklik değeri
+              
+            }}
           />
         </div>
 
-        <div className="absolute left-80 top-1/3 transform -translate-x-1/2 -translate-y-1/5 w-35 h-35 hidden lg:block rounded-full animate-bounce duration-200">
+        <div
+          className="absolute right-20 top-30 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-27 h-27 rounded-full animate-bounce duration-200"
+          
+        >
           <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-3.png&w=96&q=75"
+            src="/assets/8.jpg"
             alt="Circular Image"
             className="w-full h-full object-cover rounded-full"
-          />
-        </div>
-        <div className="absolute left-60 top-3/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-27 h-27 rounded-full animate-bounce duration-200">
-          <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-5.png&w=96&q=75"
-            alt="Circular Image"
-            className="w-full h-full object-cover rounded-full"
-          />
-        </div>
-        <div className="absolute left-10 top-1/7 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-20 h-20 rounded-full animate-bounce duration-200">
-          <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-7.png&w=96&q=75"
-            alt="Circular Image"
-            className="w-full h-full object-cover rounded-full"
-          />
-        </div>
-        <div className="absolute right-24 top-20 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-30 h-30 rounded-full animate-bounce duration-200">
-          <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-4.png&w=96&q=75"
-            alt="Circular Image"
-            className="w-full h-full object-cover rounded-full"
-          />
-        </div>
-        <div className="absolute right-1/4 top-3/4 transform -translate-x-1/2 -translate-y-1/5 hidden lg:block w-31 h-31 rounded-full animate-bounce duration-200">
-          <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-6.png&w=96&q=75"
-            alt="Circular Image"
-            className="w-full h-full object-cover rounded-full"
-          />
-        </div>
-        <div className="absolute right-60 top-90 transform -translate-x-1/3 -translate-y-1/5 hidden lg:block w-20 h-20 rounded-full animate-bounce duration-200">
-          <img
-            src="https://freeio-app-nextjs.vercel.app/_next/image?url=%2Fimages%2Fabout%2Fhome20-hero-8.png&w=96&q=75"
-            alt="Circular Image"
-            className="w-full h-full object-cover rounded-full"
+            style={{
+              width: '70px',  // İstenilen genişlik değeri
+              height: '70px', // İstenilen yükseklik değeri
+              
+            }}
           />
         </div>
 
-        <div className="mx-auto w-full max-w-sm lg:w-96">
+       
+ 	
+
+
+
+
+
+
+
+       
+
+        <div className="z-10 mx-auto w-full max-w-sm lg:w-96 bg-white">
           <div>
             <img
               className="h-10 w-auto"
@@ -140,7 +231,7 @@ export default function Register() {
                       name="email"
                       type="text"
                       autoComplete="email"
-                      className="block w-full rounded-md border-0 py-1.5 px-3 outline-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -158,7 +249,7 @@ export default function Register() {
                       name="username"
                       type="text"
                       autoComplete="username"
-                      className="block w-full rounded-md border-0 py-1.5 px-3 outline-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -176,7 +267,7 @@ export default function Register() {
                       name="password"
                       type="password"
                       autoComplete="password"
-                      className="block w-full rounded-md border-0 py-1.5 px-3 outline-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -193,7 +284,7 @@ export default function Register() {
                       name="passwordConfirmation"
                       type="password"
                       autoComplete="passwordConfirmation"
-                      className="block w-full rounded-md border-0 py-1.5 px-3 outline-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
