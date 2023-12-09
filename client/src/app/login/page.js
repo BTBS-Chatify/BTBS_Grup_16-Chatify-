@@ -7,25 +7,6 @@ import { useRouter } from "next/navigation";
 
 export default function Login()
 {
-    const [isWideScreen, setIsWideScreen] = useState(true);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsWideScreen(window.innerWidth >= 1150);
-        };
-
-        // Sayfa yüklendiğinde ve pencere boyutu değiştiğinde çağrılır
-        window.addEventListener('resize', handleResize);
-
-        // İlk render'dan sonra temizleme
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-    
-
-    const router = useRouter();
-
     async function onSubmit(e) {
         e.preventDefault();
 
