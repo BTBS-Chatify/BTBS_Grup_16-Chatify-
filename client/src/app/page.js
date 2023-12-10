@@ -16,17 +16,6 @@ const Home = ({ user }) => {
   const [groups, setGroups] = useState([]);
   const number = 0;
 
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "SET_GROUPS":
-        return { ...state, groups: action.payload };
-      default:
-        return state;
-    }
-  };
-
-  const [state, dispatch] = useReducer(reducer, { groups: [] });
-
   async function fetchGroups() {
     let serverUrl = process.env.SERVER_URL;
     let endpoint = "/group/all";
@@ -44,7 +33,6 @@ const Home = ({ user }) => {
 
               //Eğer gruplar geldiyse, groups listesine atıyoruz.
               setGroups(responseGroups);
-              dispatch({ type: "SET_GROUPS", payload: groups });
             } else {
               toast.error(JSON.stringify(response.data.message));
             }

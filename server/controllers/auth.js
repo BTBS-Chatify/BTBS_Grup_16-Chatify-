@@ -198,19 +198,28 @@ route.post('/verifyToken', (req, res) => {
     });
 });
 
-route.post('/refreshToken', (req, res) => {
-    const { token } = req.body;
+route.post('/refreshToken',  (req, res) => {
+    const { refreshToken } = req.body;
 
-    if (!token) {
+    if (!refreshToken) {
         return res.status(400).json({ valid: false, message: 'Token is missing' });
     }
 
-    jwt.verify(token, process.env.REFRESH_KEY, (err, decoded) => {
+    jwt.verify(refreshToken, process.env.REFRESH_KEY, async (err, decoded) => {
         if (err) {
             return res.status(401).json({ valid: false, message: 'Invalid token' });
         }
-        const newAccessToken = jwt.sign({ username: decoded }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-        res.status(200).json({ valid: true, message: 'New access token generated', accessToken: newAccessToken });
+
+        var decod = JSON.stringify(decoded);
+
+        var user = await prisma.user.findFirst({
+            where: {
+                email: decod.email,
+            }
+        })
+
+        const accessToken = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: '15m' });
+        res.status(200).json({ valid: true, message: 'New access token generated', accessToken: accessToken, user: decoded });
     });
 });
 
