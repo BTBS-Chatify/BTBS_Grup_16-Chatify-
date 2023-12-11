@@ -48,13 +48,10 @@ export default function Home() {
               <span className="text-gray-500 text-sm">Yalnızca Adınız kullanıcılar tarafından görülür.</span>
               <form className="mt-5">
                 <div class="mb-5 flex items-center">
-                  <label for="name" class="mb-2 w-24 text-sm font-medium">Ad*</label>
+                  <label for="name" class="mb-2 w-24 text-sm font-medium">Ad Soyad*</label>
                   <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="Metin" required />
                 </div>
-                <div class="mb-5 flex items-center">
-                  <label for="name" class="mb-2 w-24 text-sm font-medium">Soyad*</label>
-                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="TAŞ" required />
-                </div>
+
                 <hr className="py-2"></hr>
                 <span className="text-gray-500 text-sm py-2">E-postanız size bildirim göndermek için kullanılır. Ziyaretçileriniz tarafından görülmez.</span>
                 <div class="mb-5 flex items-center py-3">
@@ -62,31 +59,28 @@ export default function Home() {
                   <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="metintas@gmail.com" required />
                 </div>
                 <hr className="py-2"></hr>
-                <span className="text-gray-500 text-sm py-2">Bir telefon numarası hesap kurtarma amacıyla kullanılabilir. İki Faktörlü kimlik doğrulama için gereklidir.</span>
-                <div class="mb-5 flex items-center py-3">
-                  <label for="name" class="mb-2 w-24 text-sm font-medium">Telefon</label>
-                  <input type="lastname" class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2" placeholder="Telefon numaranızı yazın (örn+901111111111)" required />
-                </div>
+
                 <hr className="py-2"></hr>
-                <div className="flex w-1/3 border-2 rounded-md py-4 px-3 items-center">
-                  <div className="w-2/3">
-                    <span className="block font-semibold text-sm">Profil Resmi</span>
-                    <span className="text-gray-500 text-sm">Görsel, max 5MB</span>
-                  </div>
-                  <div className="flex items-center w-1/3">
-                    <UserCircleIcon className="h-12 w-12 text-gray-600"></UserCircleIcon>
-                    <CloudArrowUpIcon class="h-6 w-6 text-gray-500" />
+                <div class="col-span-full">
+                  <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Profil Resmi</label>
+                  <div class="mt-2 w-72 h-36 flex items-center justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                    <div class="text-center">
+                      <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+                      </svg>
+                      <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                        <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                          <span>Resim yükle</span>
+                          <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                        </label>
+                        <p class="pl-1">veya sürükle bırak</p>
+                      </div>
+                      <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF maks 10MB</p>
+                    </div>
                   </div>
                 </div>
                 <hr className="py-2 my-3"></hr>
-                <div class="mb-5 flex items-center py-3">
-                  <label for="name" class="mb-2 w-24 text-sm font-medium">Dil</label>
-                  <select className="shadow-sm flex-1 border-2 text-sm rounded-sm p-2.5 ml-2">
-                    <option>Otomatik Algıla</option>
-                    <option>Türkçe</option>
-                    <option>İngilizce</option>
-                  </select>
-                </div>
+
                 <hr className="py-2 my-3"></hr>
                 <div class="mb-5 flex items-center py-3">
                   <label for="name" class="mb-2 w-24 text-sm font-medium">Şifre</label>
@@ -105,12 +99,14 @@ export default function Home() {
                   <div className="block">
                     <span className="text-sm text-gray-500">Hesabınızı kaldırmak mı istiyorsunuz? </span><span><a href="#"><i><u>Hesabımı sil</u></i></a></span>
                   </div>
-
+                </div>
+                <hr className="py-2 my-3"></hr>
+                <div class="mb-5 flex items-center py-3">
+                  <div className="block">
+                    <button className="bg-green-600 px-3 block py-2 text-sm text-white font-semibold rounded-sm hover:bg-green-800">Değişiklikleri  Kaydet</button>
+                  </div>
                 </div>
               </form>
-
-
-
             </div>
           </div>
         </main>

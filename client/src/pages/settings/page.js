@@ -19,7 +19,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-full">
-      <script src="https://cdn.tailwindcss.com"></script>
       <Navigation />
 
       <div className="sm:pl-20">

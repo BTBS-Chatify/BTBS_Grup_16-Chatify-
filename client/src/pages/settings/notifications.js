@@ -46,7 +46,7 @@ export default function notifications() {
                                         Tüm bildirimleri devre dışı bırak
                                     </label>
                                     <label class="relative inline-flex  items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer"    ></input>
+                                        <input type="checkbox" value="" class="sr-only peer"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>
@@ -56,7 +56,7 @@ export default function notifications() {
                                         Çevrimiçi olduğumda bildirim gönder
                                     </label>
                                     <label class="relative inline-flex mr-0 items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer p-2" checked></input>
+                                        <input type="checkbox" value="" class="sr-only peer p-2"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>
@@ -66,7 +66,7 @@ export default function notifications() {
                                         Çevrimdışıyken bildirim gönder
                                     </label>
                                     <label class="relative inline-flex mr-0 items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer p-2" checked></input>
+                                        <input type="checkbox" value="" class="sr-only peer p-2"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>
@@ -86,7 +86,7 @@ export default function notifications() {
                                         Bildirim seslerini çal
                                     </label>
                                     <label class="relative inline-flex mr-0 items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer p-2" checked></input>
+                                        <input type="checkbox" value="" class="sr-only peer p-2"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>
@@ -97,7 +97,7 @@ export default function notifications() {
                                         Okunmamış mesajları bana e-postayla gönder
                                     </label>
                                     <label class="relative inline-flex mr-0 items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer p-2" checked></input>
+                                        <input type="checkbox" value="" class="sr-only peer p-2"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>
@@ -117,7 +117,7 @@ export default function notifications() {
                                         Kullanıcıların değerlendirmelerini bana e-postayla gönder
                                     </label>
                                     <label class="relative inline-flex mr-0 items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer p-2" checked></input>
+                                        <input type="checkbox" value="" class="sr-only peer p-2"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>
