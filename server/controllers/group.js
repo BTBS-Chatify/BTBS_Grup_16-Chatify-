@@ -1,7 +1,7 @@
 "use strict";
 
 const express = require("express");
-let route = express.Router();
+var route = express.Router();
 
 const { validate } = require("express-validation");
 const groupValidation = require("../validations/groupValidations");
@@ -15,14 +15,12 @@ route.post(
   validate(groupValidation.create, {}, {}),
   async function (req, res) {
     const { name, userId } = req.body;
-
     await prisma.group.create({
       data: {
         name: name,
         userId: userId,
       },
     });
-
     return res.status(200).json({
       status: "success",
       message: "Grup oluşturuldu",
@@ -48,6 +46,29 @@ route.post("/all", async function (req, res) {
     return res.status(500).json({
       status: "error",
       message: "Gruplar getirilirken bir hata oluştu",
+      error: error.message,
+    });
+  }
+});
+
+route.post("/messages", async function (req, res) {
+  const { groupId } = req.body;
+  try {
+    const groupMessages = await prisma.groupMessage.findMany({
+      where: {
+        groupId: groupId,
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Mesajlar listelendi",
+      messages: groupMessages,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Mesajlar getirilirken bir hata oluştu",
       error: error.message,
     });
   }

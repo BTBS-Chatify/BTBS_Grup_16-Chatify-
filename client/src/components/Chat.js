@@ -1,22 +1,41 @@
-import {
-  EllipsisVerticalIcon,
-  InboxIcon,
-  PaperAirplaneIcon,
-} from "@heroicons/react/24/outline";
-
+import React, { useEffect, useState } from "react";
 import MessageBubble from "@/components/MessageBubble";
+import axios from "axios";
 
-export default function Chat() {
-  const messages = [
-    { text: "Merhaba!", isSender: true },
-    { text: "Selam!", isSender: false },
-    { text: "Nasılsın?", isSender: false },
-    // ... Diğer mesajlar
-  ];
+const Chat = ({ chatTitle }) => {
+  const [groupMessages, setGroupMessages] = useState([]);
+
+  const fetchGroupMessages = (id) => {
+    try {
+      const serverUrl = process.env.SERVER_URL;
+      const endPoint = "/group/messages";
+      axios
+        .post(serverUrl + endPoint, {
+          groupId: id,
+        })
+        .then(
+          // Axios isteği bittiğinde çalışan fonksiyon
+          (response) => {
+            const currentMessages = response.data.messages;
+            setGroupMessages(currentMessages);
+            console.log(groupMessages);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(messages);
+  };
+
+  useEffect(() => {
+    fetchGroupMessages(2);
+  }, []);
 
   return (
     <div className="relative w-full overflow-hidden">
-      {/* Header */}
       <div className="p-4 bg-white border-b border-gray-100 lg:p-6">
         <div className="grid items-center grid-cols-12">
           <div className="col-span-8 sm:col-span-4">
@@ -31,7 +50,7 @@ export default function Chat() {
               <div className="flex-grow overflow-hidden">
                 <h5 className="mb-0">
                   <a href="#" className="text-gray-800">
-                    Enes
+                    {chatTitle}
                   </a>
                   <i className="text-green-500 ri-record-circle-fill text-10"></i>
                 </h5>
@@ -39,59 +58,51 @@ export default function Chat() {
             </div>
           </div>
           <div className="col-span-4 sm:col-span-8">
-            <ul className="flex items-center justify-end lg:gap-4">test</ul>
+            <ul className="flex items-center justify-end lg:gap-4">
+              <li className="mr-4">
+                <button className="text-gray-400 hover:text-gray-600">
+                  <i className="ri-settings-4-fill"></i>
+                </button>
+              </li>
+              <li>
+                <button className="text-gray-400 hover:text-gray-600">
+                  <i className="ri-more-2-fill"></i>
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      {/* end Header */}
 
-      <div className="h-[77vh] p-4 lg:p-6">
-        <ul className="mb-0">
-          {messages.map((msg, index) => (
-            <MessageBubble message={msg.text} isSender={msg.isSender} />
+      <div id="chat-container">
+        <div id="messages">
+          {groupMessages.map((el, index) => (
+            <MessageBubble
+              key={index}
+              message={el.message}
+              sentAt={el.createdAt}
+            />
           ))}
-        </ul>
+        </div>
       </div>
 
-      <div className="z-40 w-full fixed -bottom-1 p-6 bg-white border-t lg:mb-1 border-gray-50">
+      <div className="z-40 w-full fixed bottom-0 p-6 bg-white border-t lg:mb-1 border-gray-50">
         <div className="flex gap-2">
-          <div className="flex-grow">
+          <form className="flex-grow">
             <input
               type="text"
-              className=" w-full border-transparent rounded h-10 bg-gray-50 placeholder:text-14 text-14"
+              className="w-full border-transparent rounded h-10 bg-gray-50 placeholder:text-14 text-14"
               placeholder="Enter Message..."
             />
-          </div>
+          </form>
           <div>
             <div>
               <ul className="mb-0">
                 <li className="inline-block" title="Emoji">
-                  <button
-                    type="button"
-                    className="border-transparent group/tooltip btn relative group-data-[theme-color=violet]:dark:text-violet-200 group-data-[theme-color=green]:dark:text-green-200 group-data-[theme-color=red]:dark:text-red-200 group-data-[theme-color=violet]:text-violet-500 group-data-[theme-color=green]:text-green-500 group-data-[theme-color=red]:text-red-500 text-16"
-                  >
-                    <div className="absolute items-center hidden -top-10 ltr:-left-2 group-hover/tooltip:flex rtl:-right-2">
-                      <div className="absolute -bottom-1 left-[40%] w-3 h-3 rotate-45 bg-black"></div>
-                      <span className="relative z-10 p-2 text-xs leading-none text-white whitespace-no-wrap bg-black rounded shadow-lg">
-                        Emoji
-                      </span>
-                    </div>
-                    <i className="ri-emotion-happy-line"></i>
-                  </button>
+                  {/* Emoji button */}
                 </li>
                 <li className="inline-block" title="Attached File">
-                  <button
-                    type="button"
-                    className="border-transparent btn group/tooltip group-data-[theme-color=violet]:dark:text-violet-200 group-data-[theme-color=green]:dark:text-green-200 group-data-[theme-color=red]:dark:text-red-200 group-data-[theme-color=violet]:text-violet-500 group-data-[theme-color=green]:text-green-500 group-data-[theme-color=red]:text-red-500 text-16"
-                  >
-                    <div className="absolute items-center hidden -top-10 ltr:-left-2 group-hover/tooltip:flex rtl:-right-2">
-                      <div className="absolute -bottom-1 left-[40%] w-3 h-3 rotate-45 bg-black"></div>
-                      <span className="relative z-10 p-2 text-xs leading-none text-white whitespace-no-wrap bg-black rounded shadow-lg">
-                        Attached File
-                      </span>
-                    </div>
-                    <i className="ri-attachment-line"></i>
-                  </button>
+                  {/* Attached File button */}
                 </li>
                 <li className="inline-block">
                   <button
@@ -108,4 +119,6 @@ export default function Chat() {
       </div>
     </div>
   );
-}
+};
+
+export default Chat;
