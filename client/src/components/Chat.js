@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MessageBubble from "@/components/MessageBubble";
 import axios from "axios";
 
-const Chat = ({ chatTitle }) => {
+const Chat = ({ user, chatTitle }) => {
   const [groupMessages, setGroupMessages] = useState([]);
 
   const fetchGroupMessages = (id) => {
@@ -27,12 +27,16 @@ const Chat = ({ chatTitle }) => {
     } catch (error) {
       console.log(error);
     }
-    console.log(messages);
   };
 
   useEffect(() => {
-    fetchGroupMessages(2);
+    fetchGroupMessages(1);
   }, []);
+
+  let firstLetter = "";
+  if (chatTitle != undefined) {
+    firstLetter = chatTitle[0];
+  }
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -40,12 +44,10 @@ const Chat = ({ chatTitle }) => {
         <div className="grid items-center grid-cols-12">
           <div className="col-span-8 sm:col-span-4">
             <div className="flex items-center space-x-2">
-              <div className="">
-                <img
-                  src="https://bgcp.bionluk.com/images/avatar/200x200/560da9fe-cb7c-42f7-adc7-3755df667792.jpg"
-                  className="rounded-full h-9 w-9"
-                  alt=""
-                />
+              <div className="col-span-3 flex items-center justify-center">
+                <div className="h-14 w-14 bg-red-400 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">{firstLetter}</span>
+                </div>
               </div>
               <div className="flex-grow overflow-hidden">
                 <h5 className="mb-0">
@@ -75,14 +77,21 @@ const Chat = ({ chatTitle }) => {
       </div>
 
       <div id="chat-container">
-        <div id="messages">
-          {groupMessages.map((el, index) => (
-            <MessageBubble
-              key={index}
-              message={el.message}
-              sentAt={el.createdAt}
-            />
-          ))}
+        <div className="flex flex-col">
+          <div className="px-4 py-10 sm:px-6 lg:px-6 lg:py-4">
+            {user != null
+              ? groupMessages.map((el, index) => (
+                  <MessageBubble
+                    key={index}
+                    message={el.message}
+                    sentAt={el.createdAt}
+                    isSender={el.userId == user.id}
+                    senderPicture={el.user.picture}
+                    sender={el.user.username}
+                  />
+                ))
+              : null}
+          </div>
         </div>
       </div>
 

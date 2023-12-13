@@ -35,6 +35,9 @@ route.post("/all", async function (req, res) {
       where: {
         userId: userId,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return res.status(200).json({
@@ -57,6 +60,17 @@ route.post("/messages", async function (req, res) {
     const groupMessages = await prisma.groupMessage.findMany({
       where: {
         groupId: groupId,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            picture: true,
+          },
+        },
       },
     });
 

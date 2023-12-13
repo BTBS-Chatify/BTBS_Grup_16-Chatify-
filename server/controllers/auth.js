@@ -227,14 +227,12 @@ route.post("/refreshToken", (req, res) => {
     const accessToken = jwt.sign(user, process.env.SECRET_KEY, {
       expiresIn: "15m",
     });
-    res
-      .status(200)
-      .json({
-        valid: true,
-        message: "New access token generated",
-        accessToken: accessToken,
-        user: decoded,
-      });
+    res.status(200).json({
+      valid: true,
+      message: "New access token generated",
+      accessToken: accessToken,
+      user: decoded,
+    });
   });
 });
 

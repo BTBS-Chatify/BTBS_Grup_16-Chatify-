@@ -49,11 +49,7 @@ const Home = ({ user }) => {
 
   return (
     <div>
-      <head>
-        <title>Chatify</title>
-      </head>
       <Navigation />
-
       <div className="lg:pl-20">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button
@@ -75,7 +71,7 @@ const Home = ({ user }) => {
         </div>
 
         <main className="xl:pl-96 hidden lg:block">
-          <Chat />
+          <Chat user={user} chatTitle={"Nerd Mining"} />
         </main>
       </div>
 

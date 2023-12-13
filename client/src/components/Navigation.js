@@ -10,7 +10,7 @@ import {
   UserIcon,
   ChatBubbleLeftIcon,
   Cog8ToothIcon,
-  UserCircleIcon
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -18,24 +18,18 @@ const navigation = [
   { name: "Arkadaşlar", href: "#", icon: UserIcon, current: false },
   { name: "Gruplar", href: "#", icon: UsersIcon, current: false },
   { name: "Mesajlar", href: "#", icon: ChatBubbleLeftIcon, current: false },
-  { name: "Ayarlar", href: "/settings", icon: Cog8ToothIcon, current: false},
+  { name: "Ayarlar", href: "/settings", icon: Cog8ToothIcon, current: false },
 ];
 
-
-
 function classNames(...classes) {
-
   return classes.filter(Boolean).join(" ");
-
 }
 
 export default function Navigation() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const currentUrl = usePathname()
-
+  const currentUrl = usePathname();
 
   return (
-
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
@@ -105,7 +99,7 @@ export default function Navigation() {
                           <Link
                             href={item.href}
                             className={classNames(
-                               currentUrl == item.href
+                              currentUrl == item.href
                                 ? "bg-gray-800 text-white"
                                 : "text-gray-400 hover:text-white hover:bg-gray-800",
                               "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -147,8 +141,7 @@ export default function Navigation() {
                     currentUrl == item.href
                       ? "bg-gray-800 text-white"
                       : "text-gray-400 hover:text-white hover:bg-gray-800",
-                    "group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold",
-
+                    "group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold"
                   )}
                 >
                   <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
