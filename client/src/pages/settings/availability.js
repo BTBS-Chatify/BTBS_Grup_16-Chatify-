@@ -57,7 +57,7 @@ export default function availability() {
                                         Çevrimdışı olmaya zorla(görünmez mod)
                                     </label>
                                     <label class="relative inline-flex  items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer"    ></input>
+                                        <input type="checkbox" value="" class="sr-only peer"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>
@@ -67,7 +67,7 @@ export default function availability() {
                                         Uygulamayı kullanırken beni erişebilir yap
                                     </label>
                                     <label class="relative inline-flex  items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer" checked></input>
+                                        <input type="checkbox" value="" class="sr-only peer"></input>
                                         <div class="w-11 h-6 bg-gray-200 peer-focus:ring-4  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                     </label>
                                 </div>

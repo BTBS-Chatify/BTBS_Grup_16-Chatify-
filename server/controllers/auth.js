@@ -211,19 +211,30 @@ route.post("/refreshToken", (req, res) => {
     return res.status(400).json({ valid: false, message: "Token is missing" });
   }
 
-  jwt.verify(refreshToken, process.env.REFRESH_KEY, (err, decoded) => {
+  jwt.verify(refreshToken, process.env.REFRESH_KEY, async (err, decoded) => {
     if (err) {
       return res.status(401).json({ valid: false, message: "Invalid token" });
     }
-    const newAccessToken = jwt.sign(decoded, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+
+    var decod = JSON.stringify(decoded);
+
+    var user = await prisma.user.findFirst({
+      where: {
+        email: decod.email,
+      },
     });
-    res.status(200).json({
-      valid: true,
-      message: "New access token generated",
-      accessToken: newAccessToken,
-      user: decoded,
+
+    const accessToken = jwt.sign(user, process.env.SECRET_KEY, {
+      expiresIn: "15m",
     });
+    res
+      .status(200)
+      .json({
+        valid: true,
+        message: "New access token generated",
+        accessToken: accessToken,
+        user: decoded,
+      });
   });
 });
 

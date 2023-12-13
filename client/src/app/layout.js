@@ -13,6 +13,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <title>Chatify</title>
+      </head>
       <body className="h-full">
       {children}
       <ToastContainer />

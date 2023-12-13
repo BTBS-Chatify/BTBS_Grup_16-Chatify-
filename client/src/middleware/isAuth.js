@@ -33,18 +33,24 @@ const isAuth = (WrappedComponent) => {
             );
             if (refreshResponse.data.valid) {
               localStorage.setItem("token", refreshResponse.data.accessToken);
+
               setUser(refreshResponse.data.user);
+
               return;
             } else {
               console.error(
                 "Token verification error:",
-                refreshResponse.message
+                refreshResponse.data.message
               );
+              localStorage.removeItem("token");
               localStorage.removeItem("refreshToken");
               router.push("/login");
             }
           } else {
-            console.error("Token verification error:", refreshResponse.message);
+            console.error(
+              "Token verification error:",
+              refreshResponse.data.message
+            );
             localStorage.removeItem("token");
             router.push("/login");
           }

@@ -9,7 +9,7 @@ import Header from "@/components/Header";
 import isAuth from "@/middleware/isAuth";
 import GroupCreateModal from "@/components/GroupCreateModal";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { Icons, toast } from "react-toastify";
 
 const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -49,6 +49,9 @@ const Home = ({ user }) => {
 
   return (
     <div>
+      <head>
+        <title>Chatify</title>
+      </head>
       <Navigation />
 
       <div className="lg:pl-20">
