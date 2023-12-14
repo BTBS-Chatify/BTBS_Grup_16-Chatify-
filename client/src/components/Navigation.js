@@ -15,7 +15,7 @@ import {
 
 const navigation = [
   { name: "Akış", href: "/", icon: HomeIcon, current: false },
-  { name: "Arkadaşlar", href: "#", icon: UserIcon, current: false },
+  { name: "Arkadaşlar", href: "/friends", icon: UserIcon, current: false },
   { name: "Gruplar", href: "#", icon: UsersIcon, current: false },
   { name: "Mesajlar", href: "#", icon: ChatBubbleLeftIcon, current: false },
   { name: "Ayarlar", href: "/settings", icon: Cog8ToothIcon, current: false },
