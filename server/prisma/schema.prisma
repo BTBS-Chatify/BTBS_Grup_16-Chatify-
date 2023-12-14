@@ -101,6 +101,7 @@ model Friend {
   user1Id Int
   user2   User @relation("User2Friends", fields: [user2Id], references: [id])
   user2Id Int
+  status  Int  @default(0)
 
   @@index([user1Id, user2Id])
   @@map(name: "friends")
