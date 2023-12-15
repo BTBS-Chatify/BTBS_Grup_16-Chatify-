@@ -14,7 +14,8 @@ import {
 import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
 import SettingsNavigation from "@/components/SettingNavigation";
-export default function Home() {
+import isAuth from "@/middleware/isAuth";
+const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -38,7 +39,7 @@ export default function Home() {
             aria-hidden="true"
           />
 
-          <Header />
+          <Header user={user} />
         </div>
 
         <main className="xl:pl-96 hidden lg:block">
@@ -73,7 +74,6 @@ export default function Home() {
                           <span>Resim yükle</span>
                           <input id="file-upload" name="file-upload" type="file" class="sr-only" />
                         </label>
-                        <p class="pl-1">veya sürükle bırak</p>
                       </div>
                       <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF maks 10MB</p>
                     </div>
@@ -117,3 +117,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default isAuth(Home);

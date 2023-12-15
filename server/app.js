@@ -2,6 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { ValidationError } = require("express-validation");
 const app = express();
+const http = require('http');
+const initializeSocketIO = require('./socket.io');
+const server = http.createServer(app);
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
@@ -18,6 +21,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+initializeSocketIO(server);
 
 app.use("/auth", require("./controllers/auth"));
 app.use("/group", require("./controllers/group"));
