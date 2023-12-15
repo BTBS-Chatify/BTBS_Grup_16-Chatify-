@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import isAuth from "@/middleware/isAuth";
 import Header from "@/components/Header";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import MyFriendCard from "@/components/MyFriendCard";
 
 import axios from "axios";
 
@@ -42,8 +43,8 @@ const Friends = ({ user }) => {
   };
 
   useEffect(() => {
-    fetchFriends(1);
-  }, []);
+    user != null ? fetchFriends(user.id) : null;
+  }, [user]);
 
   return (
     <div>
@@ -72,11 +73,19 @@ const Friends = ({ user }) => {
       </div>
 
       <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
-        <div className="flex flex-row justify-between items-center bg-slate-100 py-6 px-4 sm:px-6 lg:px-8">
-          <div>
+        <div className="flex flex-row justify-between items-center py-6 px-4 sm:px-6 lg:px-8">
+          <div className="w-full">
             <span className="font-semibold text-lg text-slate-900">
               Arkadaşlarım
             </span>
+            {myFriends.map((friend) => (
+              <MyFriendCard
+                friendId={friend.user2Id}
+                fullname={friend.user2.fullName}
+                username={friend.user2.username}
+                picture={friend.user2.picture}
+              />
+            ))}
           </div>
           <div></div>
         </div>

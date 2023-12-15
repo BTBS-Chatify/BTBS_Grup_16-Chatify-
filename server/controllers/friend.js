@@ -15,6 +15,7 @@ route.post("/friends", async function (req, res) {
     include: {
       user2: {
         select: {
+          fullName: true,
           username: true,
           picture: true,
         },
