@@ -1,12 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `user` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE `user`;
-
 -- CreateTable
 CREATE TABLE `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -85,6 +76,7 @@ CREATE TABLE `friends` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user1Id` INTEGER NOT NULL,
     `user2Id` INTEGER NOT NULL,
+    `status` INTEGER NOT NULL DEFAULT 0,
 
     INDEX `friends_user1Id_user2Id_idx`(`user1Id`, `user2Id`),
     PRIMARY KEY (`id`)

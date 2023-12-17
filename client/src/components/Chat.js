@@ -29,9 +29,9 @@ const Chat = ({ user, chatTitle }) => {
     }
   };
 
-  useEffect(() => {
-    fetchGroupMessages(1);
-  }, []);
+  // useEffect(() => {
+  //   fetchGroupMessages(1);
+  // }, []);
 
   let firstLetter = "";
   if (chatTitle != undefined) {
