@@ -44,7 +44,7 @@ export default function Home() {
         <main className="sm:pl-96 hidden sm:block">
           <div className="mt-8 max-w-3xl mx-auto mb-10">
             <h3 className="font-semibold text-lg py-3">Hesap Ayarları</h3>
-            <div className="max-w-3xl bg-white rounded-lg px-8 py-6 mb-8 block">
+            <div className="max-w-3xl bg-white rounded-lg py-6 mb-8 block">
               <span className="text-gray-500 text-sm">Yalnızca Adınız kullanıcılar tarafından görülür.</span>
               <form className="mt-5">
                 <div class="mb-5 flex items-center">

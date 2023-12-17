@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 export default function SettingsNavigation() {
   return (
-    <aside className="fixed bottom-0 lg:left-20 top-16 w-80 overflow-y-auto  border-gray-200 bg-white">
+    <aside className="fixed bottom-0 max-md:hidden lg:left-20 top-16 w-80 overflow-y-auto  border-gray-200 bg-white">
       <div className="flex flex-row justify-between items-center bg-slate-100 px-4 sm:px-6 lg:px-8">
       </div>
       <Link href="/settings" className="flex flex-col">
@@ -78,7 +78,7 @@ export default function SettingsNavigation() {
       </div>
       <Link href="/logout" className="flex flex-col">
       <div class="sm:flex item">
-          <ul class="menu w-full ">
+          <ul class="menu w-full">
             <div className="shadow-sm hover:shadow-md hover:bg-gray-200 flex items-center">
                 <span className="pl-2">
                   <ArrowRightOnRectangleIcon class="p-2 h-12 w-12 text-red-500" />

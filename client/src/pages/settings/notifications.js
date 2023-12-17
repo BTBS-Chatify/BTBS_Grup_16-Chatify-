@@ -34,8 +34,8 @@ export default function notifications() {
                     <Header />
                 </div>
 
-                <main className="pl-96 hidden lg:block text-sm">
-                    <div className="mt-8 max-w-3xl mx-auto mb-10">
+                <main className="sm:pl-96 sm:block">
+                    <div className="mt-8 max-w-3xl mx-auto max-sm:mx-8 mb-10">
                         <h3 className="font-semibold text-lg py-3">Bildirim Ayarları</h3>
                         <div className="max-w-3xl bg-white rounded-lg px-8 py-6 block">
                             <span className="text-sm block my-2 text-gray-500">Bildirimleriniz nasıl yönetmek istediğinizi seçin</span>

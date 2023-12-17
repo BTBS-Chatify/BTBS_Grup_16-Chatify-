@@ -42,8 +42,8 @@ const Home = ({ user }) => {
           <Header user={user} />
         </div>
 
-        <main className="xl:pl-96 hidden lg:block">
-          <div className="mt-8 max-w-3xl mx-auto">
+        <main className="md:pl-96 sm:block">
+          <div className="mt-8 px-6 max-w-3xl mx-auto">
             <h3 className="font-semibold text-lg py-3">Hesap Ayarları</h3>
             <div className="max-w-3xl bg-white rounded-lg px-8 py-6 mb-8 block">
               <span className="text-gray-500 text-sm">Yalnızca Adınız kullanıcılar tarafından görülür.</span>
@@ -64,12 +64,12 @@ const Home = ({ user }) => {
                 <hr className="py-2"></hr>
                 <div class="col-span-full">
                   <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Profil Resmi</label>
-                  <div class="mt-2 w-72 h-36 flex items-center justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                  <div class="mt-2 w-full h-36 flex items-center justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                     <div class="text-center">
                       <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
                       </svg>
-                      <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                      <div class="mt-4 flex text-sm justify-center leading-6 text-gray-600">
                         <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                           <span>Resim yükle</span>
                           <input id="file-upload" name="file-upload" type="file" class="sr-only" />
@@ -89,8 +89,8 @@ const Home = ({ user }) => {
                 <hr className="py-2 my-3"></hr>
                 <div class="mb-5 flex items-center py-3">
                   <label for="name" class="mb-2 w-24 text-sm text-gray-500 font-medium">2 Faktörlü</label>
-                  <div className="block">
-                    <button className="bg-blue-300 px-3 block py-2 text-sm text-white font-semibold rounded-sm hover:bg-blue-400">İki Faktörlü kimlik doğrulamayı etkinleştir</button>
+                  <div className="block max-sm:text-xs">
+                    <button className="bg-blue-300 max-sm:text-xs px-3 block py-2 text-sm text-white font-semibold rounded-sm hover:bg-blue-400">İki Faktörlü kimlik doğrulamayı etkinleştir</button>
                     <span className="text-xs font-medium text-gray-500">2.Adım için bir telefon numarası gereklidir.</span>
                   </div>
                 </div>
@@ -101,9 +101,9 @@ const Home = ({ user }) => {
                   </div>
                 </div>
                 <hr className="py-2 my-3"></hr>
-                <div class="mb-5 flex items-center py-3">
+                <div class="mb-5 flex items-center max-sm:text-xs py-3">
                   <div className="block">
-                    <button className="bg-green-600 px-3 block py-2 text-sm text-white font-semibold rounded-sm hover:bg-green-800">Değişiklikleri  Kaydet</button>
+                    <button className="bg-green-600 px-3 block py-2 text-sm max-sm:text-xs text-white font-semibold rounded-sm hover:bg-green-800">Değişiklikleri  Kaydet</button>
                   </div>
                 </div>
               </form>

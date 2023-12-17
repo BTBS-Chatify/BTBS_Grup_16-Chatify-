@@ -3,13 +3,6 @@ import { Children, Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
     Bars3Icon,
-    UserCircleIcon,
-    BellAlertIcon,
-    ClockIcon,
-    LockClosedIcon,
-    QuestionMarkCircleIcon,
-    ArrowRightOnRectangleIcon,
-    CloudArrowUpIcon,
 } from "@heroicons/react/24/outline";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
@@ -42,8 +35,8 @@ export default function availability() {
                     <Header />
                 </div>
 
-                <main className="pl-96 py-10 hidden lg:block text-sm">
-                    <div className="mt-8 max-w-3xl mx-auto mb-10">
+                <main className="md:pl-96 py-10 sm:block">
+                    <div className="mt-8 max-w-3xl px-8 mb-10 mx-auto">
                         <h3 className="font-semibold text-lg py-3">Kullanılabilirlik Ayarları</h3>
                         <div className="max-w-3xl bg-white rounded-lg px-8 py-6 block">
                             <span className="text-gray-500 block py-2">Günleri ve saatleri(Saat diliminizde) yapılandırarak programınıza hazır olun. Ziyaretçiler sizi planlanan saatler dışında görürler, ancak yine de mesaj gönderebilirler.</span>
