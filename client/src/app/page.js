@@ -10,10 +10,12 @@ import isAuth from "@/middleware/isAuth";
 import GroupCreateModal from "@/components/GroupCreateModal";
 import axios from "axios";
 import { Icons, toast } from "react-toastify";
+import { flushSync } from "react-dom";
 
 const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [selectedGroup, setGroup] = useState(null);
   const number = 0;
 
   async function fetchGroups() {
@@ -43,6 +45,10 @@ const Home = ({ user }) => {
     }
   }
 
+  const handleSettingGroup = (group) => {
+    setGroup(group);
+  };
+
   useEffect(() => {
     fetchGroups();
   }, [user]);
@@ -71,7 +77,7 @@ const Home = ({ user }) => {
         </div>
 
         <main className="xl:pl-96 hidden lg:block">
-          <Chat user={user} chatTitle={"Nerd Mining"} />
+          {selectedGroup ? <Chat user={user} group={selectedGroup} /> : null}
         </main>
       </div>
 
@@ -88,10 +94,11 @@ const Home = ({ user }) => {
           {groups.map((group) => (
             <GroupCard
               key={group.id}
-              groupName={group.name}
+              group={group}
               latestSender="Deneme"
               latestMsg="bu bir deneme mesajıdır"
               latestMsgTime="15:35"
+              handleSettingGroup={handleSettingGroup}
             />
           ))}
           <MessageCard

@@ -2,21 +2,23 @@ import React, { useEffect, useState } from "react";
 import MessageBubble from "@/components/MessageBubble";
 import axios from "axios";
 
-const Chat = ({ user, chatTitle }) => {
+const Chat = ({ user, group }) => {
   const [groupMessages, setGroupMessages] = useState([]);
+  const chatTitle = group ? group.name : "";
 
-  const fetchGroupMessages = (id) => {
+  const fetchGroupMessages = () => {
     try {
       const serverUrl = process.env.SERVER_URL;
       const endPoint = "/group/messages";
       axios
         .post(serverUrl + endPoint, {
-          groupId: id,
+          groupId: group.id,
         })
         .then(
           // Axios isteği bittiğinde çalışan fonksiyon
           (response) => {
             const currentMessages = response.data.messages;
+
             setGroupMessages(currentMessages);
             console.log(groupMessages);
           },
@@ -29,9 +31,9 @@ const Chat = ({ user, chatTitle }) => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchGroupMessages(1);
-  // }, []);
+  useEffect(() => {
+    fetchGroupMessages();
+  }, [group]);
 
   let firstLetter = "";
   if (chatTitle != undefined) {
