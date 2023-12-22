@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import MessageBubble from "@/components/MessageBubble";
 import axios from "axios";
 
-const Chat = ({ user, group }) => {
+const Chat = ({ user, groupId, chatTitle }) => {
   const [groupMessages, setGroupMessages] = useState([]);
-  const chatTitle = group ? group.name : "";
 
   const fetchGroupMessages = () => {
     try {
@@ -12,7 +11,7 @@ const Chat = ({ user, group }) => {
       const endPoint = "/group/messages";
       axios
         .post(serverUrl + endPoint, {
-          groupId: group.id,
+          groupId: groupId,
         })
         .then(
           // Axios isteği bittiğinde çalışan fonksiyon
@@ -31,9 +30,38 @@ const Chat = ({ user, group }) => {
     }
   };
 
+  const handlePressEnter = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      console.log(e.target.value);
+      groupId
+        ? axios
+            .post(process.env.SERVER_URL + "/group/message/add", {
+              groupId: groupId,
+              userId: user.id,
+              message: e.target.value,
+            })
+            .then((response) => {
+              console.log(response);
+              if (response.status === 200) {
+                fetchGroupMessages(groupId);
+                e.target.value = "";
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+        : null;
+    }
+  };
+
   useEffect(() => {
     fetchGroupMessages();
-  }, [group]);
+  }, [groupId]);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handlePressEnter);
+  }, []);
 
   let firstLetter = "";
   if (chatTitle != undefined) {
@@ -42,7 +70,7 @@ const Chat = ({ user, group }) => {
 
   return (
     <div className="relative w-full overflow-hidden">
-      <div className="p-4 bg-white border-b border-gray-100 lg:p-6">
+      <div className="p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0">
         <div className="grid items-center grid-cols-12">
           <div className="col-span-8 sm:col-span-4">
             <div className="flex items-center space-x-2">
@@ -78,7 +106,7 @@ const Chat = ({ user, group }) => {
         </div>
       </div>
 
-      <div id="chat-container">
+      <div id="chat-container" className="mb-28">
         <div className="flex flex-col">
           <div className="px-4 py-10 sm:px-6 lg:px-6 lg:py-4">
             {user != null
@@ -97,16 +125,14 @@ const Chat = ({ user, group }) => {
         </div>
       </div>
 
-      <div className="z-40 w-full fixed bottom-0 p-6 bg-white border-t lg:mb-1 border-gray-50">
+      <div className="z-40 w-full fixed bottom-0 p-6 h-15 bg-white border-t border-gray-50">
         <div className="flex gap-2">
           <form className="flex-grow">
             <input
               type="text"
-              className="w-full border-transparent rounded h-10 bg-gray-50 placeholder:text-14 text-14"
-              placeholder="Enter Message..."
+              className="w-full mx-6 px-3 border-transparent rounded h-10 bg-gray-100 placeholder:text-14 text-14"
+              placeholder="Mesajı buraya girin..."
             />
-          </form>
-          <div>
             <div>
               <ul className="mb-0">
                 <li className="inline-block" title="Emoji">
@@ -116,16 +142,13 @@ const Chat = ({ user, group }) => {
                   {/* Attached File button */}
                 </li>
                 <li className="inline-block">
-                  <button
-                    type="submit"
-                    className="text-white border-transparent btn group-data-[theme-color=violet]:bg-violet-500 group-data-[theme-color=green]:bg-green-500 group-data-[theme-color=red]:bg-red-500 group-data-[theme-color=violet]:hover:bg-violet-600 group-data-[theme-color=green]:hover:bg-green-600"
-                  >
+                  <button className="text-white border-transparent btn group-data-[theme-color=violet]:bg-violet-500 group-data-[theme-color=green]:bg-green-500 group-data-[theme-color=red]:bg-red-500 group-data-[theme-color=violet]:hover:bg-violet-600 group-data-[theme-color=green]:hover:bg-green-600">
                     <i className="ri-send-plane-2-fill"></i>
                   </button>
                 </li>
               </ul>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

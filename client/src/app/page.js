@@ -45,10 +45,6 @@ const Home = ({ user }) => {
     }
   }
 
-  const handleSettingGroup = (group) => {
-    setGroup(group);
-  };
-
   useEffect(() => {
     fetchGroups();
   }, [user]);
@@ -77,7 +73,13 @@ const Home = ({ user }) => {
         </div>
 
         <main className="xl:pl-96 hidden lg:block">
-          {selectedGroup ? <Chat user={user} group={selectedGroup} /> : null}
+          {selectedGroup ? (
+            <Chat
+              user={user}
+              groupId={selectedGroup.id}
+              chatTitle={selectedGroup.name}
+            />
+          ) : null}
         </main>
       </div>
 
@@ -98,7 +100,7 @@ const Home = ({ user }) => {
               latestSender="Deneme"
               latestMsg="bu bir deneme mesajıdır"
               latestMsgTime="15:35"
-              handleSettingGroup={handleSettingGroup}
+              handleSettingGroup={setGroup}
             />
           ))}
           <MessageCard
