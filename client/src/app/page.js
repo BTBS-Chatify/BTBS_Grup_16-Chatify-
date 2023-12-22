@@ -72,7 +72,7 @@ const Home = ({ user }) => {
           <Header user={user} />
         </div>
 
-        <main className="xl:pl-96 hidden lg:block">
+        <main className="xl:pl-96 hidden lg:block h-100">
           {selectedGroup ? (
             <Chat
               user={user}
