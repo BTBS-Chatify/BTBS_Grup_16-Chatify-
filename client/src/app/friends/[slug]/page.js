@@ -98,7 +98,6 @@ const Page = ({ params, user }) => {
     }, [user]);
 
 
-
     return (
         <div>
             <Navigation />
