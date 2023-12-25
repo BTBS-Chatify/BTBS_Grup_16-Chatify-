@@ -1,12 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { ValidationError } = require("express-validation");
-const app = express();
-const http = require('http');
-const initializeSocketIO = require('./socket.io');
-const server = http.createServer(app);
 
-app.use(bodyParser.json()); // for parsing application/json
+const { Server } = require('socket.io');
+const { ValidationError } = require("express-validation");
+const { createServer } = require('node:http');
+
+const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  }
+});
+
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 
 app.use((req, res, next) => {
@@ -22,21 +29,25 @@ app.use((req, res, next) => {
   next();
 });
 
-initializeSocketIO(server);
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
+
 
 app.use("/auth", require("./controllers/auth"));
 app.use("/group", require("./controllers/group"));
 app.use("/friend", require("./controllers/friend"));
 
-app.use(function (err, req, res) {
-  if (err instanceof ValidationError) {
-    return res.status(err.statusCode).json(err);
-  }
-  return res.status(400).json(err);
-});
+// app.use(function (err, req, res) {
+//   if (err instanceof ValidationError) {
+//     return res.status(err.statusCode).json(err);
+//   }
+//   return res.status(400).json(err);
+// });
 
 const port = 3005;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

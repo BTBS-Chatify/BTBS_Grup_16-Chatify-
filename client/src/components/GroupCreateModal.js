@@ -1,7 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
 import { Dialog, Transition } from "@headlessui/react";
 import { useState, Fragment } from "react";
 

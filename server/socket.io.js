@@ -1,7 +1,7 @@
-const socketIO = require('socket.io');
+const { Server } = require('socket.io');
 
 function initializeSocketIO(server) {
-  const io = socketIO(server);
+  const io = new Server(server);
 
   io.on('connection', (socket) => {
     console.log('Bir kullanıcı bağlandı');
