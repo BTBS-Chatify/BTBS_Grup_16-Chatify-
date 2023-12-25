@@ -88,4 +88,27 @@ route.post("/messages", async function (req, res) {
   }
 });
 
+route.post("/message/add", async function (req, res) {
+  const { groupId, userId, message } = req.body;
+  try {
+    await prisma.groupMessage.create({
+      data: {
+        userId: userId,
+        groupId: groupId,
+        message: message,
+      },
+    });
+    return res.status(200).json({
+      status: "success",
+      message: "Mesaj eklendi",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Mesaj eklenirken bir hata oluştu",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = route;
