@@ -8,6 +8,7 @@ import MyFriendCard from "@/components/MyFriendCard";
 
 import axios from "axios";
 import io from "socket.io-client";
+import MessageBubble from "@/components/MessageBubble";
 
 const Page = ({ params, user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -70,11 +71,16 @@ const Page = ({ params, user }) => {
     e.preventDefault();
 
     try {
-  
-      alert(e.target.message.value);
-      
-      socket.emit("message", e.target.message.value, user.username, friend.username);
-
+      socket.emit(
+        "message",
+        e.target.message.value,
+        user.username,
+        friend.username
+      );
+      setMessages([
+        ...messages,
+        { message: e.target.message.value, from: user.username },
+      ]);
     } catch (error) {
       toast.error(error.message);
     }
@@ -108,12 +114,10 @@ const Page = ({ params, user }) => {
   useEffect(() => {
     if (socket != null) {
       socket.on("messages", (message, from) => {
-        console.log("Gelen mesaj:", message);
-        console.log("Kimden:", from);
+        setMessages([...messages, { message: message, from: from }]);
       });
     }
   });
-
 
   return (
     <div>
@@ -179,9 +183,14 @@ const Page = ({ params, user }) => {
             <div id="chat-container">
               <div className="flex flex-col">
                 <div className="px-4 py-10 sm:px-6 lg:px-6 lg:py-4">
-                  {messages.map((msg) => {
-                    return <p>Mesaj: {msg}</p>;
-                  })}
+                  {messages.map((msg, index) => (
+                    <MessageBubble
+                      key={index}
+                      message={msg.message}
+                      sender={msg.from}
+                      isSender={msg.from === user.username}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
