@@ -70,12 +70,11 @@ const Page = ({ params, user }) => {
     e.preventDefault();
 
     try {
-      socket.emit(
-        "message",
-        e.target.message.value,
-        friend.username,
-        user.username
-      );
+  
+      alert(e.target.message.value);
+      
+      socket.emit("message", e.target.message.value, user.username, friend.username);
+
     } catch (error) {
       toast.error(error.message);
     }
@@ -86,42 +85,35 @@ const Page = ({ params, user }) => {
 
     user != null ? fetchFriend(params.slug) : null;
 
-    // Sunucu adresi
-    const serverUrl = "http://localhost:3005"; // Sunucu adresinizi buraya girin
-
-    // Socket.IO bağlantısını oluştur
+    const serverUrl = "http://localhost:3005";
     const newSocket = io(serverUrl);
 
-    // Bağlantı başarılı olduğunda çalışacak kodlar
     newSocket.on("connect", () => {
       console.log("Socket.IO bağlantısı başarılı.");
     });
 
-    // Bağlantı hatası olduğunda çalışacak kodlar
     newSocket.on("connect_error", (error) => {
       console.error("Socket.IO bağlantı hatası:", error);
     });
 
-    // Bağlantıyı state'e kaydet
     setSocket(newSocket);
 
-    // Socket'e user'ı bağla.
-    // newSocket.emit("join", user.username);
     user != null ? newSocket.emit("join", user.username) : null;
 
-    // Component kaldırıldığında socket bağlantısını kapat
     return () => {
       newSocket.disconnect();
     };
   }, [user]);
 
   useEffect(() => {
-    console.log("soket useefect çalıştı");
-    socket.on("messages", (message, from) => {
-      console.log(message);
-      setMessages([...messages, message]);
-    });
+    if (socket != null) {
+      socket.on("messages", (message, from) => {
+        console.log("Gelen mesaj:", message);
+        console.log("Kimden:", from);
+      });
+    }
   });
+
 
   return (
     <div>

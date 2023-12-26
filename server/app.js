@@ -32,7 +32,6 @@ app.use((req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("Bir kullanıcı bağlandı");
 
   socket.on("join", (username) => {
     socket.username = username;
@@ -42,14 +41,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (message, from, to) => {
-    console.log("Mesaj: ", message);
-    io.to(to).emit("messages", message, from);
+    console.log(`${from} tarafından ${to} kullanıcısına mesaj gönderildi: ${message}`);
+    socket.to(users[to]).emit("messages", message, from);
   });
 
   // Kullanıcı bağlantısı kesildiğinde
   socket.on("disconnect", () => {
-    delete users[socket.username];
     console.log("Bir kullanıcı ayrıldı");
+    delete users[socket.username];
   });
 });
 
