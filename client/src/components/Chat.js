@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import MessageBubble from "@/components/MessageBubble";
 import axios from "axios";
+import GroupSettings from "@/components/GroupSettings";
+
 
 const Chat = ({ user, groupId, chatTitle }) => {
   const [groupMessages, setGroupMessages] = useState([]);
@@ -105,6 +107,7 @@ const Chat = ({ user, groupId, chatTitle }) => {
                 <button className="text-gray-400 hover:text-gray-600">
                   <i className="ri-more-2-fill"></i>
                 </button>
+                <GroupSettings user={user} groupId={groupId}/>
               </li>
             </ul>
           </div>
