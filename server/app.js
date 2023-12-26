@@ -1,17 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const { Server } = require('socket.io');
+const { Server } = require("socket.io");
 const { ValidationError } = require("express-validation");
-const { createServer } = require('node:http');
+const { createServer } = require("node:http");
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*',
-  }
+    origin: "*",
+  },
 });
+
+let users = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
@@ -29,11 +31,27 @@ app.use((req, res, next) => {
   next();
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
+io.on("connection", (socket) => {
+  console.log("Bir kullanıcı bağlandı");
+
+  socket.on("join", (username) => {
+    socket.username = username;
+    users[username] = socket.id;
+    socket.emit("joined", socket.username);
+    console.log(`${username} sohbete katıldı.`);
+  });
+
+  socket.on("message", (message, from, to) => {
+    console.log("Mesaj: ", message);
+    io.to(to).emit("messages", message, from);
+  });
+
+  // Kullanıcı bağlantısı kesildiğinde
+  socket.on("disconnect", () => {
+    delete users[socket.username];
+    console.log("Bir kullanıcı ayrıldı");
+  });
 });
-
-
 
 app.use("/auth", require("./controllers/auth"));
 app.use("/group", require("./controllers/group"));
