@@ -111,4 +111,38 @@ route.post("/message/add", async function (req, res) {
   }
 });
 
+route.post('/add', async function (req, res) {
+    const { groupId, userId } = req.body;
+
+    try {
+
+      const added = await prisma.groupMember.create({
+        data: {
+          groupId: groupId,
+          userId: userId,
+        }
+      });
+
+      if (added) {
+        return res.status(200).json({
+          status: "success",
+          message: "Kullanıcı davet edildi",
+          data: added
+        });
+      } else {
+        return res.status(500).json({
+          status: "error",
+          message: "Kullanıcı davet edilirken hata oluştu",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Kullanıcı davet edilirken hata oluştu",
+        error: error.message,
+      });
+    }
+
+});
+
 module.exports = route;

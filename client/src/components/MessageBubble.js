@@ -10,7 +10,7 @@ export default function MessageBubble({
     : "bg-gray-200 text-gray-800 rounded-tl-none rounded-lg rounded-bl-none rounded-br-none rounded-tl-none rounded-bl max-w-3xl";
 
   // Saati alma işlemi
-  const convertedTime = new Date(sentAt).toLocaleTimeString("tr-TR", {
+  const convertedTime = new Date(sentAt ?? new Date()).toLocaleTimeString("tr-TR", {
     hour: "numeric",
     minute: "numeric",
   });

@@ -81,6 +81,9 @@ const Page = ({ params, user }) => {
         ...messages,
         { message: e.target.message.value, from: user.username },
       ]);
+
+      e.target.message.value = "";
+
     } catch (error) {
       toast.error(error.message);
     }
