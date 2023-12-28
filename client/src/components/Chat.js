@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MessageBubble from "@/components/MessageBubble";
 import axios from "axios";
 import GroupSettings from "@/components/GroupSettings";
@@ -7,6 +7,8 @@ import GroupSettings from "@/components/GroupSettings";
 const Chat = ({ user, groupId, chatTitle }) => {
   const [groupMessages, setGroupMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const messagesContainerRef = useRef();
+  const [isScrolledUp, setIsScrolledUp] = useState(false);
 
   const fetchGroupMessages = () => {
     try {
@@ -54,19 +56,27 @@ const Chat = ({ user, groupId, chatTitle }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    
     if (message.trim() != "") {
       addMessage(groupId);
       setMessage("");
     }
   };
+ 
 
   useEffect(() => {
+    if (!isScrolledUp && messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
     fetchGroupMessages();
-  }, [groupId]);
+  }, [groupId,isScrolledUp, groupMessages]);
 
   const handleChange = (event) => {
     setMessage(event.target.value);
+  };
+  const handleScroll = () => {
+    // Kullanıcı scroll'u yukarı çektiyse isScrolledUp durumunu true yap
+    setIsScrolledUp(messagesContainerRef.current.scrollTop < messagesContainerRef.current.scrollHeight - messagesContainerRef.current.clientHeight - 100);
   };
 
   let firstLetter = "";
@@ -75,7 +85,7 @@ const Chat = ({ user, groupId, chatTitle }) => {
   }
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative w-full overflow-hidden flex flex-col h-screen"  >
       {/* chat header */}
       <div className="p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0">
         <div className="grid items-center grid-cols-12">
@@ -86,7 +96,7 @@ const Chat = ({ user, groupId, chatTitle }) => {
                   <span className="text-white font-bold">{firstLetter}</span>
                 </div>
               </div>
-              <div className="flex-grow overflow-hidden">
+              <div className="flex-grow overflow-y-hidden">
                 <h5 className="mb-0">
                   <a href="#" className="text-gray-800">
                     {chatTitle}
@@ -114,9 +124,7 @@ const Chat = ({ user, groupId, chatTitle }) => {
         </div>
       </div>
 
-      <div id="chat-container" className="mb-28">
-        <div className="flex flex-col">
-          <div className="px-4 py-10 sm:px-6 lg:px-6 lg:py-4">
+      <div id="chat-container" className="flex-grow overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4" ref={messagesContainerRef} onScroll={handleScroll}>
             {user != null
               ? groupMessages.map((el, index) => (
                   <MessageBubble
@@ -130,10 +138,10 @@ const Chat = ({ user, groupId, chatTitle }) => {
                 ))
               : null}
           </div>
-        </div>
-      </div>
+        
+      
 
-      <div className="p-6 h-15 bg-white border-t border-gray-50">
+      <div className="p-6 h-15 bg-white border-t border-gray-50" style={{ marginBottom: "65px" }}>
         <form onSubmit={handleSubmit} className="flex justify-between">
           <input
             type="text"
