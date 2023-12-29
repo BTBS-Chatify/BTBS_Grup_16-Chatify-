@@ -53,7 +53,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("groupMessage", (from, room, message) => {
-    io.to(room).emit("groupMessage", message, from);
+    const messageData = {
+      message: message,
+      userId: from.id,
+      createdAt: new Date(),
+      user: { username: from.username, picture: from.picture },
+    };
+    io.to(room).emit("groupMessage", messageData);
   });
 
   // Kullanıcı bağlantısı kesildiğinde

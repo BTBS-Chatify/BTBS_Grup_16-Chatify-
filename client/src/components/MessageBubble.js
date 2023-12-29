@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function MessageBubble({
   message,
   sentAt,
@@ -26,13 +28,14 @@ export default function MessageBubble({
     >
       {!isSender ? (
         <div>
-          <img
-            src={senderPicture}
-            alt=""
+          <Image
             className={`w-12 h-12 rounded-full ${
               isSender ? "float-right ml-3" : "float-left mr-3"
             }`}
-          />
+            src={`/assets/` + senderPicture}
+            height={36}
+            width={36}
+          ></Image>
         </div>
       ) : null}
 

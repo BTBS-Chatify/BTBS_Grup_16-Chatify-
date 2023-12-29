@@ -68,12 +68,7 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
     if (message.trim() !== "") {
       addMessage(groupId);
       try {
-        socket.emit(
-          "groupMessage",
-          user.username,
-          groupId,
-          message.trim(message)
-        );
+        socket.emit("groupMessage", user, groupId, message.trim(message));
       } catch (error) {
         toast.error(error.message);
       }
@@ -107,27 +102,12 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
 
   useEffect(() => {
     if (socket != null) {
-      /* 
-      TODO:: Burda soketi dinlerken grup mesajlarını çekmek için veritabanına
-        istek atıyor. Böyle yaptığında her mesaj için veritabanına istek atması
-        veritabanını yoruyor. O yüzden burası değişecek. 
-      */
       socket.on("groupMessage", (message) => {
-        const serverUrl = process.env.SERVER_URL;
-        const endPoint = "/group/messages";
-        axios
-          .post(serverUrl + endPoint, {
-            groupId: groupId,
-          })
-          .then((response) => {
-            if (response.data.status === "success") {
-              const currentMessages = response.data.messages;
-              setGroupMessages(currentMessages);
-            }
-          });
+        console.log(message);
+        setGroupMessages((messages) => [...messages, message]);
       });
     }
-  });
+  }, [socket]);
 
   const handleChange = (event) => {
     setMessage(event.target.value);
