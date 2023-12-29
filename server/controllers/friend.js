@@ -42,13 +42,13 @@ route.post("/friends", async function (req, res) {
   if (!friends) {
     return res.status(400).json({
       status: "error",
-      message: "Friends not found",
+      message: "Arkadaşlar bulunamadı.",
     });
   }
 
   return res.status(200).json({
     status: "success",
-    message: "Friends listelendi",
+    message: "Arkadaşlar listelendi",
     friends: friends,
   });
 });
@@ -104,13 +104,13 @@ route.post("/acceptedFriends", async function (req, res) {
   if (!friends) {
     return res.status(400).json({
       status: "error",
-      message: "Friends not found",
+      message: "Arkadaş bulunamadı.",
     });
   }
 
   return res.status(200).json({
     status: "success",
-    message: "Friends listelendi",
+    message: "Arkadaşlar listelendi.",
     friends: filteredFriends,
   });
 });
@@ -158,13 +158,13 @@ route.post("/withoutFriends", async function (req, res) {
   if (!excludedFriends) {
     return res.status(400).json({
       status: "error",
-      message: "Users not found",
+      message: "Kullanıcılar bulunamadı.",
     });
   }
 
   return res.status(200).json({
     status: "success",
-    message: "Users listelendi",
+    message: "Kullanıılar listelendi",
     users: excludedFriends,
   });
 });
@@ -193,13 +193,13 @@ route.post("/add", async function (req, res) {
   if (!friendData) {
     return res.status(400).json({
       status: "error",
-      message: "Friend not added",
+      message: "Arkadaşlık isteği gönderilemedi.",
     });
   }
 
   return res.status(200).json({
     status: "success",
-    message: "Friend added",
+    message: "Arkadaşlık isteği gönderildi.",
     friend: friendData,
   });
 });
@@ -244,8 +244,22 @@ route.post("/accept", async function (req, res) {
 
   return res.status(200).json({
     status: "success",
-    message: "Friend accepted",
+    message: "Arkadaşlık isteği kabul edildi.",
     friend: friendData,
+  });
+});
+
+route.post("/decline", async function (req, res) {
+  const { id } = req.body;
+  const friendData = await prisma.friend.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  return res.status(200).json({
+    status: "success",
+    message: "Arkadaşlık isteği reddedildi.",
   });
 });
 
@@ -262,7 +276,7 @@ route.post("/friend", async function (req, res) {
       if (friend.length === 0) {
         return res.status(200).json({
           status: "success",
-          message: "Friend not found",
+          message: "Arkadaşlık isteği gönderildi.",
           user: friend,
         });
       } else {
@@ -286,7 +300,7 @@ route.post("/friend", async function (req, res) {
 
         return res.status(200).json({
           status: "success",
-          message: "Friend found",
+          message: "Arkadaş bulundu.",
           user: user,
         });
       }
@@ -294,7 +308,7 @@ route.post("/friend", async function (req, res) {
     .catch((err) => {
       return res.status(400).json({
         status: "error",
-        message: "Friend not found",
+        message: "Arkadaş bulunamadı.",
         error: err,
       });
     });

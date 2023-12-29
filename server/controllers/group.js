@@ -111,38 +111,125 @@ route.post("/message/add", async function (req, res) {
   }
 });
 
-route.post('/add', async function (req, res) {
-    const { groupId, userId } = req.body;
+route.post("/invite", async function (req, res) {
+  const { groupId, userId } = req.body;
 
-    try {
+  try {
+    const added = await prisma.groupMember.create({
+      data: {
+        groupId: groupId,
+        userId: userId,
+      },
+    });
 
-      const added = await prisma.groupMember.create({
-        data: {
-          groupId: groupId,
-          userId: userId,
-        }
+    if (added) {
+      return res.status(200).json({
+        status: "success",
+        message: "Kullanıcı davet edildi",
+        data: added,
       });
-
-      if (added) {
-        return res.status(200).json({
-          status: "success",
-          message: "Kullanıcı davet edildi",
-          data: added
-        });
-      } else {
-        return res.status(500).json({
-          status: "error",
-          message: "Kullanıcı davet edilirken hata oluştu",
-        });
-      }
-    } catch (error) {
+    } else {
       return res.status(500).json({
         status: "error",
         message: "Kullanıcı davet edilirken hata oluştu",
-        error: error.message,
       });
     }
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Kullanıcı davet edilirken hata oluştu",
+      error: error.message,
+    });
+  }
+});
 
+route.post("/myGroups", async function (req, res) {
+  const { userId } = req.body;
+  try {
+    const groups = await prisma.groupMember.findMany({
+      where: {
+        userId: userId,
+      },
+      orderBy: {
+        joinedAt: "desc",
+      },
+      include: {
+        group: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return res.status(200).json({
+      status: "success",
+      message: "Gruplar listelendi",
+      groups: groups,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Gruplar getirilirken bir hata oluştu",
+      error: error.message,
+    });
+  }
+});
+
+route.post("/accept", async function (req, res) {
+  const { queryId } = req.body;
+  try {
+    const added = await prisma.groupMember.update({
+      where: {
+        id: queryId,
+      },
+      data: {
+        joinedAt: new Date(),
+      },
+      include: {
+        group: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Grup daveti kabul edildi.",
+      data: added,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Grup daveti kabul edilirken bir hata oluştu",
+      error: error.message,
+    });
+  }
+});
+
+route.post("/decline", async function (req, res) {
+  const { queryId } = req.body;
+  try {
+    const deleted = await prisma.groupMember.delete({
+      where: {
+        id: queryId,
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Grup daveti iptal edildi.",
+      data: deleted,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Grup daveti iptal edilirken bir hata oluştu",
+      error: error.message,
+    });
+  }
 });
 
 module.exports = route;
