@@ -4,19 +4,26 @@ export default function MessageBubble({
   isSender,
   senderPicture,
   sender,
+  messageRef,
 }) {
   const bubbleClasses = isSender
     ? "bg-blue-500 text-white rounded-br-none rounded-lg"
     : "bg-gray-200 text-gray-800 rounded-tl-none rounded-lg rounded-bl-none rounded-br-none rounded-tl-none rounded-bl max-w-3xl";
 
   // Saati alma işlemi
-  const convertedTime = new Date(sentAt ?? new Date()).toLocaleTimeString("tr-TR", {
-    hour: "numeric",
-    minute: "numeric",
-  });
+  const convertedTime = new Date(sentAt ?? new Date()).toLocaleTimeString(
+    "tr-TR",
+    {
+      hour: "numeric",
+      minute: "numeric",
+    }
+  );
 
   return (
-    <div className={`mb-5 ${isSender ? "text-right" : "text-left"}`}>
+    <div
+      className={`mb-5 ${isSender ? "text-right" : "text-left"}`}
+      ref={messageRef}
+    >
       {!isSender ? (
         <div>
           <img

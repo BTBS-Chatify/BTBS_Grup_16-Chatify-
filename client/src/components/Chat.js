@@ -3,14 +3,20 @@ import MessageBubble from "@/components/MessageBubble";
 import axios from "axios";
 import GroupSettings from "@/components/GroupSettings";
 
-
 const Chat = ({ user, groupId, chatTitle }) => {
   const [groupMessages, setGroupMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const messagesContainerRef = useRef();
-  const [isScrolledUp, setIsScrolledUp] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  const fetchGroupMessages =() => {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [groupMessages]);
+
+  const fetchGroupMessages = () => {
     try {
       const serverUrl = process.env.SERVER_URL;
       const endPoint = "/group/messages";
@@ -56,41 +62,30 @@ const Chat = ({ user, groupId, chatTitle }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     if (message.trim() !== "") {
-      addMessage();
+      addMessage(groupId);
       setMessage("");
     }
   };
- 
 
   useEffect(() => {
-    if (!isScrolledUp && messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-    }
     fetchGroupMessages();
-  }, [groupId,isScrolledUp, groupMessages]);
+  }, [groupId]);
 
   const handleChange = (event) => {
     setMessage(event.target.value);
   };
-  const handleScroll = () => {
-    const container = messagesContainerRef.current;
-    if (container) {
-      // Kullanıcı scroll'u yukarı çektiyse isScrolledUp durumunu true yap
-      setIsScrolledUp(container.scrollTop < container.scrollHeight - container.clientHeight);
-    }
-     };
 
   let firstLetter = "";
   if (chatTitle != undefined) {
     firstLetter = chatTitle[0];
   }
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow = "hidden";
   return (
-    <div className="relative w-full overflow-hidden flex flex-col h-screen"  >
+    <div className="relative w-full overflow-hidden flex flex-col h-screen">
       {/* chat header */}
-      <div className="p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0">
+      <div className="p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0 mt-16">
         <div className="grid items-center grid-cols-12">
           <div className="col-span-8 sm:col-span-4">
             <div className="flex items-center space-x-2">
@@ -120,29 +115,33 @@ const Chat = ({ user, groupId, chatTitle }) => {
                 <button className="text-gray-400 hover:text-gray-600">
                   <i className="ri-more-2-fill"></i>
                 </button>
-                <GroupSettings user={user} groupId={groupId}/>
+                <GroupSettings user={user} groupId={groupId} />
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div id="chat-container" className="flex-grow overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4" ref={messagesContainerRef} onScroll={handleScroll}>
-            {user != null
-              ? groupMessages.map((el, index) => (
-                  <MessageBubble
-                    key={index}
-                    message={el.message}
-                    sentAt={el.createdAt}
-                    isSender={el.userId == user.id}
-                    senderPicture={el.user.picture}
-                    sender={el.user.username}
-                  />
-                ))
-              : null}
-          </div>
+      <div
+        id="chat-container"
+        className="flex-grow overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4"
+      >
+        {user != null
+          ? groupMessages.map((el, index) => (
+              <MessageBubble
+                key={index}
+                message={el.message}
+                sentAt={el.createdAt}
+                isSender={el.userId == user.id}
+                senderPicture={el.user.picture}
+                sender={el.user.username}
+                messageRef={messagesEndRef}
+              />
+            ))
+          : null}
+      </div>
 
-      <div className="p-6 h-15 bg-white border-t border-gray-50" style={{ marginBottom: "65px" }}>
+      <div className="p-6 h-15 bg-white border-t border-gray-50">
         <form onSubmit={handleSubmit} className="flex justify-between">
           <input
             type="text"
