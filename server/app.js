@@ -32,7 +32,6 @@ app.use((req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-
   socket.on("join", (username) => {
     socket.username = username;
     users[username] = socket.id;
@@ -41,8 +40,20 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (message, from, to) => {
-    console.log(`${from} tarafından ${to} kullanıcısına mesaj gönderildi: ${message}`);
+    console.log(
+      `${from} tarafından ${to} kullanıcısına mesaj gönderildi: ${message}`
+    );
     socket.to(users[to]).emit("messages", message, from);
+  });
+
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    socket.emit("joinedRoom", room);
+    console.log(`${room} id'li grubun sohbetine katıldı.`);
+  });
+
+  socket.on("groupMessage", (from, room, message) => {
+    io.to(room).emit("groupMessage", message, from);
   });
 
   // Kullanıcı bağlantısı kesildiğinde

@@ -5,6 +5,7 @@ import isAuth from "@/middleware/isAuth";
 import Header from "@/components/Header";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import MyFriendCard from "@/components/MyFriendCard";
+import { toast } from "react-toastify";
 
 import axios from "axios";
 import io from "socket.io-client";
@@ -83,7 +84,6 @@ const Page = ({ params, user }) => {
       ]);
 
       e.target.message.value = "";
-
     } catch (error) {
       toast.error(error.message);
     }

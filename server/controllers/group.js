@@ -15,12 +15,21 @@ route.post(
   validate(groupValidation.create, {}, {}),
   async function (req, res) {
     const { name, userId } = req.body;
-    await prisma.group.create({
+    const group = await prisma.group.create({
       data: {
         name: name,
         userId: userId,
       },
     });
+
+    await prisma.groupMember.create({
+      data: {
+        groupId: group.id,
+        userId: userId,
+        joinedAt: new Date(),
+      },
+    });
+
     return res.status(200).json({
       status: "success",
       message: "Grup oluşturuldu",
@@ -49,6 +58,29 @@ route.post("/all", async function (req, res) {
     return res.status(500).json({
       status: "error",
       message: "Gruplar getirilirken bir hata oluştu",
+      error: error.message,
+    });
+  }
+});
+
+route.post("/group", async function (req, res) {
+  const { groupId } = req.body;
+  try {
+    const group = await prisma.group.findUnique({
+      where: {
+        id: groupId,
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Grup getirildi",
+      group: group,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Grup getirilirken bir hata oluştu",
       error: error.message,
     });
   }

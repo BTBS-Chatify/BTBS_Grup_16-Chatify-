@@ -8,7 +8,7 @@ import MyFriendCard from "@/components/MyFriendCard";
 
 import axios from "axios";
 import Image from "next/image";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -32,7 +32,7 @@ const Friends = ({ user }) => {
           (response) => {
             if (response.data.status === "success") {
               const currentFriends = response.data.friends;
-              console.log("Arkadas: ", currentFriends)
+              console.log("Arkadas: ", currentFriends);
               setFriends(currentFriends);
             }
           },
@@ -43,69 +43,65 @@ const Friends = ({ user }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const fetchUsers = (id) => {
     try {
       const serverUrl = process.env.SERVER_URL;
       const endPoint = "/friend/withoutFriends";
       axios
-          .post(serverUrl + endPoint, {
-            userId: id,
-          })
-          .then(
-              // Axios isteği bittiğinde çalışan fonksiyon
-              (response) => {
-                if (response.data.status === "success") {
-                  const currentUsers = response.data.users;
-                  setUsers(response.data.users);
-                }
-              },
-              (error) => {
-                console.log(error);
-              }
-          );
+        .post(serverUrl + endPoint, {
+          userId: id,
+        })
+        .then(
+          // Axios isteği bittiğinde çalışan fonksiyon
+          (response) => {
+            if (response.data.status === "success") {
+              const currentUsers = response.data.users;
+              setUsers(response.data.users);
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   const addFriend = (id) => () => {
-
     var data = {
       userId: user.id, // Bizim id'miz
       id: id, // Istek atacagimiz kullanicinin id'si
     };
 
     axios
-        .post("http://localhost:3005/friend/add", data)
-        .then((response) => {
-          if (response.data.status === "success") {
-            toast.success(response.data.message);
-          }
+      .post("http://localhost:3005/friend/add", data)
+      .then((response) => {
+        if (response.data.status === "success") {
+          toast.success(response.data.message);
+        }
 
-          console.log("Arkadas: ", response.data.friend)
+        console.log("Arkadas: ", response.data.friend);
 
-          setFriends([...myFriends, response.data.friend])
-          setUsers(users.filter((user) => user.id !== id));
-
-        })
-        .catch((response) => {
-          response.details.body.forEach((bodyData) => {
-            toast.error(bodyData.message);
-          });
+        setFriends([...myFriends, response.data.friend]);
+        setUsers(users.filter((user) => user.id !== id));
+      })
+      .catch((response) => {
+        response.details.body.forEach((bodyData) => {
+          toast.error(bodyData.message);
         });
-  }
+      });
+  };
 
-    const updateFriends = (newFriend) => {
-        setFriends(newFriend);
-    };
+  const updateFriends = (newFriend) => {
+    setFriends(newFriend);
+  };
 
-    useEffect(() => {
+  useEffect(() => {
     user != null ? fetchFriends(user.id) : null;
     user != null ? fetchUsers(user.id) : null;
   }, [user]);
-
-
 
   return (
     <div>
@@ -131,29 +127,34 @@ const Friends = ({ user }) => {
         </div>
 
         <main className="xl:pl-96 hidden lg:block">
-
           <div className="px-4 py-4">
-            <span className="text-xl text-slate-700 font-medium">Daha fazla kişi tanış</span>
+            <span className="text-xl text-slate-700 font-medium">
+              Daha fazla kişi tanış
+            </span>
 
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-8">
-
               {users.map((user) => (
-                  <div className="bg-white border border-slate-300 rounded flex flex-col justify-center items-center py-4">
+                <div className="bg-white border border-slate-300 rounded flex flex-col justify-center items-center py-4">
+                  <Image
+                    src={`/assets/` + user.picture}
+                    className="rounded-full"
+                    width="64"
+                    height="64"
+                    alt=""
+                  />
 
-                    <Image src={`/assets/` + user.picture} className="rounded-full" width="64" height="64" alt=""/>
+                  <span className="font-medium py-2">@{user.username}</span>
 
-                    <span className="font-medium py-2">@{user.username}</span>
-
-                    <button className="py-1 px-2 bg-lime-500 hover:bg-lime-600 transition duration-300 rounded" onClick={addFriend(user.id)}>
-                      <span className="text-sm text-white">+ Arkadaş Ekle</span>
-                    </button>
-
-                  </div>
+                  <button
+                    className="py-1 px-2 bg-lime-500 hover:bg-lime-600 transition duration-300 rounded"
+                    onClick={addFriend(user.id)}
+                  >
+                    <span className="text-sm text-white">+ Arkadaş Ekle</span>
+                  </button>
+                </div>
               ))}
             </div>
-
           </div>
-
         </main>
       </div>
 
@@ -164,14 +165,16 @@ const Friends = ({ user }) => {
               Arkadaşlarım
             </span>
             {myFriends.map((friend) => (
-                <MyFriendCard friend={friend} userId={user.id} fetchFriends={fetchFriends}/>
+              <MyFriendCard
+                friend={friend}
+                userId={user.id}
+                fetchFriends={fetchFriends}
+              />
             ))}
           </div>
           <div></div>
         </div>
-        <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
-
-        </div>
+        <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8"></div>
       </aside>
     </div>
   );

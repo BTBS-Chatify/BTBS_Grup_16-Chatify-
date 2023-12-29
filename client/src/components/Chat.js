@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import MessageBubble from "@/components/MessageBubble";
 import axios from "axios";
 import GroupSettings from "@/components/GroupSettings";
+import io from "socket.io-client";
 
 const Chat = ({ user, groupId, chatTitle }) => {
   const [groupMessages, setGroupMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [socket, setSocket] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -65,13 +67,61 @@ const Chat = ({ user, groupId, chatTitle }) => {
 
     if (message.trim() !== "") {
       addMessage(groupId);
+      try {
+        socket.emit(
+          "groupMessage",
+          user.username,
+          groupId,
+          message.trim(message)
+        );
+      } catch (error) {
+        toast.error(error.message);
+      }
       setMessage("");
     }
   };
 
   useEffect(() => {
-    fetchGroupMessages();
+    groupId != null ? fetchGroupMessages() : null;
+
+    const serverUrl = "http://localhost:3005";
+    const newSocket = io(serverUrl);
+
+    newSocket.on("connect", () => {
+      console.log("Socket.IO bağlantısı başarılı.");
+    });
+
+    newSocket.on("connect_error", (error) => {
+      console.error("Socket.IO bağlantı hatası:", error);
+    });
+
+    setSocket(newSocket);
+
+    groupId != null ? newSocket.emit("joinRoom", groupId) : null;
+
+    return () => {
+      newSocket.disconnect();
+    };
   }, [groupId]);
+
+  useEffect(() => {
+    if (socket != null) {
+      socket.on("groupMessage", (message) => {
+        const serverUrl = process.env.SERVER_URL;
+        const endPoint = "/group/messages";
+        axios
+          .post(serverUrl + endPoint, {
+            groupId: groupId,
+          })
+          .then((response) => {
+            if (response.data.status === "success") {
+              const currentMessages = response.data.messages;
+              setGroupMessages(currentMessages);
+            }
+          });
+      });
+    }
+  });
 
   const handleChange = (event) => {
     setMessage(event.target.value);
@@ -85,7 +135,13 @@ const Chat = ({ user, groupId, chatTitle }) => {
   return (
     <div className="relative w-full overflow-hidden flex flex-col h-screen">
       {/* chat header */}
-      <div className="p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0 mt-16">
+      <div
+        className={
+          groupMessages.length > 0
+            ? "</div></div>p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0 mt-16"
+            : "</div></div>p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0"
+        }
+      >
         <div className="grid items-center grid-cols-12">
           <div className="col-span-8 sm:col-span-4">
             <div className="flex items-center space-x-2">
@@ -141,7 +197,13 @@ const Chat = ({ user, groupId, chatTitle }) => {
           : null}
       </div>
 
-      <div className="p-6 h-15 bg-white border-t border-gray-50">
+      <div
+        className={
+          groupMessages.length > 0
+            ? "p-6 h-15 bg-white border-t border-gray-50"
+            : "p-6 h-15 bg-white border-t border-gray-50 mb-16"
+        }
+      >
         <form onSubmit={handleSubmit} className="flex justify-between">
           <input
             type="text"

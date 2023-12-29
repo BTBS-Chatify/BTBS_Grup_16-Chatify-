@@ -113,7 +113,7 @@ const MyFriendCard = ({ group, userId, fetchGroups }) => {
           </div>
         ) : (
           <Tippy content="Mesaj gönder">
-            <Link href={`/groups/${group.id}`} className="">
+            <Link href={`/groups/${group.groupId}`} className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
