@@ -4,7 +4,7 @@ import axios from "axios";
 import GroupSettings from "@/components/GroupSettings";
 import io from "socket.io-client";
 
-const Chat = ({ user, groupId, chatTitle }) => {
+const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
   const [groupMessages, setGroupMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [socket, setSocket] = useState(null);
@@ -78,6 +78,7 @@ const Chat = ({ user, groupId, chatTitle }) => {
         toast.error(error.message);
       }
       setMessage("");
+      fetchGroups();
     }
   };
 
@@ -106,6 +107,11 @@ const Chat = ({ user, groupId, chatTitle }) => {
 
   useEffect(() => {
     if (socket != null) {
+      /* 
+      TODO:: Burda soketi dinlerken grup mesajlarını çekmek için veritabanına
+        istek atıyor. Böyle yaptığında her mesaj için veritabanına istek atması
+        veritabanını yoruyor. O yüzden burası değişecek. 
+      */
       socket.on("groupMessage", (message) => {
         const serverUrl = process.env.SERVER_URL;
         const endPoint = "/group/messages";

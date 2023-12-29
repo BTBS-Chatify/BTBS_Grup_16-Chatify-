@@ -1,6 +1,14 @@
+import { useEffect, useState } from "react";
+
 export default function GroupCard(props) {
-  const { group, latestSender, latestMsg, latestMsgTime, handleSettingGroup } =
-    props;
+  const {
+    group,
+    latestSender,
+    latestMsg,
+    latestMsgTime,
+    handleSettingGroup,
+    messages,
+  } = props;
 
   const groupName = group.name;
   let firstLetter = "";
@@ -28,9 +36,16 @@ export default function GroupCard(props) {
           <span className="text-sm text-gray-400">{latestMsgTime}</span>
         </div>
         <div className="flex flex-row justify-between gap-4">
-          <span className="text-sm text-gray-400">
-            <span className="font-medium">{latestSender}:</span> {latestMsg}
-          </span>
+          {latestMsg != "" ? (
+            <span className="text-sm text-gray-400">
+              <span className="font-medium">{latestSender}:</span> {latestMsg}
+            </span>
+          ) : (
+            <span className="text-xs text-gray-400 mt-1">
+              Sohbeti başlatmak için mesaj gönder.
+            </span>
+          )}
+
           <div className="">
             {
               /* Mesaj sayısı 0'dan küçükse aşağıdaki divi göstermemek için kodu yaz: */

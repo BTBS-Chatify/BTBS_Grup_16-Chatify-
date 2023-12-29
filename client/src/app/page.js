@@ -25,20 +25,29 @@ const Home = ({ user }) => {
     if (user != null) {
       try {
         await axios
-            .post(serverUrl + endpoint, {
-              userId: user.id,
-            })
-            .then((response) => {
-              let status = response.data.status;
-              if (status === "success") {
-                let responseGroups = response.data.groups;
+          .post(serverUrl + endpoint, {
+            userId: user.id,
+          })
+          .then((response) => {
+            let status = response.data.status;
+            if (status === "success") {
+              let responseGroups = response.data.groups;
 
-                //Eğer gruplar geldiyse, groups listesine atıyoruz.
-                setGroups(responseGroups);
-              } else {
-                toast.error(JSON.stringify(response.data.message));
-              }
-            });
+              //Eğer gruplar geldiyse, groups listesine atıyoruz.
+              responseGroups = responseGroups.map((group) => {
+                return {
+                  ...group,
+                  latestMsg:
+                    group.messages.length > 0 ? group.messages[0].message : "",
+                  latestSender:
+                    group.messages.length > 0 ? group.messages[0].userId : "",
+                };
+              });
+              flushSync(() => setGroups(responseGroups));
+            } else {
+              toast.error(JSON.stringify(response.data.message));
+            }
+          });
       } catch (error) {
         toast.error(error.message);
       }
@@ -50,68 +59,63 @@ const Home = ({ user }) => {
   }, [user]);
 
   return (
-      <div>
-        <Navigation />
-        <div className="lg:pl-20">
-          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-            <button
-                type="button"
-                className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
-                onClick={() => setSidebarOpen(true)}
-            >
-              <span className="sr-only">Open sidebar</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
+    <div>
+      <Navigation />
+      <div className="lg:pl-20">
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+          <button
+            type="button"
+            className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <span className="sr-only">Open sidebar</span>
+            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+          </button>
 
-            {/* Separator */}
-            <div
-                className="h-6 w-px bg-gray-900/10 lg:hidden"
-                aria-hidden="true"
-            />
+          {/* Separator */}
+          <div
+            className="h-6 w-px bg-gray-900/10 lg:hidden"
+            aria-hidden="true"
+          />
 
-            <Header user={user} />
-          </div>
-
-          <main className="xl:pl-96 hidden lg:block h-100">
-            {selectedGroup ? (
-                <Chat
-                    user={user}
-                    groupId={selectedGroup.id}
-                    chatTitle={selectedGroup.name}
-                />
-            ) : null}
-          </main>
+          <Header user={user} />
         </div>
 
-        <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
-          <div className="flex flex-row justify-between items-center bg-slate-100 py-6 px-4 sm:px-6 lg:px-8">
-            <div>
-              <span className="font-semibold text-lg text-slate-900">Akış</span>
-            </div>
-            <div>
-              <GroupCreateModal user={user} fetchGroups={fetchGroups} />
-            </div>
-          </div>
-          <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
-            {groups.map((group) => (
-                <GroupCard
-                    key={group.id}
-                    group={group}
-                    latestSender="Deneme"
-                    latestMsg="bu bir deneme mesajıdır"
-                    latestMsgTime="15:35"
-                    handleSettingGroup={setGroup}
-                />
-            ))}
-            <MessageCard
-                unreadMsgCount="1"
-                senderFullname="Enes Öztekin"
-                latestMsg="Kanka projeyi naptın?"
-                latestMsgTime="15:35"
+        <main className="xl:pl-96 hidden lg:block h-100">
+          {selectedGroup ? (
+            <Chat
+              user={user}
+              groupId={selectedGroup.id}
+              chatTitle={selectedGroup.name}
+              fetchGroups={fetchGroups}
             />
-          </div>
-        </aside>
+          ) : null}
+        </main>
       </div>
+
+      <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
+        <div className="flex flex-row justify-between items-center bg-slate-100 py-6 px-4 sm:px-6 lg:px-8">
+          <div>
+            <span className="font-semibold text-lg text-slate-900">Akış</span>
+          </div>
+          <div>
+            <GroupCreateModal user={user} fetchGroups={fetchGroups} />
+          </div>
+        </div>
+        <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
+          {groups.map((group) => (
+            <GroupCard
+              key={group.id}
+              group={group}
+              latestSender={group.latestSender}
+              latestMsg={group.latestMsg}
+              latestMsgTime="15:35"
+              handleSettingGroup={setGroup}
+            />
+          ))}
+        </div>
+      </aside>
+    </div>
   );
 };
 

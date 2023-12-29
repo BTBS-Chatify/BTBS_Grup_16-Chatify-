@@ -38,7 +38,8 @@ route.post(
 );
 
 route.post("/all", async function (req, res) {
-  const { userId } = req.body; // userId'yi doğrudan req.body'den almalısınız, destructuring kullanımı yanlış
+  const { userId } = req.body;
+  const { groupId } = req.body;
   try {
     const groups = await prisma.group.findMany({
       where: {
@@ -49,10 +50,36 @@ route.post("/all", async function (req, res) {
       },
     });
 
+    let groupsWithMessages = [];
+
+    await Promise.all(
+      groups.map(async (group) => {
+        try {
+          const messages = await prisma.groupMessage.findMany({
+            where: {
+              groupId: group.id,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+
+          if (messages.length > 0) {
+            groupsWithMessages.push({ ...group, messages: messages });
+          } else {
+            groupsWithMessages.push({ ...group, messages: [] });
+          }
+        } catch (err) {
+          console.error("Error fetching messages:", err);
+          groupsWithMessages.push({ ...group, messages: [] });
+        }
+      })
+    );
+
     return res.status(200).json({
       status: "success",
       message: "Gruplar listelendi",
-      groups: groups,
+      groups: groupsWithMessages,
     });
   } catch (error) {
     return res.status(500).json({
