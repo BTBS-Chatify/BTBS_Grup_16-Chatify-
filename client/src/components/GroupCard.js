@@ -16,6 +16,13 @@ export default function GroupCard(props) {
     firstLetter = groupName[0];
   }
 
+  const lastMsgFormatted =
+    latestMsgTime != ""
+      ? new Date(latestMsgTime).getHours() +
+        ":" +
+        new Date(latestMsgTime).getMinutes()
+      : "";
+
   const handleOnClick = () => {
     handleSettingGroup(group);
   };
@@ -33,7 +40,7 @@ export default function GroupCard(props) {
       <div className="col-span-9 space-y-1">
         <div className="flex flex-row justify-between">
           <span className="font-medium text-gray-700">{groupName}</span>
-          <span className="text-sm text-gray-400">{latestMsgTime}</span>
+          <span className="text-sm text-gray-400">{lastMsgFormatted}</span>
         </div>
         <div className="flex flex-row justify-between gap-4">
           {latestMsg != "" ? (

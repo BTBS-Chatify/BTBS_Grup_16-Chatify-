@@ -105,6 +105,7 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
       socket.on("groupMessage", (message) => {
         console.log(message);
         setGroupMessages((messages) => [...messages, message]);
+        fetchGroups();
       });
     }
   }, [socket]);

@@ -41,6 +41,10 @@ const Home = ({ user }) => {
                     group.messages.length > 0 ? group.messages[0].message : "",
                   latestSender:
                     group.messages.length > 0 ? group.messages[0].userId : "",
+                  latestMsgTime:
+                    group.messages.length > 0
+                      ? group.messages[0].createdAt
+                      : "",
                 };
               });
               flushSync(() => setGroups(responseGroups));
@@ -109,7 +113,7 @@ const Home = ({ user }) => {
               group={group}
               latestSender={group.latestSender}
               latestMsg={group.latestMsg}
-              latestMsgTime="15:35"
+              latestMsgTime={group.latestMsgTime}
               handleSettingGroup={setGroup}
             />
           ))}
