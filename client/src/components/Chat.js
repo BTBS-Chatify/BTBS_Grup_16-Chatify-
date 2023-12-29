@@ -10,7 +10,7 @@ const Chat = ({ user, groupId, chatTitle }) => {
   const messagesContainerRef = useRef();
   const [isScrolledUp, setIsScrolledUp] = useState(false);
 
-  const fetchGroupMessages = () => {
+  const fetchGroupMessages =() => {
     try {
       const serverUrl = process.env.SERVER_URL;
       const endPoint = "/group/messages";
@@ -57,8 +57,8 @@ const Chat = ({ user, groupId, chatTitle }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     
-    if (message.trim() != "") {
-      addMessage(groupId);
+    if (message.trim() !== "") {
+      addMessage();
       setMessage("");
     }
   };
@@ -75,15 +75,18 @@ const Chat = ({ user, groupId, chatTitle }) => {
     setMessage(event.target.value);
   };
   const handleScroll = () => {
-    // Kullanıcı scroll'u yukarı çektiyse isScrolledUp durumunu true yap
-    setIsScrolledUp(messagesContainerRef.current.scrollTop < messagesContainerRef.current.scrollHeight - messagesContainerRef.current.clientHeight - 100);
-  };
+    const container = messagesContainerRef.current;
+    if (container) {
+      // Kullanıcı scroll'u yukarı çektiyse isScrolledUp durumunu true yap
+      setIsScrolledUp(container.scrollTop < container.scrollHeight - container.clientHeight);
+    }
+     };
 
   let firstLetter = "";
   if (chatTitle != undefined) {
     firstLetter = chatTitle[0];
   }
-
+  document.body.style.overflow = 'hidden';
   return (
     <div className="relative w-full overflow-hidden flex flex-col h-screen"  >
       {/* chat header */}
@@ -138,8 +141,6 @@ const Chat = ({ user, groupId, chatTitle }) => {
                 ))
               : null}
           </div>
-        
-      
 
       <div className="p-6 h-15 bg-white border-t border-gray-50" style={{ marginBottom: "65px" }}>
         <form onSubmit={handleSubmit} className="flex justify-between">
