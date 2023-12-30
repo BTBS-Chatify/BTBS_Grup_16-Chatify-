@@ -336,4 +336,82 @@ route.post("/members", async function (req, res) {
   }
 });
 
+route.post("/withoutGroupMembers", async function (req, res) {
+  const { groupId, userId } = req.body;
+
+  const members = await prisma.groupMember.findMany({
+    where: {
+      groupId: groupId
+    },
+  });
+
+  const user2IdArray = [];
+
+  if (members.length === 0) {
+    user2IdArray.push(userId);
+  }
+
+  members.forEach((item) => {
+    user2IdArray.push(item.userId);
+  });
+
+  const cleanedUser2IdArray = user2IdArray.filter((id) => id !== undefined);
+
+  const excludedFriends = await prisma.friend.findMany({
+    where: {
+      NOT: {
+        id: {
+          in: cleanedUser2IdArray,
+        },
+      },
+    },
+    include: {
+      user1: {
+        select: {
+          fullName: true,
+          username: true,
+          picture: true,
+          status: true,
+          id: true,
+        },
+      },
+      user2: {
+        select: {
+          fullName: true,
+          username: true,
+          picture: true,
+          status: true,
+          id: true,
+        },
+      },
+    },
+  });
+
+  let filteredMembers = [];
+
+  excludedFriends.forEach(filterMember);
+
+  function filterMember(friend) {
+    if (friend.user1Id !== userId) {
+      filteredMembers.push(friend.user2);
+    } else {
+      filteredMembers.push(friend.user1);
+    }
+  }
+
+
+  if (!excludedFriends) {
+    return res.status(400).json({
+      status: "error",
+      message: "Kullanıcılar bulunamadı.",
+    });
+  }
+
+  return res.status(200).json({
+    status: "success",
+    message: "Kullanıılar listelendi",
+    users: filteredMembers,
+  });
+});
+
 module.exports = route;
