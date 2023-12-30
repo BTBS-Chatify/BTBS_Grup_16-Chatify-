@@ -76,6 +76,16 @@ route.post("/all", async function (req, res) {
       })
     );
 
+    groupsWithMessages.sort(function (a, b) {
+      const lastMessageTimeA =
+        a.messages.length > 0 ? a.messages[0].createdAt : 0;
+      const lastMessageTimeB =
+        b.messages.length > 0 ? b.messages[0].createdAt : 0;
+
+      // Daha son mesaj atan grubu önce göstermek için sıralama yap
+      return lastMessageTimeB - lastMessageTimeA;
+    });
+
     return res.status(200).json({
       status: "success",
       message: "Gruplar listelendi",

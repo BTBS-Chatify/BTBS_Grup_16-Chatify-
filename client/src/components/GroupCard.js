@@ -16,11 +16,17 @@ export default function GroupCard(props) {
     firstLetter = groupName[0];
   }
 
+  function formatTwoDigits(number) {
+    return number.toString().padStart(2, "0");
+  }
+
+  const latestSentMessageTime = new Date(latestMsgTime);
+
   const lastMsgFormatted =
     latestMsgTime != ""
-      ? new Date(latestMsgTime).getHours() +
+      ? latestSentMessageTime.getHours() +
         ":" +
-        new Date(latestMsgTime).getMinutes()
+        formatTwoDigits(latestSentMessageTime.getMinutes())
       : "";
 
   const handleOnClick = () => {
