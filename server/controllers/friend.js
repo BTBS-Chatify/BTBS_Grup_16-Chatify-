@@ -41,13 +41,29 @@ route.post("/friends", async function (req, res) {
 
   let filteredFriends = [];
 
+  console.log("Ark: ", friends);
+
   friends.forEach(filterFriend);
 
   function filterFriend(friend) {
     if (friend.user1Id === userId) {
-      filteredFriends.push(friend.user2);
+
+      var user = friend.user2;
+      user.status = friend.status;
+      user.user1Id = friend.user1Id;
+      user.user2Id = friend.user2Id;
+      user.id = friend.id;
+
+      filteredFriends.push(user);
     } else {
-      filteredFriends.push(friend.user1);
+
+      var user = friend.user1;
+      user.status = friend.status;
+      user.user1Id = friend.user1Id;
+      user.user2Id = friend.user2Id;
+      user.id = friend.id;
+
+      filteredFriends.push(user);
     }
   }
 
