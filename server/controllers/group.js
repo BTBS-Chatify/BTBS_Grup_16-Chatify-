@@ -301,4 +301,39 @@ route.post("/decline", async function (req, res) {
   }
 });
 
+route.post("/members", async function (req, res) {
+  const { groupId } = req.body;
+  try {
+    const members = await prisma.groupMember.findMany({
+      where: {
+        groupId: groupId,
+      },
+      orderBy: {
+        joinedAt: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            picture: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Grup üyeleri listelendi",
+      members: members,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Grup üyeleri getirilirken bir hata oluştu",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = route;
