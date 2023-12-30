@@ -4,9 +4,11 @@ import Link from "next/link";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useCookies } from "next-client-cookies";
 
 export default function Login() {
   const router = useRouter();
+  const cookie = useCookies();
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -26,8 +28,8 @@ export default function Login() {
           toast.success(response.message);
         }
 
-        localStorage.setItem("token", response.accessToken);
-        localStorage.setItem("refreshToken", response.refreshToken);
+        cookie.set("token", response.accessToken);
+        cookie.set("refreshToken", response.refreshToken);
 
         router.push("/");
       })
