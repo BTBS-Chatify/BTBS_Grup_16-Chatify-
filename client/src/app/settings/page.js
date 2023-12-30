@@ -1,5 +1,5 @@
 "use client";
-import { Children, Fragment, useState } from "react";
+import { Children, Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -15,8 +15,43 @@ import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
 import SettingsNavigation from "@/components/SettingNavigation";
 import isAuth from "@/middleware/isAuth";
+import ChangePassword from "@/components/ChangePasword"
 const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [mail, setMail] = useState("");
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    closeDialog();
+  };
+
+  useEffect(() => {
+    if (user) {
+      setFullName(user.fullName || "");
+      setMail(user.email || "");
+    }
+  }, [user])
+
+
+  const handleUsernameChange = (e) => {
+    const inputText = e.target.value;
+    setFullName(inputText);
+  };
+
+  const handleEmailChange = (e) => {
+    const inputText = e.target.value;
+    setMail(inputText);
+  };
 
   return (
     <div>
@@ -51,13 +86,15 @@ const Home = ({ user }) => {
               </span>
               <form className="mt-5">
                 <div class="mb-5 flex items-center">
-                  <label for="name" class="mb-2 w-24 text-sm font-medium">
-                    Ad Soyad*
+                  <label for="fullname" class="mb-2 w-24 text-sm font-medium">
+                    Ad Soyad:
                   </label>
                   <input
-                    type="lastname"
-                    class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2"
-                    placeholder="Metin"
+                    type="text"  // type'ı text olarak güncellendi
+                    name="fullname"
+                    className="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2"
+                    value={fullName}
+                    onChange={handleUsernameChange}
                     required
                   />
                 </div>
@@ -74,7 +111,8 @@ const Home = ({ user }) => {
                   <input
                     type="lastname"
                     class="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2"
-                    placeholder="metintas@gmail.com"
+                    value={mail}
+                    onChange={handleEmailChange}
                     required
                   />
                 </div>
@@ -129,10 +167,21 @@ const Home = ({ user }) => {
                   <label for="name" class="mb-2 w-24 text-sm font-medium">
                     Şifre
                   </label>
-                  <button className="bg-blue-600 px-3 py-2 text-sm text-white font-semibold rounded-sm hover:bg-blue-500">
+                  <button
+                    type="button"
+                    className="bg-blue-600 px-3 py-2 text-sm text-white font-semibold rounded-sm hover:bg-blue-500"
+                    onClick={openDialog}
+                  >
                     Şifre Değiştir
                   </button>
                 </div>
+                <ChangePassword
+                  isOpen={isDialogOpen}
+                  closeModal={closeDialog}
+                  onSubmit={handleSubmit}
+                />
+
+                {/* ... (remaining code) */}
                 <hr className="py-2 my-3"></hr>
                 <div class="mb-5 flex items-center py-3">
                   <label
@@ -168,7 +217,11 @@ const Home = ({ user }) => {
                 <hr className="py-2 my-3"></hr>
                 <div class="mb-5 flex items-center max-sm:text-xs py-3">
                   <div className="block">
-                    <button className="bg-green-600 px-3 block py-2 text-sm max-sm:text-xs text-white font-semibold rounded-sm hover:bg-green-800">
+                    <button className="bg-green-600 px-3 block py-2 text-sm max-sm:text-xs text-white font-semibold rounded-sm hover:bg-green-800"
+                      onClick={
+                        console.log("")
+                      }
+                    >
                       Değişiklikleri Kaydet
                     </button>
                   </div>

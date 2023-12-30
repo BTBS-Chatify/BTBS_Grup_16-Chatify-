@@ -77,7 +77,7 @@ const MyFriendCard = ({ friend, userId, fetchFriends }) => {
             />
           ) : (
             <Image
-              src={`/assets/` + friend.user.picture}
+              src={`/assets/1.jpg`}
               className="rounded-full"
               width="48"
               height="48"
