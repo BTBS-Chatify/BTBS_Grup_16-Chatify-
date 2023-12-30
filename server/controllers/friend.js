@@ -39,6 +39,18 @@ route.post("/friends", async function (req, res) {
     },
   });
 
+  let filteredFriends = [];
+
+  friends.forEach(filterFriend);
+
+  function filterFriend(friend) {
+    if (friend.user1Id === userId) {
+      filteredFriends.push(friend.user2);
+    } else {
+      filteredFriends.push(friend.user1);
+    }
+  }
+
   if (!friends) {
     return res.status(400).json({
       status: "error",
@@ -49,7 +61,7 @@ route.post("/friends", async function (req, res) {
   return res.status(200).json({
     status: "success",
     message: "Arkadaşlar listelendi",
-    friends: friends,
+    friends: filteredFriends,
   });
 });
 

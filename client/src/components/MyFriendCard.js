@@ -67,29 +67,18 @@ const MyFriendCard = ({ friend, userId, fetchFriends }) => {
     <div className="bg-slate-100 my-5 p-3 rounded-lg">
       <div className="w-full flex justify-between items-center">
         <div className="flex flex-row space-x-2 items-center">
-          {friend.user1Id === userId ? (
-            <Image
-              src={`/assets/` + friend.user2.picture}
+
+          <Image
+              src={`/assets/` + friend.picture}
               className="rounded-full"
               width="48"
               height="48"
               alt=""
-            />
-          ) : (
-            <Image
-              src={`/assets/1.jpg`}
-              className="rounded-full"
-              width="48"
-              height="48"
-              alt=""
-            />
-          )}
+          />
           <div className="flex flex-col gap-1">
             <span className="text-sm text-slate-700 font-bold">
               @
-              {friend.user1Id === userId
-                ? friend.user2.username
-                : friend.user1.username}
+              {friend.username}
             </span>
           </div>
         </div>
