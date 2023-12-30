@@ -11,11 +11,13 @@ import GroupCreateModal from "@/components/GroupCreateModal";
 import axios from "axios";
 import { Icons, toast } from "react-toastify";
 import { flushSync } from "react-dom";
+import io from "socket.io-client";
 
 const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setGroup] = useState(null);
+  const [socket, setSocket] = useState(null);
   const number = 0;
 
   async function fetchGroups() {
@@ -61,6 +63,40 @@ const Home = ({ user }) => {
   useEffect(() => {
     fetchGroups();
   }, [user]);
+
+  useEffect(() => {
+    const serverUrl = "http://localhost:3005";
+    const newSocket = io(serverUrl);
+
+    newSocket.on("connect", () => {
+      console.log("Socket.IO bağlantısı başarılı.");
+    });
+
+    newSocket.on("connect_error", (error) => {
+      console.error("Socket.IO bağlantı hatası:", error);
+    });
+
+    setSocket(newSocket);
+
+    if (groups.length > 0) {
+      groups.forEach((group) => {
+        group != null ? newSocket.emit("joinRoom", group.id) : null;
+      });
+    }
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [groups]);
+
+  useEffect(() => {
+    if (socket != null) {
+      // Yeni bir mesaj varsa grupları tekrar çeksin. Bu sayede grubun son mesajına göre gruplar yeniden listelenecek.
+      socket.on("groupMessage", () => {
+        fetchGroups();
+      });
+    }
+  }, [socket]);
 
   return (
     <div>
