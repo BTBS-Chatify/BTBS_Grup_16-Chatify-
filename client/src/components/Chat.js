@@ -119,6 +119,18 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
     firstLetter = chatTitle[0];
   }
   document.body.style.overflow = "hidden";
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prevSidebarOpen) => !prevSidebarOpen);
+    if (!prevSidebarOpen && selectedGroup) {
+      setGroup(null);
+    }
+  };
+
+  
+ 
+  
+    
   return (
     <div className="relative w-full overflow-hidden flex flex-col h-screen">
       {/* chat header */}
@@ -166,8 +178,8 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
       </div>
 
       <div
-        id="chat-container"
-        className="flex-grow overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4"
+        id="chat-container" 
+        className="flex-grow overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4  "
       >
         {user != null
           ? groupMessages.map((el, index) => (
@@ -225,3 +237,4 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
 };
 
 export default Chat;
+

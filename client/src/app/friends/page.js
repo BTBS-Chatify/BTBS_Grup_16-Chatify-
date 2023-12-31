@@ -1,3 +1,4 @@
+
 "use client";
 import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
@@ -18,6 +19,10 @@ const Friends = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [myFriends, setFriends] = useState([]);
   const [users, setUsers] = useState([]);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+  const [sidebarInitiallyClosed, setSidebarInitiallyClosed] = useState(false);
+  const [shouldCloseSidebar, setShouldCloseSidebar] = useState(false);
+  
 
   const fetchFriends = (id) => {
     try {
@@ -99,20 +104,56 @@ const Friends = ({ user }) => {
     user != null ? fetchUsers(user.id) : null;
   }, [user]);
 
+  
+  useEffect(() => {
+    setSidebarOpen(true);
+    setSidebarInitiallyClosed(true);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newIsSmallScreen = window.innerWidth < 768;
+      if (newIsSmallScreen && sidebarInitiallyClosed && sidebarOpen && !shouldCloseSidebar) {
+        setSidebarOpen(false);
+        setSidebarInitiallyClosed(false);
+       
+      }
+
+      setIsSmallScreen(newIsSmallScreen);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Sayfa yüklendiğinde boyutu kontrol et
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [sidebarOpen, sidebarInitiallyClosed, shouldCloseSidebar]);
+
+  useEffect(() => {
+    if (shouldCloseSidebar) {
+      setSidebarOpen(false);
+      setShouldCloseSidebar(false);
+    }
+  }, [shouldCloseSidebar]);
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prevSidebarOpen) => !prevSidebarOpen);
+  };
+
   return (
     <div>
       <Navigation />
       <div className="lg:pl-20">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <span className="sr-only">Open sidebar</span>
+              
+        <button onClick={toggleSidebar}>
+            <span className="sr-only">Toggle sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-
+       
           {/* Separator */}
           <div
             className="h-6 w-px bg-gray-900/10 lg:hidden"
@@ -123,6 +164,7 @@ const Friends = ({ user }) => {
         </div>
 
         <main className="xl:pl-96 hidden lg:block">
+        {!isSmallScreen && (
           <div className="px-4 py-4">
             <span className="text-xl text-slate-700 font-medium">
               Daha fazla kişi tanış
@@ -151,9 +193,10 @@ const Friends = ({ user }) => {
               ))}
             </div>
           </div>
+        )}
         </main>
       </div>
-
+      {sidebarOpen && (
       <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
         <div className="flex flex-row justify-between items-center py-6 px-4 sm:px-6 lg:px-8">
           <div className="w-full">
@@ -165,6 +208,7 @@ const Friends = ({ user }) => {
                 friend={friend}
                 userId={user.id}
                 fetchFriends={fetchFriends}
+                onSelectFriend={() => setSelectedFriend(friend)}
               />
             ))}
           </div>
@@ -172,6 +216,7 @@ const Friends = ({ user }) => {
         </div>
         <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8"></div>
       </aside>
+      )}
     </div>
   );
 };
