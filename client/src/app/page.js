@@ -106,6 +106,8 @@ const Home = ({ user }) => {
     setSidebarOpen(true);
     setSidebarInitiallyClosed(true);
   }, []);
+  
+  const newSocket = io('http://localhost:3005');
 
   if (groups.length > 0) {
     groups.forEach((group) => {
