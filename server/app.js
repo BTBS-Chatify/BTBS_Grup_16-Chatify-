@@ -40,9 +40,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (message, from, to) => {
-    console.log(
-      `${from} tarafından ${to} kullanıcısına mesaj gönderildi: ${message}`
-    );
     socket.to(users[to]).emit("messages", message, from);
   });
 

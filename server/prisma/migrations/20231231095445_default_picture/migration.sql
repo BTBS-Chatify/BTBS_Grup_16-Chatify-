@@ -6,7 +6,7 @@ CREATE TABLE `users` (
     `username` VARCHAR(20) NOT NULL,
     `fullName` VARCHAR(50) NULL,
     `password` VARCHAR(255) NOT NULL,
-    `picture` VARCHAR(255) NULL,
+    `picture` VARCHAR(255) NOT NULL DEFAULT 'default.jpg',
     `status` INTEGER NOT NULL DEFAULT 1,
 
     UNIQUE INDEX `users_email_key`(`email`),

@@ -75,7 +75,7 @@ const Page = ({ params, user }) => {
       socket.emit(
         "message",
         e.target.message.value,
-        user.username,
+        { username: user.username, picture: user.picture },
         friend.username
       );
       setMessages([
@@ -190,8 +190,9 @@ const Page = ({ params, user }) => {
                     <MessageBubble
                       key={index}
                       message={msg.message}
-                      sender={msg.from}
+                      sender={msg.from.username}
                       isSender={msg.from === user.username}
+                      senderPicture={msg.from.picture}
                     />
                   ))}
                 </div>

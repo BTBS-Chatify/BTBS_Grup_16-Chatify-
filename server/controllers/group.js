@@ -339,79 +339,52 @@ route.post("/members", async function (req, res) {
 route.post("/withoutGroupMembers", async function (req, res) {
   const { groupId, userId } = req.body;
 
-  const members = await prisma.groupMember.findMany({
-    where: {
-      groupId: groupId
-    },
-  });
+  try {
+    const members = await prisma.groupMember.findMany({
+      where: {
+        groupId: groupId,
+      },
+    });
 
-  const user2IdArray = [];
+    const user2IdArray = members.map((item) => item.userId);
 
-  if (members.length === 0) {
-    user2IdArray.push(userId);
-  }
-
-  members.forEach((item) => {
-    user2IdArray.push(item.userId);
-  });
-
-  const cleanedUser2IdArray = user2IdArray.filter((id) => id !== undefined);
-
-  const excludedFriends = await prisma.friend.findMany({
-    where: {
-      NOT: {
-        id: {
-          in: cleanedUser2IdArray,
+    const excludedFriends = await prisma.friend.findMany({
+      where: {
+        user1Id: userId,
+        NOT: {
+          user2Id: {
+            in: user2IdArray,
+          },
+        },
+        status: 1,
+      },
+      include: {
+        user2: {
+          select: {
+            fullName: true,
+            username: true,
+            picture: true,
+            status: true,
+            id: true,
+          },
         },
       },
-    },
-    include: {
-      user1: {
-        select: {
-          fullName: true,
-          username: true,
-          picture: true,
-          status: true,
-          id: true,
-        },
-      },
-      user2: {
-        select: {
-          fullName: true,
-          username: true,
-          picture: true,
-          status: true,
-          id: true,
-        },
-      },
-    },
-  });
+    });
 
-  let filteredMembers = [];
+    const filteredMembers = excludedFriends.map((friend) => friend.user2);
 
-  excludedFriends.forEach(filterMember);
-
-  function filterMember(friend) {
-    if (friend.user1Id !== userId) {
-      filteredMembers.push(friend.user2);
-    } else {
-      filteredMembers.push(friend.user1);
-    }
-  }
-
-
-  if (!excludedFriends) {
-    return res.status(400).json({
+    return res.status(200).json({
+      status: "success",
+      message: "Gruba üye olmayan arkadaşlar listelendi",
+      members: filteredMembers,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({
       status: "error",
-      message: "Kullanıcılar bulunamadı.",
+      message: "Bir hata oluştu, arkadaşlar getirilemedi",
     });
   }
-
-  return res.status(200).json({
-    status: "success",
-    message: "Kullanıılar listelendi",
-    users: filteredMembers,
-  });
 });
 
 module.exports = route;

@@ -8,7 +8,7 @@ import { Disclosure } from "@headlessui/react";
 export default function AddMember({ user, groupId }) {
   const [query, setQuery] = useState("");
   const [friends, setFriends] = useState([]);
-  const [selected, setSelected] = useState(friends[0]);
+  const [selected, setSelected] = useState();
 
   const filteredPeople =
     query === ""
@@ -47,7 +47,7 @@ export default function AddMember({ user, groupId }) {
   const fetchFriends = (id) => {
     try {
       const serverUrl = process.env.SERVER_URL;
-      const endPoint = "/friend/acceptedFriends";
+      const endPoint = "/group/withoutGroupMembers";
       axios
         .post(serverUrl + endPoint, {
           userId: id,
@@ -56,7 +56,7 @@ export default function AddMember({ user, groupId }) {
           // Axios isteği bittiğinde çalışan fonksiyon
           (response) => {
             if (response.data.status === "success") {
-              const currentFriends = response.data.friends;
+              const currentFriends = response.data.members;
               setFriends(currentFriends);
               setSelected(currentFriends[0]);
             }
@@ -131,7 +131,7 @@ export default function AddMember({ user, groupId }) {
                 afterLeave={() => setQuery("")}
               >
                 <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg outline-0 sm:text-sm">
-                  {filteredPeople.length === 0 && query !== "" ? (
+                  {friends.length === 0 ? (
                     <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                       Arkadaş bulunamadı.
                     </div>

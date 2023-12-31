@@ -84,18 +84,14 @@ const Friends = ({ user }) => {
 
         console.log("Arkadas: ", response.data.friend);
 
-        setFriends([...myFriends, response.data.friend]);
         setUsers(users.filter((user) => user.id !== id));
+        fetchFriends(user.id);
       })
       .catch((response) => {
         response.details.body.forEach((bodyData) => {
           toast.error(bodyData.message);
         });
       });
-  };
-
-  const updateFriends = (newFriend) => {
-    setFriends(newFriend);
   };
 
   useEffect(() => {

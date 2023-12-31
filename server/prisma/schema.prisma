@@ -14,7 +14,7 @@ model User {
   username         String         @db.VarChar(20)
   fullName         String?        @db.VarChar(50)
   password         String         @db.VarChar(255)
-  picture          String?        @db.VarChar(255)
+  picture          String         @default("default.jpg") @db.VarChar(255)
   status           Int            @default(1)
   GroupMember      GroupMember[]
   GroupMessage     GroupMessage[]
