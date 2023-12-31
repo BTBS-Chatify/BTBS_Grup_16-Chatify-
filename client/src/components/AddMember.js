@@ -51,6 +51,7 @@ export default function AddMember({ user, groupId }) {
       axios
         .post(serverUrl + endPoint, {
           userId: id,
+          groupId: groupId,
         })
         .then(
           // Axios isteği bittiğinde çalışan fonksiyon

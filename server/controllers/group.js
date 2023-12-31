@@ -41,12 +41,18 @@ route.post("/all", async function (req, res) {
   const { userId } = req.body;
   const { groupId } = req.body;
   try {
-    const groups = await prisma.group.findMany({
+    const groups = await prisma.groupMember.findMany({
       where: {
         userId: userId,
+        NOT: {
+          joinedAt: null,
+        },
       },
       orderBy: {
-        createdAt: "desc",
+        joinedAt: "desc",
+      },
+      include: {
+        group: true,
       },
     });
 
@@ -57,7 +63,7 @@ route.post("/all", async function (req, res) {
         try {
           const messages = await prisma.groupMessage.findMany({
             where: {
-              groupId: group.id,
+              groupId: group.groupId,
             },
             orderBy: {
               createdAt: "desc",
@@ -350,15 +356,37 @@ route.post("/withoutGroupMembers", async function (req, res) {
 
     const excludedFriends = await prisma.friend.findMany({
       where: {
-        user1Id: userId,
-        NOT: {
-          user2Id: {
-            in: user2IdArray,
+        OR: [
+          {
+            user1Id: userId,
+            NOT: {
+              user2Id: {
+                in: user2IdArray,
+              },
+            },
+            status: 1,
           },
-        },
-        status: 1,
+          {
+            user2Id: userId,
+            NOT: {
+              user1Id: {
+                in: user2IdArray,
+              },
+            },
+            status: 1,
+          },
+        ],
       },
       include: {
+        user1: {
+          select: {
+            fullName: true,
+            username: true,
+            picture: true,
+            status: true,
+            id: true,
+          },
+        },
         user2: {
           select: {
             fullName: true,
@@ -371,11 +399,18 @@ route.post("/withoutGroupMembers", async function (req, res) {
       },
     });
 
-    const filteredMembers = excludedFriends.map((friend) => friend.user2);
+    const filteredMembers = excludedFriends.reduce((acc, friend) => {
+      if (friend.user1Id === userId) {
+        acc.push(friend.user2);
+      } else {
+        acc.push(friend.user1);
+      }
+      return acc;
+    }, []);
 
     return res.status(200).json({
       status: "success",
-      message: "Gruba üye olmayan arkadaşlar listelendi",
+      message: "Gruba üye olmayan ve status'u 1 olan arkadaşlar listelendi",
       members: filteredMembers,
     });
   } catch (error) {

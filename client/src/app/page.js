@@ -145,8 +145,8 @@ const Home = ({ user }) => {
         <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
           {groups.map((group) => (
             <GroupCard
-              key={group.id}
-              group={group}
+              key={group.groupId}
+              group={group.group}
               latestSender={group.latestSender}
               latestMsg={group.latestMsg}
               latestMsgTime={group.latestMsgTime}
