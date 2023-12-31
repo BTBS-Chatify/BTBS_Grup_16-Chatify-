@@ -80,7 +80,7 @@ const Home = ({ user }) => {
 
     if (groups.length > 0) {
       groups.forEach((group) => {
-        group != null ? newSocket.emit("joinRoom", group.id) : null;
+        group != null ? newSocket.emit("joinRoom", group.groupId) : null;
       });
     }
 
