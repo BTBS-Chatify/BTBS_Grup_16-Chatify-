@@ -68,6 +68,13 @@ route.post("/all", async function (req, res) {
             orderBy: {
               createdAt: "desc",
             },
+            include: {
+              user: {
+                select: {
+                  username: true,
+                },
+              },
+            },
           });
 
           if (messages.length > 0) {

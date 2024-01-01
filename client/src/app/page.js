@@ -44,7 +44,9 @@ const Home = ({ user }) => {
                   latestMsg:
                     group.messages.length > 0 ? group.messages[0].message : "",
                   latestSender:
-                    group.messages.length > 0 ? group.messages[0].userId : "",
+                    group.messages.length > 0
+                      ? group.messages[0].user.username
+                      : "",
                   latestMsgTime:
                     group.messages.length > 0
                       ? group.messages[0].createdAt
