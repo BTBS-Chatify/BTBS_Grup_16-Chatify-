@@ -422,4 +422,36 @@ route.post("/withoutGroupMembers", async function (req, res) {
   }
 });
 
+route.post("/leave", async function (req, res) {
+  const { groupId, userId } = req.body;
+  try {
+    const leaved = await prisma.groupMember.deleteMany({
+      where: {
+        groupId: groupId,
+        userId: userId,
+      },
+    });
+
+    if (leaved) {
+      return res.status(200).json({
+        status: "success",
+        message: "Gruptan ayrıldınız.",
+        data: leaved,
+      });
+    } else {
+      return res.status(500).json({
+        status: "error",
+        message:
+          "Kullanıcı gruptan ayrılırken bir hata oluştu. Tekrar deneyiniz.",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Bir hata oluştu",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = route;

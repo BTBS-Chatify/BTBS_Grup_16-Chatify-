@@ -106,23 +106,18 @@ const Home = ({ user }) => {
     setSidebarOpen(true);
     setSidebarInitiallyClosed(true);
   }, []);
-  
-  const newSocket = io('http://localhost:3005');
-
-  if (groups.length > 0) {
-    groups.forEach((group) => {
-      group != null ? newSocket.emit("joinRoom", group.id) : null;
-      group != null ? newSocket.emit("joinRoom", group.groupId) : null;
-    });
-  }
 
   useEffect(() => {
     const handleResize = () => {
       const newIsSmallScreen = window.innerWidth < 768;
-      if (newIsSmallScreen && sidebarInitiallyClosed && sidebarOpen && !shouldCloseSidebar) {
+      if (
+        newIsSmallScreen &&
+        sidebarInitiallyClosed &&
+        sidebarOpen &&
+        !shouldCloseSidebar
+      ) {
         setSidebarOpen(false);
         setSidebarInitiallyClosed(false);
-       
       }
 
       setIsSmallScreen(newIsSmallScreen);
@@ -154,13 +149,10 @@ const Home = ({ user }) => {
       <Navigation />
       <div className="lg:pl-20">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-            
           <button onClick={toggleSidebar}>
             <span className="sr-only">Toggle sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-       
-       
 
           {/* Separator */}
           <div
@@ -172,39 +164,42 @@ const Home = ({ user }) => {
         </div>
 
         <main className="xl:pl-96  lg:block h-100">
-        {!isSmallScreen && selectedGroup ? (
-           <Chat className="ml-0"
-           user={user}
-           groupId={selectedGroup.id}
-           chatTitle={selectedGroup.name}
-           fetchGroups={fetchGroups}
-         />
-        ) : null}
-      </main>
+          {!isSmallScreen && selectedGroup ? (
+            <Chat
+              className="ml-0"
+              user={user}
+              groupId={selectedGroup.id}
+              setSelectedGroup={setGroup}
+              chatTitle={selectedGroup.name}
+              fetchGroups={fetchGroups}
+            />
+          ) : null}
+        </main>
       </div>
       {sidebarOpen && (
-      <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
-        <div className="flex flex-row justify-between items-center bg-slate-100 py-6 px-4 sm:px-6 lg:px-8">
-          <div>
-            <span className="font-semibold text-lg text-slate-900">Akış</span>
+        <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
+          <div className="flex flex-row justify-between items-center bg-slate-100 py-6 px-4 sm:px-6 lg:px-8">
+            <div>
+              <span className="font-semibold text-lg text-slate-900">Akış</span>
+            </div>
+            <div>
+              <GroupCreateModal user={user} fetchGroups={fetchGroups} />
+            </div>
           </div>
-          <div>
-            <GroupCreateModal user={user} fetchGroups={fetchGroups} />
+          <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
+            {groups.map((group) => (
+              <GroupCard
+                key={group.groupId}
+                group={group.group}
+                latestSender={group.latestSender}
+                latestMsg={group.latestMsg}
+                latestMsgTime={group.latestMsgTime}
+                handleSettingGroup={setGroup}
+              />
+            ))}
           </div>
-        </div>
-        <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8">
-          {groups.map((group) => (
-            <GroupCard
-            key={group.groupId}
-            group={group.group}
-            latestSender={group.latestSender}
-            latestMsg={group.latestMsg}
-            latestMsgTime={group.latestMsgTime}
-            handleSettingGroup={setGroup}
-            />
-          ))}
-        </div>
-      </aside>)}
+        </aside>
+      )}
     </div>
   );
 };

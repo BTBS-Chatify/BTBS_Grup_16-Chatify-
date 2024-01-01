@@ -6,7 +6,7 @@ import { flushSync } from "react-dom";
 
 import AddMember from "./AddMember";
 
-const GroupSettings = ({ user, groupId }) => {
+const GroupSettings = ({ user, groupId, fetchGroups, setSelectedGroup }) => {
   let [isOpen, setIsOpen] = useState(false);
   const [members, setMembers] = useState([]);
 
@@ -38,6 +38,31 @@ const GroupSettings = ({ user, groupId }) => {
             setMembers(responseMembers);
           } else {
             toast.error(JSON.stringify(response.data.message));
+          }
+        });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const leaveGroup = async () => {
+    const serverUrl = process.env.SERVER_URL;
+    const endpoint = "/group/leave";
+
+    try {
+      await axios
+        .post(serverUrl + endpoint, {
+          groupId: groupId,
+          userId: user.id,
+        })
+        .then((response) => {
+          if (response.data.status === "success") {
+            closeModal();
+            fetchGroups();
+            setSelectedGroup(null);
+            toast.success(response.data.message);
+          } else {
+            toast.error(response.data.message);
           }
         });
     } catch (error) {
@@ -273,7 +298,7 @@ const GroupSettings = ({ user, groupId }) => {
                       className="font-medium "
                       style={{ color: "#CD5C5C", marginLeft: "8px" }}
                     >
-                      <a href=" ">Gruptan çık</a>
+                      <button onClick={leaveGroup}>Gruptan çık</button>
                     </label>
                   </div>
                 </Dialog.Panel>

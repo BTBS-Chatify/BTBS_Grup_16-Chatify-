@@ -4,7 +4,7 @@ import axios from "axios";
 import GroupSettings from "@/components/GroupSettings";
 import io from "socket.io-client";
 
-const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
+const Chat = ({ user, groupId, chatTitle, fetchGroups, setSelectedGroup }) => {
   const [groupMessages, setGroupMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [socket, setSocket] = useState(null);
@@ -127,10 +127,6 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
     }
   };
 
-  
- 
-  
-    
   return (
     <div className="relative w-full overflow-hidden flex flex-col h-screen">
       {/* chat header */}
@@ -170,7 +166,12 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
                 <button className="text-gray-400 hover:text-gray-600">
                   <i className="ri-more-2-fill"></i>
                 </button>
-                <GroupSettings user={user} groupId={groupId} />
+                <GroupSettings
+                  user={user}
+                  groupId={groupId}
+                  fetchGroups={fetchGroups}
+                  setSelectedGroup={setSelectedGroup}
+                />
               </li>
             </ul>
           </div>
@@ -178,7 +179,7 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
       </div>
 
       <div
-        id="chat-container" 
+        id="chat-container"
         className="flex-grow overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4  "
       >
         {user != null
@@ -237,4 +238,3 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups }) => {
 };
 
 export default Chat;
-
