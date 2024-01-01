@@ -4,7 +4,14 @@ import axios from "axios";
 import GroupSettings from "@/components/GroupSettings";
 import io from "socket.io-client";
 
-const Chat = ({ user, groupId, chatTitle, fetchGroups, setSelectedGroup }) => {
+const Chat = ({
+  user,
+  groupId,
+  chatTitle,
+  fetchGroups,
+  setSelectedGroup,
+  sidebarOpen,
+}) => {
   const [groupMessages, setGroupMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [socket, setSocket] = useState(null);
@@ -128,13 +135,13 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups, setSelectedGroup }) => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden flex flex-col h-screen">
+    <div className="block relative w-full overflow-hidden flex flex-col h-screen">
       {/* chat header */}
       <div
         className={
-          groupMessages.length > 0
-            ? "</div></div>p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0 mt-16"
-            : "</div></div>p-4 bg-white border-b border-gray-100 lg:p-6 left-0 right-0"
+          sidebarOpen
+            ? "p-4 bg-white border-b border-gray-100 lg:p-6 fixed lg:left-[calc(24rem+5rem)] left-[calc(24rem)] right-0 top-16"
+            : "p-4 bg-white border-b border-gray-100 lg:p-6 fixed left-20 right-0 top-16"
         }
       >
         <div className="grid items-center grid-cols-12">
@@ -180,7 +187,11 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups, setSelectedGroup }) => {
 
       <div
         id="chat-container"
-        className="flex-grow overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4  "
+        className={
+          sidebarOpen
+            ? "fixed overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4 pb-20 lg:left-[calc(24rem+5rem)] left-[calc(24rem)] right-0 bottom-24 top-44"
+            : "fixed overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4 pb-20 left-20 right-0 bottom-24 top-44"
+        }
       >
         {user != null
           ? groupMessages.map((el, index) => (
@@ -199,9 +210,9 @@ const Chat = ({ user, groupId, chatTitle, fetchGroups, setSelectedGroup }) => {
 
       <div
         className={
-          groupMessages.length > 0
-            ? "p-6 h-15 bg-white border-t border-gray-50"
-            : "p-6 h-15 bg-white border-t border-gray-50 mb-16"
+          sidebarOpen
+            ? "p-6 h-15 bg-white border-t border-gray-50 fixed bottom-0 lg:left-[calc(24rem+5rem)] left-[calc(24rem)] right-0"
+            : "p-6 h-15 bg-white border-t border-gray-50 fixed bottom-0 left-20 right-0"
         }
       >
         <form onSubmit={handleSubmit} className="flex justify-between">

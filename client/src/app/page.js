@@ -165,7 +165,7 @@ const Home = ({ user }) => {
           <Header user={user} />
         </div>
 
-        <main className="xl:pl-96  lg:block h-100">
+        <main className="h-100">
           {!isSmallScreen && selectedGroup ? (
             <Chat
               className="ml-0"
@@ -174,6 +174,7 @@ const Home = ({ user }) => {
               setSelectedGroup={setGroup}
               chatTitle={selectedGroup.name}
               fetchGroups={fetchGroups}
+              sidebarOpen={sidebarOpen}
             />
           ) : null}
         </main>
