@@ -16,6 +16,7 @@ const Chat = ({
   const [message, setMessage] = useState("");
   const [socket, setSocket] = useState(null);
   const messagesEndRef = useRef(null);
+  const [dynamicMargin,setDynamicMarhin]=useState("0");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -133,16 +134,30 @@ const Chat = ({
       setGroup(null);
     }
   };
+  useEffect(()=>{
+    const handleResize=()=>{
+      setDynamicMarhin(window.innweWidth<=300 ? "-100% ": "0");
+    };
+    let timeoutId;
+    const debouncResize=() => {
+      clearTimeout(timeoutId);
+      timeoutId=setTimeout(handleResize,200);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  },[]);
 
   return (
     <div className="block relative w-full overflow-hidden flex flex-col h-screen">
       {/* chat header */}
       <div
-        className={
-          sidebarOpen
-            ? "p-4 bg-white border-b border-gray-100 lg:p-6 fixed lg:left-[calc(24rem+5rem)] left-[calc(24rem)] right-0 top-16"
-            : "p-4 bg-white border-b border-gray-100 lg:p-6 fixed left-20 right-0 top-16"
-        }
+       className={`p-4 bg-white border-b border-gray-100 lg:p-6 fixed ${
+        sidebarOpen
+          ? "lg:left-[calc(24rem+5rem)] left-[calc(24rem)] right-0 top-16"
+          : "left-0 right-0 sm:left-20 sm:right-0 top-16"
+      }`}
       >
         <div className="grid items-center grid-cols-12">
           <div className="col-span-8 sm:col-span-4">
@@ -186,11 +201,11 @@ const Chat = ({
       </div>
 
       <div
-        id="chat-container"
+        id="chat-container" 
         className={
           sidebarOpen
             ? "fixed overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4 pb-20 lg:left-[calc(24rem+5rem)] left-[calc(24rem)] right-0 bottom-24 top-44"
-            : "fixed overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4 pb-20 left-20 right-0 bottom-24 top-44"
+            : "fixed overflow-auto px-4 py-10 sm:px-6 lg:px-6 lg:py-4 pb-20 left-20 right-0 bottom-24 top-44" 
         }
       >
         {user != null

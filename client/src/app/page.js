@@ -166,7 +166,7 @@ const Home = ({ user }) => {
         </div>
 
         <main className="h-100">
-          {!isSmallScreen && selectedGroup ? (
+          { selectedGroup ? (
             <Chat
               className="ml-0"
               user={user}
