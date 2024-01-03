@@ -102,7 +102,7 @@ const Home = ({ user }) => {
     }
   }, [socket]);
 
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768); // Adjust the breakpoint as needed
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     setSidebarOpen(true);

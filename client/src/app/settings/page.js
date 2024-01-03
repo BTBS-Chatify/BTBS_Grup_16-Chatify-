@@ -1,6 +1,7 @@
 "use client";
 import { Children, Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
+import axios from "axios";
 import {
   Bars3Icon,
   UserCircleIcon,
@@ -16,42 +17,64 @@ import Header from "@/components/Header";
 import SettingsNavigation from "@/components/SettingNavigation";
 import isAuth from "@/middleware/isAuth";
 import ChangePassword from "@/components/ChangePasword"
+import { toast } from "react-toastify";
 const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [mail, setMail] = useState("");
-  const [isDialogOpen, setDialogOpen] = useState(false);
+ const [fullName, setFullName] = useState("");
+ const [mail, setMail] = useState("");
+ const [isDialogOpen, setDialogOpen] = useState(false);
   
-  const openDialog = () => {
+ const openDialog = () => {
     setDialogOpen(true);
-  };
+ };
 
-  const closeDialog = () => {
+ const closeDialog = () => {
     setDialogOpen(false);
-  };
+ };
 
-  const handleSubmit = (event) => {
+ const handleSubmit = (event) => {
     event.preventDefault();
     closeDialog();
-  };
+ };
 
-  useEffect(() => {
-    if (user) {
-      setFullName(user.fullName || "");
-      setMail(user.email || "");
-    }
-  }, [user])
+ useEffect(() => {
+ if (user && user.fullName !== null && user.email !== null) {
+    setFullName(user.fullName || "");
+    setMail(user.email || "");
+ }
+}, [user]);
 
 
-  const handleUsernameChange = (e) => {
+ const handleUsernameChange = (e) => {
     const inputText = e.target.value;
     setFullName(inputText);
-  };
+ };
 
-  const handleEmailChange = (e) => {
+ const handleEmailChange = (e) => {
     const inputText = e.target.value;
     setMail(inputText);
-  };
+ };
+
+ const handleSaveChanges = async (e) => {
+    e.preventDefault();
+    try {
+      const serverURL = process.env.SERVER_URL;
+      const endPoint = "/settings/updateUser"
+      await axios.post(serverURL + endPoint, {
+        userId: user.id,
+        fullName: fullName,
+        email: mail,
+      }).then(
+        response => {
+          if(response.data.status == "success"){
+              toast.success(response.data.message);
+          }
+        }
+      )
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+ };
 
   return (
     <div>
@@ -218,9 +241,7 @@ const Home = ({ user }) => {
                 <div class="mb-5 flex items-center max-sm:text-xs py-3">
                   <div className="block">
                     <button className="bg-green-600 px-3 block py-2 text-sm max-sm:text-xs text-white font-semibold rounded-sm hover:bg-green-800"
-                      onClick={
-                        console.log("")
-                      }
+                      onClick={handleSaveChanges}
                     >
                       Değişiklikleri Kaydet
                     </button>

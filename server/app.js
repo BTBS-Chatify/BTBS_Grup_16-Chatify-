@@ -16,7 +16,7 @@ const io = new Server(server, {
 let users = [];
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -69,6 +69,7 @@ io.on("connection", (socket) => {
 app.use("/auth", require("./controllers/auth"));
 app.use("/group", require("./controllers/group"));
 app.use("/friend", require("./controllers/friend"));
+app.use("/settings", require("./controllers/settings"));
 
 // app.use(function (err, req, res) {
 //   if (err instanceof ValidationError) {
