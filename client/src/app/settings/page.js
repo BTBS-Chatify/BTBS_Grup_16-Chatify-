@@ -16,65 +16,81 @@ import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
 import SettingsNavigation from "@/components/SettingNavigation";
 import isAuth from "@/middleware/isAuth";
-import ChangePassword from "@/components/ChangePasword"
+import ChangePassword from "@/components/ChangePasword";
 import { toast } from "react-toastify";
 const Home = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
- const [fullName, setFullName] = useState("");
- const [mail, setMail] = useState("");
- const [isDialogOpen, setDialogOpen] = useState(false);
-  
- const openDialog = () => {
+  const [fullName, setFullName] = useState("");
+  const [mail, setMail] = useState("");
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [updatedUser, setUpdatedUser] = useState(null);
+
+  const openDialog = () => {
     setDialogOpen(true);
- };
+  };
 
- const closeDialog = () => {
+  const closeDialog = () => {
     setDialogOpen(false);
- };
+  };
 
- const handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     closeDialog();
- };
+  };
 
- useEffect(() => {
- if (user && user.fullName !== null && user.email !== null) {
-    setFullName(user.fullName || "");
-    setMail(user.email || "");
- }
-}, [user]);
+  const getUser = async (userId) => {
+    const serverURL = process.env.SERVER_URL;
+    const endPoint = "/settings/getUser";
+    await axios
+      .post(serverURL + endPoint, { userId: userId })
+      .then((response) => {
+        if (response.data.status == "success") {
+          setUpdatedUser(response.data.user);
+        }
+      });
+  };
+  useEffect(() => {
+    user != null ? getUser(user.id) : null;
+  }, [user]);
 
+  useEffect(() => {
+    updatedUser != null ? console.log("updatedUser", updatedUser) : null;
+    if (updatedUser) {
+      setFullName(updatedUser.fullName || "");
+      setMail(updatedUser.email || "");
+    }
+  }, [updatedUser]);
 
- const handleUsernameChange = (e) => {
+  const handleUsernameChange = (e) => {
     const inputText = e.target.value;
     setFullName(inputText);
- };
+  };
 
- const handleEmailChange = (e) => {
+  const handleEmailChange = (e) => {
     const inputText = e.target.value;
     setMail(inputText);
- };
+  };
 
- const handleSaveChanges = async (e) => {
+  const handleSaveChanges = async (e) => {
     e.preventDefault();
     try {
       const serverURL = process.env.SERVER_URL;
-      const endPoint = "/settings/updateUser"
-      await axios.post(serverURL + endPoint, {
-        userId: user.id,
-        fullName: fullName,
-        email: mail,
-      }).then(
-        response => {
-          if(response.data.status == "success"){
-              toast.success(response.data.message);
+      const endPoint = "/settings/updateUser";
+      await axios
+        .post(serverURL + endPoint, {
+          userId: user.id,
+          fullName: fullName,
+          email: mail,
+        })
+        .then((response) => {
+          if (response.data.status == "success") {
+            toast.success(response.data.message);
           }
-        }
-      )
+        });
     } catch (error) {
       console.error("Error updating user:", error);
     }
- };
+  };
 
   return (
     <div>
@@ -113,7 +129,7 @@ const Home = ({ user }) => {
                     Ad Soyad:
                   </label>
                   <input
-                    type="text"  // type'ı text olarak güncellendi
+                    type="text" // type'ı text olarak güncellendi
                     name="fullname"
                     className="shadow-sm flex-1 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-sm p-2.5 ml-2"
                     value={fullName}
@@ -240,7 +256,8 @@ const Home = ({ user }) => {
                 <hr className="py-2 my-3"></hr>
                 <div class="mb-5 flex items-center max-sm:text-xs py-3">
                   <div className="block">
-                    <button className="bg-green-600 px-3 block py-2 text-sm max-sm:text-xs text-white font-semibold rounded-sm hover:bg-green-800"
+                    <button
+                      className="bg-green-600 px-3 block py-2 text-sm max-sm:text-xs text-white font-semibold rounded-sm hover:bg-green-800"
                       onClick={handleSaveChanges}
                     >
                       Değişiklikleri Kaydet
