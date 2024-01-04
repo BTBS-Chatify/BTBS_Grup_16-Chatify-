@@ -163,13 +163,11 @@ const Friends = ({ user }) => {
           <Header user={user} />
         </div>
 
-        <main className="xl:pl-96 hidden lg:block">
-        {!isSmallScreen && (
-          <div className="px-4 py-4">
+        <main className="xl:pl-96 lg:block">
+          <div className="px-12 py-6">
             <span className="text-xl text-slate-700 font-medium">
               Daha fazla kişi tanış
             </span>
-
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-8">
               {users.map((user) => (
                 <div className="bg-white border border-slate-300 rounded flex flex-col justify-center items-center py-4">
@@ -193,7 +191,6 @@ const Friends = ({ user }) => {
               ))}
             </div>
           </div>
-        )}
         </main>
       </div>
       {sidebarOpen && (
