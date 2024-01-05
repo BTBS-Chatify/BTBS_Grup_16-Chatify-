@@ -28,54 +28,6 @@ export default function SettingsNavigation() {
           </ul>
         </div>
       </Link>
-      <Link href="/settings/notifications" className="flex flex-col">
-      <div class="sm:flex">
-            <ul class="menu w-full">
-              <div className="shadow-sm hover:shadow-md hover:bg-gray-200 flex">
-                  <span className="p-2">
-                    <BellAlertIcon class="p-2 h-12 w-12 text-yellow-500" />
-                  </span>
-                  <span className="flex flex-col p-2">
-                    <span className="font-semibold">Bildirimler</span>
-                    <span className="text-gray-400 text-xs">E-posta, masaüstü, mobil</span>
-                  </span>
-              </div>
-            </ul>
-          </div>
-      </Link>
-      <Link href="/settings/availability" className="flex flex-col">
-        <div class="md:flex">
-          <ul class="menu w-full">
-            <div className="shadow-sm hover:shadow-md hover:bg-gray-200 flex">
-              <span className="p-2">
-                <ClockIcon class="p-2 h-12 w-12 text-purple-500" />
-              </span>
-              <span className="flex flex-col p-2">
-                <span className="font-semibold">Kullanılabilirlik</span>
-                <span className="text-gray-400 text-xs">Ziyaretçiler sizi çevrimiçi olarak gördüğünde</span>
-              </span>
-
-            </div>
-          </ul>
-        </div>
-      </Link>
-      <div className="flex flex-col ">
-        <div class="md:flex">
-          <ul class="menu w-full">
-            <div className="shadow-sm hover:shadow-md hover:bg-gray-200">
-              <a href="#" className="flex">
-                <span className="p-2">
-                  <LockClosedIcon class="p-2 h-12 w-12 text-green-500" />
-                </span>
-                <span className="flex flex-col p-2">
-                  <span className="font-semibold">Gizlilik & Güvenlik</span>
-                  <span className="text-gray-400 text-xs">şifre değiştirme, hesap güvenliği</span>
-                </span>
-              </a>
-            </div>
-          </ul>
-        </div>
-      </div>
       <Link href="/logout" className="flex flex-col">
       <div class="sm:flex item">
           <ul class="menu w-full">
