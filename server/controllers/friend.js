@@ -338,4 +338,72 @@ route.post("/friend", async function (req, res) {
     });
 });
 
+route.post("/message/add", async function (req, res) {
+  const { userId, friendId, message } = req.body;
+  const added = await prisma.message.create({
+    data: {
+      conversationId: 1,
+      senderId: userId,
+      receiverId: friendId,
+      messageText: message,
+      sentAt: new Date(),
+    },
+  });
+
+  if (!added) {
+    return res.status(400).json({
+      status: "error",
+      message: "Mesaj gönderilemedi.",
+    });
+  }
+
+  return res.status(200).json({
+    status: "success",
+    message: "Mesaj gönderildi.",
+  });
+});
+
+route.post("/messages", async function (req, res) {
+  const { userId, friendId } = req.body;
+
+  const messages = await prisma.message.findMany({
+    where: {
+      OR: [
+        {
+          senderId: userId,
+          receiverId: friendId,
+        },
+        {
+          senderId: friendId,
+          receiverId: userId,
+        },
+      ],
+    },
+  });
+
+  messages.forEach((msg) => {
+    const sender = prisma.user
+      .findFirst({
+        where: {
+          id: msg.senderId,
+        },
+      })
+      .then((sender) => (msg.sender = sender));
+
+    const receiver = prisma.user
+      .findFirst({
+        where: {
+          id: msg.receiverId,
+        },
+      })
+      .then((receiver) => (msg.receiver = receiver));
+  });
+
+  return res.status(200).json({
+    status: "success",
+    message: "Mesajlar listelendi.",
+    messages: messages,
+  });
+});
+
 module.exports = route;

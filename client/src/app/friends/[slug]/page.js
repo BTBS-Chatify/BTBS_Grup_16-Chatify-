@@ -68,6 +68,63 @@ const Page = ({ params, user }) => {
     } catch (error) {}
   };
 
+  const addMessage = async (message) => {
+    try {
+      const serverUrl = process.env.SERVER_URL;
+      const endPoint = "/friend/message/add";
+
+      await axios
+        .post(serverUrl + endPoint, {
+          userId: user.id,
+          friendId: friend.id,
+          message: message,
+        })
+        .then(
+          (response) => {
+            if (response.data.status === "success") {
+              // message added to the db.
+              fetchMessages();
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const fetchMessages = async () => {
+    try {
+      const serverUrl = process.env.SERVER_URL;
+      const endPoint = "/friend/messages";
+      await axios
+        .post(serverUrl + endPoint, {
+          userId: user.id,
+          friendId: friend.id,
+        })
+        .then(
+          (response) => {
+            const data = response.data.messages;
+            if (response.data.status === "success") {
+              const updatedMessages = data.map((message) => ({
+                ...message,
+                from: { username: "deneme", picture: "default.jpg" },
+              }));
+              console.log(updatedMessages);
+              setMessages(updatedMessages);
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const handleSendMessage = (e) => {
     e.preventDefault();
 
@@ -78,6 +135,7 @@ const Page = ({ params, user }) => {
         { username: user.username, picture: user.picture },
         friend.username
       );
+      addMessage(e.target.message.value);
       setMessages([
         ...messages,
         { message: e.target.message.value, from: user.username },
@@ -88,6 +146,10 @@ const Page = ({ params, user }) => {
       toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    fetchMessages();
+  }, [friend]);
 
   useEffect(() => {
     user != null ? fetchFriends(user.id) : null;
@@ -117,7 +179,20 @@ const Page = ({ params, user }) => {
   useEffect(() => {
     if (socket != null) {
       socket.on("messages", (message, from) => {
-        setMessages([...messages, { message: message, from: from }]);
+        console.log([
+          ...messages,
+          {
+            from: from,
+            messageText: message,
+          },
+        ]);
+        setMessages([
+          ...messages,
+          {
+            from: from,
+            messageText: message,
+          },
+        ]);
       });
     }
   });
@@ -189,10 +264,11 @@ const Page = ({ params, user }) => {
                   {messages.map((msg, index) => (
                     <MessageBubble
                       key={index}
-                      message={msg.message}
+                      message={msg.messageText}
                       sender={msg.from.username}
                       isSender={msg.from === user.username}
                       senderPicture={msg.from.picture}
+                      sentAt={msg.sentAt}
                     />
                   ))}
                 </div>
