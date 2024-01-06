@@ -1,9 +1,70 @@
 // GroupSettingsDialog.js
 import React from 'react';
+import { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
+import { bcrypt } from 'react';
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const GroupSettingsDialog = ({ isOpen, closeModal, onSubmit, user, groupId }) => {
+const GroupSettingsDialog = ({ isOpen, closeModal, onSubmit, user }) => {
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    
+    const handlePasswordChange = async (e) => {
+        e.preventDefault();
+
+        try {
+            // 1. Mevcut şifreyi kontrol et
+            const userId = user.id;
+            const serverURL = process.env.SERVER_URL;
+            const endPoint = "/settings/checkPassword";
+            const checkPasswordResponse = await axios.post(serverURL + endPoint, {
+                userId: userId,
+                currentPassword: currentPassword,
+            });
+
+            if (checkPasswordResponse.data.status !== 'success') {
+                console.error(checkPasswordResponse.data.message);
+                console.log("User ID:", user.data.id);
+                return;
+            }    
+
+            // 2. Yeni şifreyi güncelle
+
+            if (newPassword !== confirmNewPassword) {
+                toast.error("Yeni şifreler uyuşmuyor.");
+                closeModal();
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmNewPassword();
+                return;
+            }
+            const updatePasswordResponse = await axios.post(serverURL + "/settings/updatePassword", {
+                userId: userId,
+                newPassword: newPassword,
+            });
+            
+            if (updatePasswordResponse.data.status === 'success') {
+                closeModal();
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmNewPassword();
+                toast.success("Şifre Değiştirildi")
+            } else {
+                console.error(updatePasswordResponse.data.message); 
+            }
+
+            if(closeModal()){
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmNewPassword();
+            }
+        } catch (error) {
+            console.error('Axios hatası:', error);
+        }
+    };
     return (
         <Transition appear show={isOpen} as={React.Fragment}>
             <Dialog as="div" className="relative z-50" onClose={closeModal}>
@@ -39,7 +100,11 @@ const GroupSettingsDialog = ({ isOpen, closeModal, onSubmit, user, groupId }) =>
                                     className="text-lg font-medium leading-6 text-gray-900 pb-4"
                                 >
                                     <div className='flex items-center justify-center'>
-                                        <form className='block items-center justify-center'>
+                                        <form className='block items-center justify-center'
+                                            onSubmit={(e) => {
+                                                e.preventDefault();
+                                                handlePasswordChange();
+                                            }}>
                                             <label className=''>Şifre Değiştir</label>
                                             <div className="relative mt-2 rounded-md shadow-sm">
                                                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -49,9 +114,11 @@ const GroupSettingsDialog = ({ isOpen, closeModal, onSubmit, user, groupId }) =>
                                                 </div>
                                                 <input
                                                     type="password"
-                                                    name="name"
-                                                    id="name"
+                                                    name="currentPassword"
+                                                    id="currentPassword"
                                                     required
+                                                    value={currentPassword}
+                                                    onChange={(e) => setCurrentPassword(e.target.value)}
                                                     className="block w-full rounded-md border-0 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-gray-400 sm:text-sm sm:leading-6"
                                                     placeholder="Mevcut Şifre"
                                                 />
@@ -64,9 +131,11 @@ const GroupSettingsDialog = ({ isOpen, closeModal, onSubmit, user, groupId }) =>
                                                 </div>
                                                 <input
                                                     type="password"
-                                                    name="name"
-                                                    id="name"
+                                                    name="newPassword"
+                                                    id="newPassword"
                                                     required
+                                                    value={newPassword}
+                                                    onChange={(e) => setNewPassword(e.target.value)}
                                                     className="block w-full rounded-md border-0 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-gray-400 sm:text-sm sm:leading-6"
                                                     placeholder="Yeni Şifre"
                                                 />
@@ -79,15 +148,18 @@ const GroupSettingsDialog = ({ isOpen, closeModal, onSubmit, user, groupId }) =>
                                                 </div>
                                                 <input
                                                     type="password"
-                                                    name="name"
-                                                    id="name"
+                                                    name="confirmNewPassword"
+                                                    id="confirmNewPassword"
                                                     required
+                                                    value={confirmNewPassword}
+                                                    onChange={(e) => setConfirmNewPassword(e.target.value)}
                                                     className="block w-full rounded-md border-0 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-gray-400 sm:text-sm sm:leading-6"
                                                     placeholder="Yeni Şifre Tekrar"
                                                 />
                                             </div>
                                             <div className="relative mt-2 rounded-md">
-                                                <button className="bg-blue-600 px-3 py-2 w-full text-sm text-white font-semibold rounded-sm hover:bg-blue-500">
+                                                <button className="bg-blue-600 px-3 py-2 w-full text-sm text-white font-semibold rounded-sm hover:bg-blue-500"
+                                                    onClick={handlePasswordChange}>
                                                     Kaydet
                                                 </button>
                                             </div>

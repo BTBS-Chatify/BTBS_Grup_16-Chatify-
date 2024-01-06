@@ -164,25 +164,11 @@ const Home = ({ user }) => {
                   isOpen={isDialogOpen}
                   closeModal={closeDialog}
                   onSubmit={handleSubmit}
+                  user={user}
                 />
 
                 {/* ... (remaining code) */}
                 <hr className="py-1 my-3"></hr>
-                <div class="mb-5 flex items-center py-3">
-                  <div className="block">
-                    <span className="text-sm text-gray-500">
-                      Hesabınızı kaldırmak mı istiyorsunuz?{" "}
-                    </span>
-                    <span>
-                      <a href="#">
-                        <i>
-                          <u>Hesabımı sil</u>
-                        </i>
-                      </a>
-                    </span>
-                  </div>
-                </div>
-                <hr className="py-2 my-3"></hr>
                 <div class="mb-5 flex items-center max-sm:text-xs py-3">
                   <div className="block">
                     <button
