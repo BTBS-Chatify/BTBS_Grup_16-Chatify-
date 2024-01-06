@@ -1,4 +1,3 @@
-
 "use client";
 import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
@@ -22,7 +21,6 @@ const Friends = ({ user }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
   const [sidebarInitiallyClosed, setSidebarInitiallyClosed] = useState(false);
   const [shouldCloseSidebar, setShouldCloseSidebar] = useState(false);
-  
 
   const fetchFriends = (id) => {
     try {
@@ -39,6 +37,7 @@ const Friends = ({ user }) => {
               const currentFriends = response.data.friends;
               console.log("Arkadas: ", currentFriends);
               setFriends(currentFriends);
+              console.log("Arkadaşlarım: ", myFriends);
             }
           },
           (error) => {
@@ -104,7 +103,6 @@ const Friends = ({ user }) => {
     user != null ? fetchUsers(user.id) : null;
   }, [user]);
 
-  
   useEffect(() => {
     setSidebarOpen(true);
     setSidebarInitiallyClosed(true);
@@ -113,10 +111,14 @@ const Friends = ({ user }) => {
   useEffect(() => {
     const handleResize = () => {
       const newIsSmallScreen = window.innerWidth < 768;
-      if (newIsSmallScreen && sidebarInitiallyClosed && sidebarOpen && !shouldCloseSidebar) {
+      if (
+        newIsSmallScreen &&
+        sidebarInitiallyClosed &&
+        sidebarOpen &&
+        !shouldCloseSidebar
+      ) {
         setSidebarOpen(false);
         setSidebarInitiallyClosed(false);
-       
       }
 
       setIsSmallScreen(newIsSmallScreen);
@@ -148,12 +150,11 @@ const Friends = ({ user }) => {
       <Navigation />
       <div className="lg:pl-20">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-              
-        <button onClick={toggleSidebar}>
+          <button onClick={toggleSidebar}>
             <span className="sr-only">Toggle sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-       
+
           {/* Separator */}
           <div
             className="h-6 w-px bg-gray-900/10 lg:hidden"
@@ -194,25 +195,24 @@ const Friends = ({ user }) => {
         </main>
       </div>
       {sidebarOpen && (
-      <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
-        <div className="flex flex-row justify-between items-center py-6 px-4 sm:px-6 lg:px-8">
-          <div className="w-full">
-            <span className="font-semibold text-lg text-slate-900">
-              Arkadaşlarım
-            </span>
-            {myFriends.map((friend) => (
-              <MyFriendCard
-                friend={friend}
-                userId={user.id}
-                fetchFriends={fetchFriends}
-                onSelectFriend={() => setSelectedFriend(friend)}
-              />
-            ))}
+        <aside className="fixed bottom-0 lg:left-20 top-16 w-96 overflow-y-auto border-r border-gray-200 bg-white">
+          <div className="flex flex-row justify-between items-center py-6 px-4 sm:px-6 lg:px-8">
+            <div className="w-full">
+              <span className="font-semibold text-lg text-slate-900">
+                Arkadaşlarım
+              </span>
+              {myFriends.map((friend) => (
+                <MyFriendCard
+                  friend={friend}
+                  userId={user.id}
+                  fetchFriends={fetchFriends}
+                />
+              ))}
+            </div>
+            <div></div>
           </div>
-          <div></div>
-        </div>
-        <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8"></div>
-      </aside>
+          <div className="flex flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8"></div>
+        </aside>
       )}
     </div>
   );

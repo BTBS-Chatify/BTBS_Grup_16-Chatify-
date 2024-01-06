@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import io from "socket.io-client";
 import MessageBubble from "@/components/MessageBubble";
+import Image from "next/image";
 
 const Page = ({ params, user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,7 +23,7 @@ const Page = ({ params, user }) => {
   const fetchFriends = (id) => {
     try {
       const serverUrl = process.env.SERVER_URL;
-      const endPoint = "/friend/acceptedFriends";
+      const endPoint = "/friend/friends";
       axios
         .post(serverUrl + endPoint, {
           userId: id,
@@ -34,6 +35,7 @@ const Page = ({ params, user }) => {
               const currentFriends = response.data.friends;
               console.log("Arkadas: ", currentFriends);
               setFriends(currentFriends);
+              console.log("Arkadaşlarım (Slug): ", myFriends);
             }
           },
           (error) => {
@@ -68,28 +70,30 @@ const Page = ({ params, user }) => {
     } catch (error) {}
   };
 
-  const addMessage = async (message) => {
+  const addMessage = async (message, user, friend) => {
     try {
       const serverUrl = process.env.SERVER_URL;
       const endPoint = "/friend/message/add";
 
-      await axios
-        .post(serverUrl + endPoint, {
-          userId: user.id,
-          friendId: friend.id,
-          message: message,
-        })
-        .then(
-          (response) => {
-            if (response.data.status === "success") {
-              // message added to the db.
-              fetchMessages();
+      if (user.id != null && friend.id != null) {
+        await axios
+          .post(serverUrl + endPoint, {
+            userId: user.id,
+            friendId: friend.id,
+            message: message,
+          })
+          .then(
+            (response) => {
+              if (response.data.status === "success") {
+                // message added to the db.
+                fetchMessages();
+              }
+            },
+            (error) => {
+              console.log(error);
             }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+          );
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -99,27 +103,29 @@ const Page = ({ params, user }) => {
     try {
       const serverUrl = process.env.SERVER_URL;
       const endPoint = "/friend/messages";
-      await axios
-        .post(serverUrl + endPoint, {
-          userId: user.id,
-          friendId: friend.id,
-        })
-        .then(
-          (response) => {
-            const data = response.data.messages;
-            if (response.data.status === "success") {
-              const updatedMessages = data.map((message) => ({
-                ...message,
-                from: { username: "deneme", picture: "default.jpg" },
-              }));
-              console.log(updatedMessages);
-              setMessages(updatedMessages);
+      if (user && friend) {
+        await axios
+          .post(serverUrl + endPoint, {
+            userId: user.id,
+            friendId: friend.id,
+          })
+          .then(
+            (response) => {
+              const data = response.data.messages;
+              if (response.data.status === "success") {
+                const updatedMessages = data.map((message) => ({
+                  ...message,
+                  from: message.senderId === user.id ? user : friend,
+                }));
+                console.log(updatedMessages);
+                setMessages(updatedMessages);
+              }
+            },
+            (error) => {
+              console.log(error);
             }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+          );
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -135,7 +141,7 @@ const Page = ({ params, user }) => {
         { username: user.username, picture: user.picture },
         friend.username
       );
-      addMessage(e.target.message.value);
+      addMessage(e.target.message.value, user, friend);
       setMessages([
         ...messages,
         { message: e.target.message.value, from: user.username },
@@ -228,7 +234,16 @@ const Page = ({ params, user }) => {
                   <div className="flex items-center space-x-2">
                     <div className="col-span-3 flex items-center justify-center">
                       <div className="h-14 w-14 bg-red-400 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold">S</span>
+                        <span className="text-white font-bold">
+                          {friend != null ? (
+                            <Image
+                              className="w-12 h-12 rounded-full"
+                              src={`/assets/` + friend.picture}
+                              height={36}
+                              width={36}
+                            ></Image>
+                          ) : null}
+                        </span>
                       </div>
                     </div>
                     <div className="flex-grow overflow-hidden">
@@ -266,7 +281,7 @@ const Page = ({ params, user }) => {
                       key={index}
                       message={msg.messageText}
                       sender={msg.from.username}
-                      isSender={msg.from === user.username}
+                      isSender={msg.from.id === user.id}
                       senderPicture={msg.from.picture}
                       sentAt={msg.sentAt}
                     />
@@ -322,6 +337,7 @@ const Page = ({ params, user }) => {
                 friend={friend}
                 userId={user.id}
                 fetchFriends={fetchFriends}
+                onSelectFriend={() => setSelectedFriend(friend)}
               />
             ))}
           </div>

@@ -98,7 +98,6 @@ route.post("/acceptedFriends", async function (req, res) {
           username: true,
           picture: true,
           status: true,
-          id: true,
         },
       },
       user2: {
@@ -107,13 +106,14 @@ route.post("/acceptedFriends", async function (req, res) {
           username: true,
           picture: true,
           status: true,
-          id: true,
         },
       },
     },
   });
 
   let filteredFriends = [];
+
+  console.log(friends);
 
   friends.forEach(filterFriend);
 
@@ -379,24 +379,6 @@ route.post("/messages", async function (req, res) {
         },
       ],
     },
-  });
-
-  messages.forEach((msg) => {
-    const sender = prisma.user
-      .findFirst({
-        where: {
-          id: msg.senderId,
-        },
-      })
-      .then((sender) => (msg.sender = sender));
-
-    const receiver = prisma.user
-      .findFirst({
-        where: {
-          id: msg.receiverId,
-        },
-      })
-      .then((receiver) => (msg.receiver = receiver));
   });
 
   return res.status(200).json({

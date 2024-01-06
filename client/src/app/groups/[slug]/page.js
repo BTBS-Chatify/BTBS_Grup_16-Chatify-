@@ -82,13 +82,15 @@ const Page = ({ params, user }) => {
           <Header user={user} />
         </div>
 
-        <main className="xl:pl-96 hidden lg:block">
+        <main className="h-100">
           {group != null ? (
             <Chat
+              className={"ml-0"}
               user={user}
               groupId={group.id}
               chatTitle={group.name}
               fetchGroups={fetchGroups}
+              sidebarOpen={true}
             />
           ) : null}
         </main>
